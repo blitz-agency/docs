@@ -1,97 +1,124 @@
+# Documentation BlitzAPI
+
+## 🚀 Bienvenue sur BlitzAPI
+
+BlitzAPI est votre plateforme unifiée d'enrichissement de données B2B en temps réel. Nous transformons de simples URLs et identifiants en données structurées riches et exploitables pour alimenter vos processus business.
+
+## Notre Mission
+
+Simplifier l'accès aux données B2B en offrant une API unique, performante et fiable qui centralise les meilleures sources d'enrichissement du marché.
+
+## 💡 Pourquoi BlitzAPI ?
+
+### Une API, Multiple Sources
+- **Centralisation** : Un point d'accès unique pour tous vos besoins d'enrichissement
+- **Best-of-breed** : Nous sélectionnons et intégrons les meilleurs providers du marché
+- **Évolutivité** : Nouveaux endpoints et sources ajoutés régulièrement
+
+### Performance & Fiabilité
+- **Cache intelligent** : Optimisation automatique des coûts et performances
+- **Validation stricte** : Contrôle qualité avant chaque appel
+
+### Simplicité d'Intégration
+- **RESTful API** : Standards modernes et documentation claire
+- **Gestion d'erreurs** : Messages clairs et actionnables
+
+## 📊 Nos Services d'Enrichissement
+
+### LinkedIn Enrichment
+Transformez des URLs LinkedIn en profils complets :
+- ✅ [**Profils Personnels**](./linkedin-person) : Informations détaillées des professionnels
+- ✅ [**Pages Entreprises**](./linkedin-company) : Données complètes des organisations
+
+### Email Enrichment *(Coming Soon)*
+Enrichissez vos contacts à partir d'adresses email :
+- 🔜 **Email vers Profil** : Trouvez les informations professionnelles
+- 🔜 **Validation d'Email** : Vérifiez la validité et délivrabilité
+- 🔜 **Email Finder** : Découvrez les emails à partir de noms et domaines
+
+### Company Enrichment *(Coming Soon)*
+Données d'entreprise à partir de domaines :
+- 🔜 **Domaine vers Entreprise** : Informations firmographiques complètes
+- 🔜 **Technographies** : Stack technologique utilisé
+- 🔜 **Signaux d'Intent** : Indicateurs d'achat et de croissance
+
+### Contact Discovery *(Coming Soon)*
+Recherche avancée de contacts :
+- 🔜 **Search API** : Recherche multicritères de prospects
+- 🔜 **Lookalike** : Trouvez des profils similaires
+- 🔜 **Job Changes** : Alertes de mobilité professionnelle
+
+## 🔑 Concepts Clés
+
+### Authentification
+- **Bearer Token** : Clés API
+- **Évolution transparente** : Les améliorations providers sont automatiques
+- **Validation préalable** : Économie sur les requêtes invalides
+
+### Flux de Données
+1. **Réception** : Validation et normalisation de la requête
+2. **Vérification** : Recherche en cache et déduplication
+3. **Enrichissement** : Appel provider si nécessaire
+4. **Réponse** : Retour pass-through des données
+
+## 🚦 Démarrage Rapide
+
+### 1. Obtenir vos Clés API
+```bash
+# Contactez notre équipe commerciale
+# XXXX
+# Rejoignez le slack communautaire
+# XXX
+```
+
+### 2. Premier Appel
+```bash
+curl -X POST https://api.blitzapi.io/enrich/linkedin/person \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.linkedin.com/in/example"}'
+```
+
+### 3. Intégrer dans votre Application
+Consultez nos guides d'intégration détaillés et exemples de code pour chaque endpoint.
+
+## 📚 Navigation Documentation
+
+| Section | Description |
+|---------|-------------|
+| 🌐 [LinkedIn - Personnes](./linkedin-person) | Enrichissement de profils personnels LinkedIn |
+| 🏢 [LinkedIn - Entreprises](./linkedin-company) | Enrichissement de pages entreprises LinkedIn |
+
+## 🤝 Support & Communauté
+
+### Assistance Technique
+- 📧 **Email** : support@blitzapi.io
+- 💼 **Slack** : Rejoignez notre communauté d'utilisateurs
+
+## 📅 Roadmap Produit
+
+### ✅ Disponible
+- LinkedIn Profile Enrichment (Person & Company)
+- LinkedIn URL Finders (Person & Company)
+- Email Domain Finder
+- LinkedIn Scraping Suite (7 endpoints)
+
+### 🚧 En développement (Q1 2025)
+- Waterfall ICP Search
+- People Search
+- Email & Phone Finders
+- Bulk Operations
+- Email Validation
+
+### 📋 Planifié (Q2-Q3 2025)
+- Intent Signals
+- Technographic Data
+- Job Changes Tracking
+- Company News & Events
+- Advanced Analytics API
+
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
----
 
-## Setting up
+*BlitzAPI - L'enrichissement de données B2B simple, rapide et fiable.*
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+*Dernière mise à jour : Septembre 2025*
