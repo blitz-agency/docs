@@ -1,542 +1,966 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "BlitzAPI – LinkedIn Enrichment API",
-    "description": "API d'enrichissement LinkedIn avec architecture pass-through. Transforme des URLs LinkedIn en données structurées complètes pour les profils personnels et pages entreprises. Coût: 1 crédit par requête.",
-    "version": "1.0.0",
-    "contact": {
-      "email": "support@blitzapi.io",
-      "url": "https://blitz-api.ai/contact"
-    }
-  },
-  "servers": [
-    {
-      "url": "https://api.blitzapi.io",
-      "description": "Production server"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/enrich/linkedin/person": {
-      "post": {
-        "summary": "Enrichissement de profil LinkedIn personnel",
-        "description": "Enrichit un profil LinkedIn personnel (/in/ ou /pub/). Retourne toutes les informations publiques disponibles avec structure paginée pour les collections. Coût: 1 crédit.",
-        "tags": ["LinkedIn Enrichment"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PersonUrlRequest"
-              },
-              "examples": {
-                "basic": {
-                  "summary": "URL standard",
-                  "value": {
-                    "url": "https://www.linkedin.com/in/jane-doe"
-                  }
-                },
-                "withSlash": {
-                  "summary": "URL avec slash final",
-                  "value": {
-                    "url": "https://www.linkedin.com/in/jane-doe/"
-                  }
-                },
-                "legacy": {
-                  "summary": "Format ancien /pub/",
-                  "value": {
-                    "url": "https://www.linkedin.com/pub/john-smith/1/2/3"
-                  }
-                }
-              }
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Blitz OpenAPI Reference",
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "APIKey": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "x-api-key",
+                "description": "API key for the Blitz API"
             }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "Profil enrichi avec succès",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PersonProfile"
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
-        }
-      }
+        "schemas": {},
+        "parameters": {}
     },
-    "/enrich/linkedin/company": {
-      "post": {
-        "summary": "Enrichissement de page entreprise LinkedIn",
-        "description": "Enrichit une page entreprise LinkedIn (/company/). Retourne toutes les informations publiques disponibles. Coût: 1 crédit.",
-        "tags": ["LinkedIn Enrichment"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyUrlRequest"
-              },
-              "examples": {
-                "basic": {
-                  "summary": "URL standard",
-                  "value": {
-                    "url": "https://www.linkedin.com/company/apple"
-                  }
+    "paths": {
+        "/api/enrichment/phone": {
+            "post": {
+                "summary": "Find Phone Number",
+                "description": "cost: 3 credits on success",
+                "tags": [
+                    "enrichment"
+                ],
+                "security": [
+                    {
+                        "APIKey": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "linkedin_profile_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+                                }
+                            }
+                        }
+                    }
                 },
-                "withSlash": {
-                  "summary": "URL avec slash final",
-                  "value": {
-                    "url": "https://www.linkedin.com/company/microsoft/"
-                  }
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "found": true,
+                                        "phone": "+1234567890"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "Entreprise enrichie avec succès",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyProfile"
+        "/api/enrichment/email": {
+            "post": {
+                "summary": "Find work email",
+                "description": "cost: 1 credit on success",
+                "tags": [
+                    "enrichment"
+                ],
+                "security": [
+                    {
+                        "APIKey": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "linkedin_profile_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "found": true,
+                                        "email": "antoine@blitz-agency.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "422": {
-            "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
+        },
+        "/api/enrichment/email_domain": {
+            "post": {
+                "summary": "Email Domain Finder",
+                "description": "cost: 0.5 credits on success",
+                "tags": [
+                    "enrichment"
+                ],
+                "security": [
+                    {
+                        "APIKey": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "linkedin_company_url": "https://www.linkedin.com/company/blitz-api"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "found": true,
+                                        "email_domain": "example.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/blitz/key-info": {
+            "get": {
+                "summary": "Get API Key info",
+                "description": "cost: 0 credits",
+                "tags": [
+                    "blitz"
+                ],
+                "security": [
+                    {
+                        "APIKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "id": "ID",
+                                        "credits_balance": 278,
+                                        "credits_reset_at": "21/11/2025, 00:00:00 AM",
+                                        "active_plans": [
+                                            {
+                                                "name": "plan name",
+                                                "status": "active"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "API Key not found"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/email/validate": {
+            "post": {
+                "tags": [
+                    "email"
+                ],
+                "summary": "Catch-all Email Validation",
+                "description": "cost: 0.5 credits on success",
+                "security": [
+                    {
+                        "APIKey": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "email": "antoine@blitz-agency.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "email": "antoine@blitz-agency.com",
+                                        "status": "valid"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/search/waterfall-icp": {
+            "post": {
+                "tags": [
+                    "search"
+                ],
+                "summary": "Waterfall ICP",
+                "description": "cost: 1 credit per result (max = max_results)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "company_linkedin_url": {
+                                        "type": "string",
+                                        "example": "https://www.linkedin.com/company/wttj-fr"
+                                    },
+                                    "cascade": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "include_title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "exclude_title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "location": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "include_headline_search": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "include_title": [
+                                                    "Marketing Director",
+                                                    "Head Marketing",
+                                                    "Chief Marketing Officer"
+                                                ],
+                                                "exclude_title": [
+                                                    "assistant",
+                                                    "intern",
+                                                    "product",
+                                                    "junior"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Marketing Manager",
+                                                    "Head Growth",
+                                                    "Growth manager"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "hacker"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication Director",
+                                                    "Brand Director",
+                                                    "Content Director"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "UX",
+                                                    "UI",
+                                                    "Design"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication Manager",
+                                                    "Brand Manager",
+                                                    "Content Manager"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication",
+                                                    "marketing",
+                                                    "growth",
+                                                    "brand"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "product"
+                                                ],
+                                                "location": [
+                                                    "US",
+                                                    "CA"
+                                                ],
+                                                "include_headline_search": true
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "CEO",
+                                                    "founder",
+                                                    "cofounder",
+                                                    "owner",
+                                                    "General Director"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            }
+                                        ]
+                                    },
+                                    "max_results": {
+                                        "type": "number",
+                                        "example": 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                        "max_results": 2,
+                                        "results_length": 2,
+                                        "results": [
+                                            {
+                                                "full_name": "Lionel Pereira",
+                                                "first_name": "Lionel",
+                                                "last_name": "Pereira",
+                                                "job_title": "Director Sales Enterprise & Agency",
+                                                "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                                                "company_domain": "welcometothejungle.com",
+                                                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                                "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
+                                                "country": "France",
+                                                "icp": 2,
+                                                "ranking": 1,
+                                                "what_matched": [
+                                                    {
+                                                        "value": "Director Sales Enterprise & Agency",
+                                                        "key": "job_title"
+                                                    },
+                                                    {
+                                                        "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                                                        "key": "linkedin_headline"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "full_name": "Sandrine Fostinelli",
+                                                "first_name": "Sandrine",
+                                                "last_name": "Fostinelli",
+                                                "job_title": "Product Marketing Director",
+                                                "linkedin_headline": "Head of Product Marketing",
+                                                "company_domain": "welcometothejungle.com",
+                                                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                                "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
+                                                "country": "France",
+                                                "icp": 3,
+                                                "ranking": 2,
+                                                "what_matched": [
+                                                    {
+                                                        "value": "Product Marketing Director",
+                                                        "key": "job_title"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "error": {
+                                            "code": "INVALID_INPUT",
+                                            "message": "Missing required fields"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/search/waterfall-icp-real-time": {
+            "post": {
+                "tags": [
+                    "search"
+                ],
+                "summary": "Waterfall ICP Real Time",
+                "description": "cost: 3 credits per result (max = max_results)",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "company_linkedin_url": {
+                                        "type": "string",
+                                        "example": "https://www.linkedin.com/company/wttj-fr"
+                                    },
+                                    "cascade": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "include_title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "exclude_title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "location": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "include_headline_search": {
+                                                    "type": "boolean"
+                                                }
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "include_title": [
+                                                    "Marketing Director",
+                                                    "Head Marketing",
+                                                    "Chief Marketing Officer"
+                                                ],
+                                                "exclude_title": [
+                                                    "assistant",
+                                                    "intern",
+                                                    "product",
+                                                    "junior"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Marketing Manager",
+                                                    "Head Growth",
+                                                    "Growth manager"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "hacker"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication Director",
+                                                    "Brand Director",
+                                                    "Content Director"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "UX",
+                                                    "UI",
+                                                    "Design"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication Manager",
+                                                    "Brand Manager",
+                                                    "Content Manager"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "Communication",
+                                                    "marketing",
+                                                    "growth",
+                                                    "brand"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern",
+                                                    "product"
+                                                ],
+                                                "location": [
+                                                    "US",
+                                                    "CA"
+                                                ],
+                                                "include_headline_search": true
+                                            },
+                                            {
+                                                "include_title": [
+                                                    "CEO",
+                                                    "founder",
+                                                    "cofounder",
+                                                    "owner",
+                                                    "General Director"
+                                                ],
+                                                "exclude_title": [
+                                                    "junior",
+                                                    "assistant",
+                                                    "intern"
+                                                ],
+                                                "location": [
+                                                    "WORLD"
+                                                ],
+                                                "include_headline_search": false
+                                            }
+                                        ]
+                                    },
+                                    "max_results": {
+                                        "type": "number",
+                                        "example": 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                        "max_results": 2,
+                                        "results_length": 2,
+                                        "results": [
+                                            {
+                                                "full_name": "Lionel Pereira",
+                                                "first_name": "Lionel",
+                                                "last_name": "Pereira",
+                                                "job_title": "Director Sales Enterprise & Agency",
+                                                "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                                                "company_domain": "welcometothejungle.com",
+                                                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                                "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
+                                                "country": "France",
+                                                "icp": 2,
+                                                "ranking": 1,
+                                                "what_matched": [
+                                                    {
+                                                        "value": "Director Sales Enterprise & Agency",
+                                                        "key": "job_title"
+                                                    },
+                                                    {
+                                                        "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                                                        "key": "linkedin_headline"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "full_name": "Sandrine Fostinelli",
+                                                "first_name": "Sandrine",
+                                                "last_name": "Fostinelli",
+                                                "job_title": "Product Marketing Director",
+                                                "linkedin_headline": "Head of Product Marketing",
+                                                "company_domain": "welcometothejungle.com",
+                                                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                                                "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
+                                                "country": "France",
+                                                "icp": 3,
+                                                "ranking": 2,
+                                                "what_matched": [
+                                                    {
+                                                        "value": "Product Marketing Director",
+                                                        "key": "job_title"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "402": {
+                        "description": "Payment Required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "message": "Insufficient credits balance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "error": {
+                                            "code": "INVALID_INPUT",
+                                            "message": "Missing required fields"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "success": false,
+                                        "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  },
-  "components": {
-    "schemas": {
-      "PersonUrlRequest": {
-        "type": "object",
-        "required": ["url"],
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://(www\\.)?linkedin\\.com/(in|pub|company)/[A-Za-z0-9\\-_.%]+/?$",
-            "description": "URL LinkedIn du profil. Sous-domaines pays (fr.linkedin.com) non acceptés.",
-            "examples": [
-              "https://www.linkedin.com/in/jane-doe",
-              "https://www.linkedin.com/in/jane-doe/",
-              "https://linkedin.com/in/jane-doe/",
-              "https://www.linkedin.com/in/jane-doe/1/2/3",
-              "https://www.linkedin.com/pub/jane-doe/1/2/3"
-            ]
-          }
-        }
-      },
-      "CompanyUrlRequest": {
-        "type": "object",
-        "required": ["url"],
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "pattern": "^https?://(www\\.)?linkedin\\.com/(in|pub|company)/[A-Za-z0-9\\-_.%]+/?$",
-            "description": "URL LinkedIn de l'entreprise. Sous-domaines pays (fr.linkedin.com) non acceptés.",
-            "examples": [
-              "https://www.linkedin.com/company/apple",
-              "https://www.linkedin.com/company/apple/",
-              "https://linkedin.com/company/apple/",
-              "https://www.linkedin.com/company/apple/1/2/3"
-            ]
-          }
-        }
-      },
-      "PersonProfile": {
-        "type": "object",
-        "description": "Structure complète d'un profil LinkedIn personnel avec sections paginées",
-        "properties": {
-          "url": {
-            "type": "string",
-            "description": "URL du profil LinkedIn"
-          },
-          "identifier": {
-            "type": "string",
-            "description": "Identifiant dans l'URL"
-          },
-          "entityUrn": {
-            "type": "string",
-            "description": "URN unique LinkedIn"
-          },
-          "objectUrn": {
-            "type": "integer",
-            "description": "ID numérique unique"
-          },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": ["string", "null"]
-          },
-          "birthDate": {
-            "type": ["string", "null"]
-          },
-          "headline": {
-            "type": "string",
-            "description": "Titre professionnel actuel"
-          },
-          "picture": {
-            "type": ["string", "null"],
-            "description": "URL de la photo de profil"
-          },
-          "background": {
-            "type": ["string", "null"],
-            "description": "Image de couverture"
-          },
-          "openToWork": {
-            "type": "boolean"
-          },
-          "summary": {
-            "type": ["string", "null"],
-            "description": "Résumé du profil"
-          },
-          "influencer": {
-            "type": "boolean"
-          },
-          "premium": {
-            "type": "boolean"
-          },
-          "industry": {
-            "type": "string"
-          },
-          "location": {
-            "$ref": "#/components/schemas/PersonLocation"
-          },
-          "organizations": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "educations": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "certifications": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "positionGroups": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "volunteerExperiences": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "languages": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "skills": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "patents": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "awards": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "projects": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "publications": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "courses": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          },
-          "testScores": {
-            "$ref": "#/components/schemas/PaginatedSection"
-          }
-        }
-      },
-      "CompanyProfile": {
-        "type": "object",
-        "description": "Structure complète d'une page entreprise LinkedIn",
-        "properties": {
-          "url": {
-            "type": "string",
-            "description": "URL de la page LinkedIn"
-          },
-          "name": {
-            "type": "string",
-            "description": "Nom de l'entreprise"
-          },
-          "universalName": {
-            "type": "string",
-            "description": "Identifiant unique LinkedIn"
-          },
-          "type": {
-            "type": "string",
-            "description": "Type d'entreprise",
-            "examples": ["Privately Held", "Public Company", "Non-profit"]
-          },
-          "objectUrn": {
-            "type": "integer",
-            "description": "ID numérique unique"
-          },
-          "description": {
-            "type": ["string", "null"],
-            "description": "Description détaillée de l'entreprise"
-          },
-          "phone": {
-            "type": ["string", "null"]
-          },
-          "followers": {
-            "type": "integer",
-            "description": "Nombre de followers"
-          },
-          "website": {
-            "type": ["string", "null"],
-            "format": "uri"
-          },
-          "logo": {
-            "type": ["string", "null"],
-            "format": "uri"
-          },
-          "cover": {
-            "type": ["string", "null"],
-            "format": "uri",
-            "description": "Image de couverture"
-          },
-          "tagline": {
-            "type": ["string", "null"],
-            "description": "Slogan de l'entreprise"
-          },
-          "foundedYear": {
-            "type": ["integer", "null"]
-          },
-          "staff": {
-            "$ref": "#/components/schemas/CompanyStaff"
-          },
-          "locations": {
-            "$ref": "#/components/schemas/CompanyLocations"
-          },
-          "fundingData": {
-            "type": ["object", "null"]
-          },
-          "specialities": {
-            "type": ["array", "null"],
-            "items": {
-              "type": "string"
-            }
-          },
-          "industries": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "hashtags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "PaginatedSection": {
-        "type": "object",
-        "required": ["totalElements", "page", "size", "contents"],
-        "properties": {
-          "totalElements": {
-            "type": "integer",
-            "description": "Nombre total d'éléments"
-          },
-          "page": {
-            "type": "integer",
-            "description": "Page actuelle"
-          },
-          "size": {
-            "type": "integer",
-            "description": "Taille de page"
-          },
-          "contents": {
-            "type": "array",
-            "description": "Contenu de la section",
-            "items": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "PersonLocation": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "defaultValue": {
-            "type": "string"
-          },
-          "shortValue": {
-            "type": "string"
-          }
-        }
-      },
-      "CompanyStaff": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "integer",
-            "description": "Nombre d'employés sur LinkedIn"
-          },
-          "range": {
-            "type": "object",
-            "properties": {
-              "start": {
-                "type": "integer"
-              },
-              "end": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      },
-      "CompanyLocations": {
-        "type": "object",
-        "properties": {
-          "headquarter": {
-            "$ref": "#/components/schemas/Location"
-          },
-          "other": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Location"
-            }
-          }
-        }
-      },
-      "Location": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string",
-            "description": "Code pays ISO"
-          },
-          "geographicArea": {
-            "type": ["string", "null"]
-          },
-          "city": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": ["string", "null"]
-          },
-          "line1": {
-            "type": ["string", "null"]
-          },
-          "line2": {
-            "type": ["string", "null"]
-          },
-          "isPrimary": {
-            "type": ["boolean", "null"]
-          }
-        }
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "required": ["error", "message"],
-        "properties": {
-          "error": {
-            "type": "string",
-            "description": "Code d'erreur"
-          },
-          "message": {
-            "type": "string",
-            "description": "Description de l'erreur"
-          }
-        }
-      }
-    },
-    "responses": {
-      "Unauthorized": {
-        "description": "Clé API manquante ou invalide",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
-            },
-            "example": {
-              "error": "Missing API key",
-              "message": "Please provide a valid API key in the 'Authorization' header"
-            }
-          }
-        }
-      },
-      "UnprocessableEntity": {
-        "description": "Entité non traitable - URL invalide ou champs requis manquants",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
-            },
-            "example": {
-              "error": "UNPROCESSABLE_ENTITY",
-              "message": "Invalid input or missing required fields"
-            }
-          }
-        }
-      },
-      "InternalServerError": {
-        "description": "Erreur serveur interne",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
-            },
-            "example": {
-              "error": "INTERNAL_SERVER_ERROR",
-              "message": "An error occurred while processing your request"
-            }
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "description": "Authentification Bearer Token. Format: Bearer YOUR_API_KEY"
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "LinkedIn Enrichment",
-      "description": "Endpoints d'enrichissement de profils LinkedIn (1 crédit par requête)"
-    }
-  ]
 }
