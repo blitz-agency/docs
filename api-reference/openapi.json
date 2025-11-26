@@ -5,24 +5,16 @@
         "version": "1.0.0"
     },
     "servers": [
-    {
-      "url": "https://api.blitzapi.io",
-      "description": "Production server"
-    }
-  ],
-
-    "components": {
-        "securitySchemes": {
-            "APIKey": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "x-api-key",
-                "description": "API key for the Blitz API"
-            }
-        },
-        "schemas": {},
-        "parameters": {}
-    },
+      {
+        "url": "https://api.blitzapi.io",
+        "description": "Production server"
+      }
+    ],
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
     "paths": {
         "/api/enrichment/phone": {
             "post": {
