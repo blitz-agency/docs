@@ -2,12 +2,11 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Blitz OpenAPI Reference",
-    "version": "1.0.0",
-    "description": "Blitz enrichment and search API"
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://api.blitzapi.io",
+      "url": "https://api.blitz-api.ai",
       "description": "Production server"
     }
   ],
@@ -17,43 +16,412 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "API key for the Blitz API. Send: x-api-key: YOUR_KEY"
+        "description": "API key for the Blitz API"
       }
     },
-    "schemas": {},
-    "parameters": {}
-  },
-  "security": [
-    {
-      "APIKey": []
+    "schemas": {
+      "LinkedInProfileURLRequest": {
+        "type": "object",
+        "properties": {
+          "linkedin_profile_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn profile URL of the person"
+          }
+        },
+        "required": [
+          "linkedin_profile_url"
+        ]
+      },
+      "LinkedInCompanyURLRequest": {
+        "type": "object",
+        "properties": {
+          "linkedin_company_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn company profile URL"
+          }
+        },
+        "required": [
+          "linkedin_company_url"
+        ]
+      },
+      "EmailValidationRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address to validate"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "CascadeStep": {
+        "type": "object",
+        "properties": {
+          "include_title": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Job titles to include in search"
+          },
+          "exclude_title": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Job titles to exclude from search"
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Locations to filter search (e.g., country codes or regions)"
+          },
+          "include_headline_search": {
+            "type": "boolean",
+            "description": "Whether to include LinkedIn headline in search criteria"
+          }
+        },
+        "required": [
+          "include_title"
+        ]
+      },
+      "WaterfallICPRequest": {
+        "type": "object",
+        "properties": {
+          "company_linkedin_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn company profile URL for the search"
+          },
+          "cascade": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CascadeStep"
+            },
+            "description": "Cascade steps of search criteria"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum number of results to retrieve"
+          }
+        },
+        "required": [
+          "company_linkedin_url",
+          "cascade",
+          "max_results"
+        ]
+      },
+      "PhoneEnrichmentResponse": {
+        "type": "object",
+        "properties": {
+          "found": {
+            "type": "boolean",
+            "description": "Whether a phone number was found"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number (present if found is true)"
+          }
+        },
+        "required": [
+          "found"
+        ]
+      },
+      "EmailEnrichmentResponse": {
+        "type": "object",
+        "properties": {
+          "found": {
+            "type": "boolean",
+            "description": "Whether an email was found"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address (present if found is true)"
+          }
+        },
+        "required": [
+          "found"
+        ]
+      },
+      "EmailDomainResponse": {
+        "type": "object",
+        "properties": {
+          "found": {
+            "type": "boolean",
+            "description": "Whether an email domain was found"
+          },
+          "email_domain": {
+            "type": "string",
+            "description": "Email domain (present if found is true)"
+          }
+        },
+        "required": [
+          "found"
+        ]
+      },
+      "KeyInfoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "API Key identifier"
+          },
+          "credits_balance": {
+            "type": "integer",
+            "description": "Remaining credits balance"
+          },
+          "credits_reset_at": {
+            "type": "string",
+            "description": "Next reset time for credits"
+          },
+          "active_plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivePlan"
+            },
+            "description": "List of active subscription plans"
+          }
+        },
+        "required": [
+          "id",
+          "credits_balance",
+          "credits_reset_at",
+          "active_plans"
+        ]
+      },
+      "ActivePlan": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the plan"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the plan (e.g., active)"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
+      "EmailValidationResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address that was validated"
+          },
+          "status": {
+            "type": "string",
+            "description": "Validation status (e.g., 'valid' or 'invalid')"
+          }
+        },
+        "required": [
+          "email",
+          "status"
+        ]
+      },
+      "MatchDetail": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Field that matched the search"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value of the field that matched"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      },
+      "WaterfallICPResult": {
+        "type": "object",
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "description": "Full name of the person"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name of the person"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Last name of the person"
+          },
+          "job_title": {
+            "type": "string",
+            "description": "Job title of the person"
+          },
+          "linkedin_headline": {
+            "type": "string",
+            "description": "LinkedIn headline of the person"
+          },
+          "company_domain": {
+            "type": "string",
+            "description": "Domain of the company"
+          },
+          "company_linkedin_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn URL of the company"
+          },
+          "person_linkedin_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn URL of the person"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country of the person"
+          },
+          "icp": {
+            "type": "integer",
+            "description": "ICP group or category"
+          },
+          "ranking": {
+            "type": "integer",
+            "description": "Ranking of the result"
+          },
+          "what_matched": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchDetail"
+            },
+            "description": "List of criteria that matched for this person"
+          }
+        }
+      },
+      "WaterfallICPResponse": {
+        "type": "object",
+        "properties": {
+          "company_linkedin_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "LinkedIn company URL that was searched"
+          },
+          "max_results": {
+            "type": "integer",
+            "description": "Maximum results requested"
+          },
+          "results_length": {
+            "type": "integer",
+            "description": "Number of results returned"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WaterfallICPResult"
+            },
+            "description": "List of results matching the search criteria"
+          }
+        },
+        "required": [
+          "company_linkedin_url",
+          "max_results",
+          "results_length",
+          "results"
+        ]
+      },
+      "ErrorMessageResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "ServerErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Success status (false for error)"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        },
+        "required": [
+          "success",
+          "message"
+        ]
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message detail"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "ValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Success status (false for error)"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "success",
+          "error"
+        ]
+      }
     }
-  ],
+  },
   "paths": {
     "/api/enrichment/phone": {
       "post": {
         "summary": "Find Phone Number",
         "description": "cost: 3 credits on success",
-        "tags": ["enrichment"],
+        "tags": [
+          "enrichment"
+        ],
         "security": [
           {
             "APIKey": []
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["linkedin_profile_url"],
-                "properties": {
-                  "linkedin_profile_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "LinkedIn profile URL of the person",
-                    "example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-                  }
-                }
+                "$ref": "#/components/schemas/LinkedInProfileURLRequest"
+              },
+              "example": {
+                "linkedin_profile_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
               }
             }
           }
@@ -64,19 +432,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "found": {
-                      "type": "boolean"
-                    },
-                    "phone": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "found": true,
-                    "phone": "+1234567890"
-                  }
+                  "$ref": "#/components/schemas/PhoneEnrichmentResponse"
+                },
+                "example": {
+                  "found": true,
+                  "phone": "+1234567890"
                 }
               }
             }
@@ -86,15 +446,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -104,15 +459,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -122,19 +472,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -146,27 +488,22 @@
       "post": {
         "summary": "Find work email",
         "description": "cost: 1 credit on success",
-        "tags": ["enrichment"],
+        "tags": [
+          "enrichment"
+        ],
         "security": [
           {
             "APIKey": []
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["linkedin_profile_url"],
-                "properties": {
-                  "linkedin_profile_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "LinkedIn profile URL of the person",
-                    "example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-                  }
-                }
+                "$ref": "#/components/schemas/LinkedInProfileURLRequest"
+              },
+              "example": {
+                "linkedin_profile_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
               }
             }
           }
@@ -177,20 +514,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "found": {
-                      "type": "boolean"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    }
-                  },
-                  "example": {
-                    "found": true,
-                    "email": "antoine@blitz-agency.com"
-                  }
+                  "$ref": "#/components/schemas/EmailEnrichmentResponse"
+                },
+                "example": {
+                  "found": true,
+                  "email": "antoine@blitz-agency.com"
                 }
               }
             }
@@ -200,15 +528,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -218,15 +541,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -236,19 +554,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -260,27 +570,22 @@
       "post": {
         "summary": "Email Domain Finder",
         "description": "cost: 0.5 credits on success",
-        "tags": ["enrichment"],
+        "tags": [
+          "enrichment"
+        ],
         "security": [
           {
             "APIKey": []
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["linkedin_company_url"],
-                "properties": {
-                  "linkedin_company_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "LinkedIn company URL",
-                    "example": "https://www.linkedin.com/company/blitz-api"
-                  }
-                }
+                "$ref": "#/components/schemas/LinkedInCompanyURLRequest"
+              },
+              "example": {
+                "linkedin_company_url": "https://www.linkedin.com/company/blitz-api"
               }
             }
           }
@@ -291,19 +596,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "found": {
-                      "type": "boolean"
-                    },
-                    "email_domain": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "found": true,
-                    "email_domain": "example.com"
-                  }
+                  "$ref": "#/components/schemas/EmailDomainResponse"
+                },
+                "example": {
+                  "found": true,
+                  "email_domain": "example.com"
                 }
               }
             }
@@ -313,15 +610,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -331,15 +623,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -349,19 +636,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -373,7 +652,9 @@
       "get": {
         "summary": "Get API Key info",
         "description": "cost: 0 credits",
-        "tags": ["blitz"],
+        "tags": [
+          "blitz"
+        ],
         "security": [
           {
             "APIKey": []
@@ -385,43 +666,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "credits_balance": {
-                      "type": "number"
-                    },
-                    "credits_reset_at": {
-                      "type": "string"
-                    },
-                    "active_plans": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "status": {
-                            "type": "string"
-                          }
-                        }
-                      }
+                  "$ref": "#/components/schemas/KeyInfoResponse"
+                },
+                "example": {
+                  "id": "ID",
+                  "credits_balance": 278,
+                  "credits_reset_at": "25/11/2025, 00:00:00 AM",
+                  "active_plans": [
+                    {
+                      "name": "plan name",
+                      "status": "active"
                     }
-                  },
-                  "example": {
-                    "id": "ID",
-                    "credits_balance": 278,
-                    "credits_reset_at": "21/11/2025, 00:00:00 AM",
-                    "active_plans": [
-                      {
-                        "name": "plan name",
-                        "status": "active"
-                      }
-                    ]
-                  }
+                  ]
                 }
               }
             }
@@ -431,15 +687,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -449,15 +700,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "API Key not found"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "API Key not found"
                 }
               }
             }
@@ -467,19 +713,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -489,7 +727,9 @@
     },
     "/api/email/validate": {
       "post": {
-        "tags": ["email"],
+        "tags": [
+          "email"
+        ],
         "summary": "Catch-all Email Validation",
         "description": "cost: 0.5 credits on success",
         "security": [
@@ -498,20 +738,13 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["email"],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email address to validate",
-                    "example": "antoine@blitz-agency.com"
-                  }
-                }
+                "$ref": "#/components/schemas/EmailValidationRequest"
+              },
+              "example": {
+                "email": "antoine@blitz-agency.com"
               }
             }
           }
@@ -522,21 +755,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "Validation status (e.g. valid, invalid, catch-all)"
-                    }
-                  },
-                  "example": {
-                    "email": "antoine@blitz-agency.com",
-                    "status": "valid"
-                  }
+                  "$ref": "#/components/schemas/EmailValidationResponse"
+                },
+                "example": {
+                  "email": "antoine@blitz-agency.com",
+                  "status": "valid"
                 }
               }
             }
@@ -546,15 +769,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -564,15 +782,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -582,19 +795,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -604,7 +809,9 @@
     },
     "/api/search/waterfall-icp": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Waterfall ICP",
         "description": "cost: 1 credit per result (max = max_results)",
         "security": [
@@ -613,55 +820,59 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["company_linkedin_url", "cascade", "max_results"],
-                "properties": {
-                  "company_linkedin_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "LinkedIn company URL",
-                    "example": "https://www.linkedin.com/company/wttj-fr"
+                "$ref": "#/components/schemas/WaterfallICPRequest"
+              },
+              "example": {
+                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                "cascade": [
+                  {
+                    "include_title": [
+                      "Founder",
+                      "Co-Founder",
+                      "Chief Executive Officer",
+                      "CEO",
+                      "Owner",
+                      "President"
+                    ],
+                    "location": [
+                      "US",
+                      "CA"
+                    ],
+                    "include_headline_search": false
                   },
-                  "cascade": {
-                    "type": "array",
-                    "description": "Cascade of ICP filters",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "include_title": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "exclude_title": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "location": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "include_headline_search": {
-                          "type": "boolean"
-                        }
-                      }
-                    }
+                  {
+                    "include_title": [
+                      "Chief Sales Officer",
+                      "CSO",
+                      "VP Sales",
+                      "Vice President Sales",
+                      "Head of Sales",
+                      "Sales Director"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": true
                   },
-                  "max_results": {
-                    "type": "integer",
-                    "description": "Maximum number of results to return",
-                    "example": 10
+                  {
+                    "include_title": [
+                      "Chief Marketing Officer",
+                      "CMO",
+                      "Marketing Director",
+                      "Director of Marketing"
+                    ],
+                    "exclude_title": [
+                      "Assistant",
+                      "Executive Assistant",
+                      "Intern"
+                    ],
+                    "include_headline_search": true
                   }
-                }
+                ],
+                "max_results": 10
               }
             }
           }
@@ -672,56 +883,69 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                    "max_results": 2,
-                    "results_length": 2,
-                    "results": [
-                      {
-                        "full_name": "Lionel Pereira",
-                        "first_name": "Lionel",
-                        "last_name": "Pereira",
-                        "job_title": "Director Sales Enterprise & Agency",
-                        "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-                        "company_domain": "welcometothejungle.com",
-                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                        "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
-                        "country": "France",
-                        "icp": 2,
-                        "ranking": 1,
-                        "what_matched": [
-                          {
-                            "value": "Director Sales Enterprise & Agency",
-                            "key": "job_title"
-                          },
-                          {
-                            "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-                            "key": "linkedin_headline"
-                          }
-                        ]
-                      },
-                      {
-                        "full_name": "Sandrine Fostinelli",
-                        "first_name": "Sandrine",
-                        "last_name": "Fostinelli",
-                        "job_title": "Product Marketing Director",
-                        "linkedin_headline": "Head of Product Marketing",
-                        "company_domain": "welcometothejungle.com",
-                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                        "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
-                        "country": "France",
-                        "icp": 3,
-                        "ranking": 2,
-                        "what_matched": [
-                          {
-                            "value": "Product Marketing Director",
-                            "key": "job_title"
-                          }
-                        ]
-                      }
-                    ]
-                  }
+                  "$ref": "#/components/schemas/WaterfallICPResponse"
+                },
+                "example": {
+                  "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                  "max_results": 2,
+                  "results_length": 2,
+                  "results": [
+                    {
+                      "full_name": "Lionel Pereira",
+                      "first_name": "Lionel",
+                      "last_name": "Pereira",
+                      "job_title": "Director Sales Enterprise & Agency",
+                      "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
+                      "country": "France",
+                      "icp": 2,
+                      "ranking": 1,
+                      "what_matched": [
+                        {
+                          "value": "Director Sales Enterprise & Agency",
+                          "key": "job_title"
+                        },
+                        {
+                          "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                          "key": "linkedin_headline"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Sandrine Fostinelli",
+                      "first_name": "Sandrine",
+                      "last_name": "Fostinelli",
+                      "job_title": "Product Marketing Director",
+                      "linkedin_headline": "Head of Product Marketing",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
+                      "country": "France",
+                      "icp": 3,
+                      "ranking": 2,
+                      "what_matched": [
+                        {
+                          "value": "Product Marketing Director",
+                          "key": "job_title"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -731,10 +955,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -744,13 +968,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "success": false,
-                    "error": {
-                      "code": "INVALID_INPUT",
-                      "message": "Missing required fields"
-                    }
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "INVALID_INPUT",
+                    "message": "Missing required fields"
                   }
                 }
               }
@@ -761,11 +985,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
@@ -775,7 +999,9 @@
     },
     "/api/search/waterfall-icp-real-time": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Waterfall ICP Real Time",
         "description": "cost: 3 credits per result (max = max_results)",
         "security": [
@@ -784,55 +1010,59 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": ["company_linkedin_url", "cascade", "max_results"],
-                "properties": {
-                  "company_linkedin_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "LinkedIn company URL",
-                    "example": "https://www.linkedin.com/company/wttj-fr"
+                "$ref": "#/components/schemas/WaterfallICPRequest"
+              },
+              "example": {
+                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                "cascade": [
+                  {
+                    "include_title": [
+                      "Founder",
+                      "Co-Founder",
+                      "Chief Executive Officer",
+                      "CEO",
+                      "Owner",
+                      "President"
+                    ],
+                    "location": [
+                      "US",
+                      "CA"
+                    ],
+                    "include_headline_search": false
                   },
-                  "cascade": {
-                    "type": "array",
-                    "description": "Cascade of ICP filters (real-time mode)",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "include_title": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "exclude_title": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "location": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "include_headline_search": {
-                          "type": "boolean"
-                        }
-                      }
-                    }
+                  {
+                    "include_title": [
+                      "Chief Sales Officer",
+                      "CSO",
+                      "VP Sales",
+                      "Vice President Sales",
+                      "Head of Sales",
+                      "Sales Director"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": true
                   },
-                  "max_results": {
-                    "type": "integer",
-                    "description": "Maximum number of results to return",
-                    "example": 10
+                  {
+                    "include_title": [
+                      "Chief Marketing Officer",
+                      "CMO",
+                      "Marketing Director",
+                      "Director of Marketing"
+                    ],
+                    "exclude_title": [
+                      "Assistant",
+                      "Executive Assistant",
+                      "Intern"
+                    ],
+                    "include_headline_search": true
                   }
-                }
+                ],
+                "max_results": 10
               }
             }
           }
@@ -843,56 +1073,69 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                    "max_results": 2,
-                    "results_length": 2,
-                    "results": [
-                      {
-                        "full_name": "Lionel Pereira",
-                        "first_name": "Lionel",
-                        "last_name": "Pereira",
-                        "job_title": "Director Sales Enterprise & Agency",
-                        "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-                        "company_domain": "welcometothejungle.com",
-                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                        "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
-                        "country": "France",
-                        "icp": 2,
-                        "ranking": 1,
-                        "what_matched": [
-                          {
-                            "value": "Director Sales Enterprise & Agency",
-                            "key": "job_title"
-                          },
-                          {
-                            "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-                            "key": "linkedin_headline"
-                          }
-                        ]
-                      },
-                      {
-                        "full_name": "Sandrine Fostinelli",
-                        "first_name": "Sandrine",
-                        "last_name": "Fostinelli",
-                        "job_title": "Product Marketing Director",
-                        "linkedin_headline": "Head of Product Marketing",
-                        "company_domain": "welcometothejungle.com",
-                        "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                        "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
-                        "country": "France",
-                        "icp": 3,
-                        "ranking": 2,
-                        "what_matched": [
-                          {
-                            "value": "Product Marketing Director",
-                            "key": "job_title"
-                          }
-                        ]
-                      }
-                    ]
-                  }
+                  "$ref": "#/components/schemas/WaterfallICPResponse"
+                },
+                "example": {
+                  "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                  "max_results": 2,
+                  "results_length": 2,
+                  "results": [
+                    {
+                      "full_name": "Lionel Pereira",
+                      "first_name": "Lionel",
+                      "last_name": "Pereira",
+                      "job_title": "Director Sales Enterprise & Agency",
+                      "linkedin_headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
+                      "country": "France",
+                      "icp": 2,
+                      "ranking": 1,
+                      "what_matched": [
+                        {
+                          "value": "Director Sales Enterprise & Agency",
+                          "key": "job_title"
+                        },
+                        {
+                          "value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+                          "key": "linkedin_headline"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Sandrine Fostinelli",
+                      "first_name": "Sandrine",
+                      "last_name": "Fostinelli",
+                      "job_title": "Product Marketing Director",
+                      "linkedin_headline": "Head of Product Marketing",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/sandrine-fostinelli",
+                      "country": "France",
+                      "icp": 3,
+                      "ranking": 2,
+                      "what_matched": [
+                        {
+                          "value": "Product Marketing Director",
+                          "key": "job_title"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
                 }
               }
             }
@@ -902,10 +1145,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "message": "Insufficient credits balance"
-                  }
+                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                },
+                "example": {
+                  "message": "Insufficient credits balance"
                 }
               }
             }
@@ -915,13 +1158,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "success": false,
-                    "error": {
-                      "code": "INVALID_INPUT",
-                      "message": "Missing required fields"
-                    }
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "INVALID_INPUT",
+                    "message": "Missing required fields"
                   }
                 }
               }
@@ -932,11 +1175,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "example": {
-                    "success": false,
-                    "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-                  }
+                  "$ref": "#/components/schemas/ServerErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
                 }
               }
             }
