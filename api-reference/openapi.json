@@ -4,6 +4,13 @@
         "title": "Blitz OpenAPI Reference",
         "version": "1.0.0"
     },
+    "servers": [
+    {
+      "url": "https://api.blitzapi.io",
+      "description": "Production server"
+    }
+  ],
+
     "components": {
         "securitySchemes": {
             "APIKey": {
