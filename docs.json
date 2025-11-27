@@ -28,10 +28,30 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "LinkedIn Enrichment",
+            "group": "Enrichment",
             "pages": [
-              "api-reference/openapi.json post /enrich/linkedin/person",
-              "api-reference/openapi.json post /enrich/linkedin/company"
+              "api-reference/openapi.json post /api/enrichment/phone",
+              "api-reference/openapi.json post /api/enrichment/email",
+              "api-reference/openapi.json post /api/enrichment/email_domain"
+            ]
+          },
+          {
+            "group": "Blitz",
+            "pages": [
+              "api-reference/openapi.json get /api/blitz/key-info"
+            ]
+          },
+          {
+            "group": "Email",
+            "pages": [
+              "api-reference/openapi.json post /api/email/validate"
+            ]
+          },
+          {
+            "group": "Search",
+            "pages": [
+              "api-reference/openapi.json post /api/search/waterfall-icp",
+              "api-reference/openapi.json post /api/search/waterfall-icp-real-time"
             ]
           }
         ]
