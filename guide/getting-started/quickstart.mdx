@@ -1,0 +1,108 @@
+---
+title: "Quickstart"
+description: "Make your first API request in less than 2 minutes."
+---
+
+Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: **finding a verified professional email** from a LinkedIn profile URL.
+
+<Info>
+  **Prerequisites**: You need an API Key. You can grab one from your [BlitzAPI Dashboard](https://app.blitzapi.io).
+</Info>
+
+<Steps>
+  <Step title="Choose your client">
+    BlitzAPI is a standard REST API, so you can use it with any language.
+
+    We recommend using **cURL** to test quickly in your terminal, or **Node.js/Python** for building integration scripts.
+  </Step>
+  <Step title="Prepare the request">
+    We will use the `/api/enrichment/email` endpoint.
+
+    Replace `YOUR_API_KEY` with your actual key.
+
+    <CodeGroup>
+
+    ```bash cURL
+    curl -X POST "[https://api.blitz-agency.com/api/enrichment/email](https://api.blitz-agency.com/api/enrichment/email)" \
+         -H "Content-Type: application/json" \
+         -H "x-api-key: YOUR_API_KEY" \
+         -d '{
+               "linkedin_profile_url": "[https://www.linkedin.com/in/williamhgates](https://www.linkedin.com/in/williamhgates)"
+             }'
+    ```
+
+    
+    ```javascript Node.js
+    const axios = require('axios');
+    
+    async function enrichProfile() {
+      const response = await axios.post(
+        '[https://api.blitz-agency.com/api/enrichment/email](https://api.blitz-agency.com/api/enrichment/email)',
+        {
+          linkedin_profile_url: '[https://www.linkedin.com/in/williamhgates](https://www.linkedin.com/in/williamhgates)'
+        },
+        {
+          headers: { 'x-api-key': 'YOUR_API_KEY' }
+        }
+      );
+    
+      console.log(response.data);
+    }
+    
+    enrichProfile();
+    ```
+
+    
+    ```python Python
+    import requests
+    
+    url = "[https://api.blitz-agency.com/api/enrichment/email](https://api.blitz-agency.com/api/enrichment/email)"
+    payload = {
+        "linkedin_profile_url": "[https://www.linkedin.com/in/williamhgates](https://www.linkedin.com/in/williamhgates)"
+    }
+    headers = {
+        "x-api-key": "YOUR_API_KEY",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(url, json=payload, headers=headers)
+    print(response.json())
+    ```
+
+    </CodeGroup>
+  </Step>
+  <Step title="Check the response">
+    You should receive a JSON object containing the verified email and its status.
+
+    ```json
+    {
+      "found": true,
+      "email": "bill.gates@gatesfoundation.org",
+      "status": "valid"
+    }
+    ```
+
+    <Note>
+      **Cost**: This successful request costs **1 credit**. If the email is not found (`found: false`), the cost is **0 credits**.
+    </Note>
+  </Step>
+</Steps>
+
+## What just happened?
+
+1. **Authentication**: You passed your key via the `x-api-key` header.
+2. **Live Signal**: BlitzAPI queried the network in real-time.
+3. **Verification**: We validated the email deliverability before returning it.
+
+## Next Steps
+
+Now that you have the basics down, explore our more advanced features.
+
+<CardGroup cols={2}>
+  <Card title="Waterfall Search" icon="magnifying-glass-chart" href="/guide/concepts/waterfall-logic">
+    Don't have a profile URL? Find people by Job Title and Company.
+  </Card>
+  <Card title="Bulk Enrichment" icon="layer-group" href="/guide/recipes/enrichment-workflow">
+    Learn how to process thousands of leads efficiently.
+  </Card>
+</CardGroup>

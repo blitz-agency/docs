@@ -1,0 +1,118 @@
+---
+title: 'Clean & Normalize Data'
+description: 'Functional examples to validate emails and find company domains.'
+---
+
+Use these cURL requests to clean your CRM data or verify inputs before saving them.
+
+## 1. Validate an Email Address
+
+Before sending an email, verify if it is valid, invalid, or a "catch-all" (risky).
+
+### Request (cURL)
+
+```bash
+curl -X POST "[https://api.blitz-agency.com/api/email/validate](https://api.blitz-agency.com/api/email/validate)"\
+     -H "Content-Type: application/json"\
+     -H "x-api-key: YOUR_API_KEY"\
+     -d '{
+           "email": "antoine@blitz-agency.com"
+         }'
+
+```
+
+### Response
+
+The `status` field tells you if it is safe to send.
+
+JSON
+
+```
+{
+  "email": "antoine@blitz-agency.com",
+  "status": "valid",
+  "reason": "smtp_connectable",
+  "mx_record": "aspmx.l.google.com"
+}
+
+```
+
+<Note> **Cost**: 0.5 credits per check. </Note>
+
+* * * * *
+
+2\. Find Company Domain
+-----------------------
+
+Convert a LinkedIn Company URL into a clean website domain (e.g., for data deduplication in HubSpot/Salesforce).
+
+### Request (cURL)
+
+Bash
+
+```
+curl -X POST "[https://api.blitz-agency.com/api/enrichment/email_domain](https://api.blitz-agency.com/api/enrichment/email_domain)"\
+     -H "Content-Type: application/json"\
+     -H "x-api-key: YOUR_API_KEY"\
+     -d '{
+           "linkedin_company_url": "[https://www.linkedin.com/company/apple](https://www.linkedin.com/company/apple)"
+         }'
+
+```
+
+### Response
+
+JSON
+
+```
+{
+  "found": true,
+  "email_domain": "apple.com"
+}
+
+```
+
+<Note> **Cost**: 0.5 credits per success. </Note>
+
+* * * * *
+
+3\. Find Phone Numbers
+----------------------
+
+If you need to add direct dials to your contacts.
+
+### Request (cURL)
+
+Bash
+
+```
+curl -X POST "[https://api.blitz-agency.com/api/enrichment/phone](https://api.blitz-agency.com/api/enrichment/phone)"\
+     -H "Content-Type: application/json"\
+     -H "x-api-key: YOUR_API_KEY"\
+     -d '{
+           "linkedin_profile_url": "[https://www.linkedin.com/in/satyanadella](https://www.linkedin.com/in/satyanadella)"
+         }'
+
+```
+
+### Response
+
+JSON
+
+```
+{
+  "found": true,
+  "phone": "+14258828080",
+  "country_code": "US"
+}
+
+```
+
+<Warning> **Cost**: 3 credits per success. This is a premium endpoint. </Warning>
+
+```
+
+C'est concis et purement fonctionnel.
+
+Si tu veux remplacer la section "Integrations" (qui est plus théorique) par une autre page technique cURL, dis-le moi. Sinon, nous avons couvert tous les endpoints clés de manière pratique. **Veux-tu que je génère un fichier ZIP ou un résumé de tous les fichiers créés ?**
+```

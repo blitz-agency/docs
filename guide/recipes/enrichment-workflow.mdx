@@ -1,0 +1,112 @@
+---
+title: 'End-to-End Prospecting'
+description: 'Execute a complete Search → Enrich → Validate workflow using cURL.'
+---
+
+This guide demonstrates the full business logic of BlitzAPI. We will turn a target company (e.g., "Stripe") into a qualified, verified lead ready for your CRM.
+
+## The Workflow
+
+We will perform three distinct business actions:
+1.  **Target**: Identify the "Head of Sales" at a specific company.
+2.  **Enrich**: Extract their verified professional email.
+3.  **Validate**: Confirm the email is safe to send.
+
+---
+
+<Steps>
+  <Step title="1. Target the Decision Maker">
+    **Goal**: Find the most relevant profile URL without browsing LinkedIn manually.
+    
+    We use the **Waterfall Search** to define our priority: "Give me the VP of Sales. If not found, give me the Sales Director."
+
+    ```bash cURL
+    curl -X POST "[https://api.blitz-agency.com/api/search/waterfall-icp](https://api.blitz-agency.com/api/search/waterfall-icp)" \
+         -H "Content-Type: application/json" \
+         -H "x-api-key: YOUR_API_KEY" \
+         -d '{
+               "company_linkedin_url": "[https://www.linkedin.com/company/stripe](https://www.linkedin.com/company/stripe)",
+               "cascade": [
+                 {
+                   "include_title": ["VP Sales", "Head of Sales"],
+                   "location": ["US", "GB"]
+                 },
+                 {
+                   "include_title": ["Sales Director"],
+                   "location": ["US", "GB"]
+                 }
+               ]
+             }'
+    ```
+
+    **Key Output to capture:**
+    Locate the `person_linkedin_url` in the response. You will need it for the next step.
+
+    ```json
+    {
+      "results": [
+        {
+          "full_name": "John Doe",
+          "job_title": "VP of Sales",
+          "person_linkedin_url": "[https://www.linkedin.com/in/johndoe-stripe-vp](https://www.linkedin.com/in/johndoe-stripe-vp)",
+          "icp": 1
+        }
+      ]
+    }
+    ```
+  </Step>
+
+  <Step title="2. Enrich Profile">
+    **Goal**: Convert the LinkedIn public URL into private contact data.
+    
+    Paste the URL obtained in Step 1 into the `linkedin_profile_url` field.
+
+    ```bash cURL
+    curl -X POST "[https://api.blitz-agency.com/api/enrichment/email](https://api.blitz-agency.com/api/enrichment/email)" \
+         -H "Content-Type: application/json" \
+         -H "x-api-key: YOUR_API_KEY" \
+         -d '{
+               "linkedin_profile_url": "[https://www.linkedin.com/in/johndoe-stripe-vp](https://www.linkedin.com/in/johndoe-stripe-vp)"
+             }'
+    ```
+
+    **Key Output to capture:**
+    If `found: true`, capture the `email`.
+
+    ```json
+    {
+      "found": true,
+      "email": "john.doe@stripe.com"
+    }
+    ```
+  </Step>
+
+  <Step title="3. Validate Deliverability (Optional)">
+    **Goal**: Ensure high deliverability rates before adding to your Outreach tool.
+    
+    *Note: BlitzAPI enrichment already verifies emails, but this endpoint gives you deeper SMTP details (like catch-all status).*
+
+    ```bash cURL
+    curl -X POST "[https://api.blitz-agency.com/api/email/validate](https://api.blitz-agency.com/api/email/validate)" \
+         -H "Content-Type: application/json" \
+         -H "x-api-key: YOUR_API_KEY" \
+         -d '{
+               "email": "john.doe@stripe.com"
+             }'
+    ```
+
+    **Final Decision:**
+    * `status: "valid"` → **Safe to send.**
+    * `status: "catch-all"` → **Risky.** (Acceptable if you have high domain reputation).
+    * `status: "invalid"` → **Do not send.**
+  </Step>
+</Steps>
+
+## Summary of Costs
+
+| Step | Action | Cost (on success) |
+| :--- | :--- | :--- |
+| 1 | Find Person | **1 credit** |
+| 2 | Get Email | **1 credit** |
+| 3 | Validate | **0.5 credits** |
+| **Total** | **Qualified Lead** | **2.5 credits** |

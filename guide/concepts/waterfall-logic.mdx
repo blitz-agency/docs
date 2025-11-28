@@ -1,0 +1,66 @@
+---
+title: "Waterfall Logic"
+description: "How to use hierarchical search to find the best decision maker."
+---
+
+The **Waterfall ICP** (`/api/search/waterfall-icp`) is BlitzAPI's flagship feature for Account-Based Marketing.
+
+Instead of searching for a random contact at a company, you define a **hierarchy of preference**. BlitzAPI searches level-by-level until a matching decision-maker is found.
+
+## How it works
+
+You send a list of "Cascades". BlitzAPI processes the first cascade. If no one is found, it moves to the second, and so on.
+
+<Steps>
+  <Step title="Level 1: The Ideal Target">
+    You first request a "CEO" or "Founder" located in the "US".
+  </Step>
+  <Step title="Level 2: The Deputy">
+    If Level 1 fails, Blitz searches for a "VP Sales" or "Head of Sales".
+  </Step>
+  <Step title="Level 3: The Backup">
+    As a last resort, you might accept a "Marketing Director".
+  </Step>
+</Steps>
+
+## Building a Query
+
+The `cascade` parameter accepts an array of objects. Each object represents a search step.
+
+```json
+{
+  "company_linkedin_url": "[https://www.linkedin.com/company/stripe](https://www.linkedin.com/company/stripe)",
+  "cascade": [
+    {
+      "include_title": ["CEO", "Founder"],
+      "location": ["US", "GB"]
+    },
+    {
+      "include_title": ["VP Sales", "Chief Revenue Officer"],
+      "location": ["US", "GB"]
+    }
+  ]
+}
+```
+
+### Key Parameters
+
+| **Parameter**             | **Type**  | **Description**                                                            |
+| ------------------------- | --------- | -------------------------------------------------------------------------- |
+| `include_title`           | `array`   | Job titles to search for (e.g., `["CEO", "CTO"]`).                         |
+| `exclude_title`           | `array`   | Titles to strictly ignore (e.g., `["Assistant", "Intern"]`).               |
+| `location`                | `array`   | LinkedIn Country Codes (e.g., `["US", "FR"]`). Use `["WORLD"]` for global. |
+| `include_headline_search` | `boolean` | If `true`, searches the user's bio headline (broader reach).               |
+
+## Search Types & Pricing
+
+We offer two versions of this logic: Standard (Cached/Fast) and Real-Time (Live).
+
+| **Endpoint**                      | **Type**     | **Cost**               | **Latency** |
+| --------------------------------- | ------------ | ---------------------- | ----------- |
+| `/search/waterfall-icp`           | **Standard** | **1 credit** / result  | \< 1s       |
+| `/search/waterfall-icp-real-time` | **Live**     | **3 credits** / result | ~3-5s       |
+
+<Tip>
+  Pro Tip: Start with Standard Search to save credits. Use Real-Time only for very specific or hard-to-find targets.
+</Tip>

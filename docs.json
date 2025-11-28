@@ -49,6 +49,12 @@
             "pages": [
               "guide/integrations/n8n-make-clay"
             ]
+          },
+          {
+            "group": "Appendix",
+            "pages": [
+              "guide/reference/appendix"
+            ]
           }
         ]
       },
