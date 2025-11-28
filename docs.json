@@ -24,28 +24,28 @@
             ]
           },
           {
-            "group": "Premiers Pas",
+            "group": "Getting Started",
             "pages": [
-              "guide/demarrage/authentication",
-              "guide/demarrage/quickstart"
+              "guide/getting-started/authentication",
+              "guide/getting-started/quickstart"
             ]
           },
           {
-            "group": "Concepts Clés",
+            "group": "Core Concepts",
             "pages": [
               "guide/concepts/waterfall-logic",
               "guide/concepts/live-signal"
             ]
           },
           {
-            "group": "Recettes (Use Cases)",
+            "group": "Recipes (Use Cases)",
             "pages": [
-              "guide/recettes/enrichment-workflow",
-              "guide/recettes/crm-hygiene"
+              "guide/recipes/enrichment-workflow",
+              "guide/recipes/crm-hygiene"
             ]
           },
           {
-            "group": "Intégrations",
+            "group": "Integrations",
             "pages": [
               "guide/integrations/n8n-make-clay"
             ]
