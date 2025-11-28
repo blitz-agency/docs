@@ -3,7 +3,7 @@
   "info": {
     "title": "Blitz OpenAPI Reference",
     "version": "1.0.0",
-    "description": "Bienvenue sur la référence API de Blitz. Ici, vous pouvez tester les endpoints directement.\n\nPour des tutoriels complets et des explications sur la logique métier, consultez notre [Guide Utilisateur](/guide/introduction)."
+    "description": "Welcome to the Blitz API Reference.\n\nUse this interactive documentation to test endpoints directly in your browser. Authentication is required via the `x-api-key` header."
   },
   "servers": [
     {
@@ -17,7 +17,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "x-api-key",
-        "description": "Votre clé API Blitz. Disponible sur votre [Dashboard](https://app.blitzapi.io)."
+        "description": "Your Blitz API Key."
       }
     },
     "schemas": {
@@ -27,7 +27,7 @@
           "linkedin_profile_url": {
             "type": "string",
             "format": "uri",
-            "description": "L'URL publique du profil LinkedIn (ex: `https://www.linkedin.com/in/username`)."
+            "description": "The public LinkedIn profile URL (e.g., `https://www.linkedin.com/in/username`)."
           }
         },
         "required": [
@@ -40,7 +40,7 @@
           "linkedin_company_url": {
             "type": "string",
             "format": "uri",
-            "description": "L'URL de la page entreprise LinkedIn."
+            "description": "The LinkedIn Company Page URL."
           }
         },
         "required": [
@@ -53,7 +53,7 @@
           "email": {
             "type": "string",
             "format": "email",
-            "description": "L'adresse email à analyser."
+            "description": "The email address to analyze."
           }
         },
         "required": [
@@ -68,25 +68,25 @@
             "items": {
               "type": "string"
             },
-            "description": "Liste des titres de poste recherchés (ex: `['CEO', 'Founder']`)."
+            "description": "List of job titles to search for (e.g., `['CEO', 'Founder']`)."
           },
           "exclude_title": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Mots-clés à exclure (ex: `['Assistant', 'Intern']`)."
+            "description": "Keywords to exclude from job titles (e.g., `['Assistant', 'Intern']`)."
           },
           "location": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Codes pays LinkedIn (ex: `['US', 'FR']` ou `['WORLD']`)."
+            "description": "LinkedIn Country Codes (e.g., `['US', 'FR']` or `['WORLD']`)."
           },
           "include_headline_search": {
             "type": "boolean",
-            "description": "Si `true`, recherche aussi dans la bio (headline) et pas seulement le titre de poste actuel."
+            "description": "If `true`, the search includes the user's bio/headline, not just the current job title."
           }
         },
         "required": [
@@ -99,18 +99,18 @@
           "company_linkedin_url": {
             "type": "string",
             "format": "uri",
-            "description": "L'URL de l'entreprise cible."
+            "description": "The target company's LinkedIn URL."
           },
           "cascade": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CascadeStep"
             },
-            "description": "La liste ordonnée des critères de recherche."
+            "description": "An ordered list of search criteria (steps). The API stops at the first successful step."
           },
           "max_results": {
             "type": "integer",
-            "description": "Nombre maximum de profils à retourner."
+            "description": "Maximum number of profiles to retrieve."
           }
         },
         "required": [
@@ -124,11 +124,11 @@
         "properties": {
           "found": {
             "type": "boolean",
-            "description": "Indique si un numéro a été trouvé."
+            "description": "Indicates if a phone number was found."
           },
           "phone": {
             "type": "string",
-            "description": "Le numéro de téléphone au format international."
+            "description": "The direct business phone number in international format."
           }
         },
         "required": [
@@ -140,11 +140,11 @@
         "properties": {
           "found": {
             "type": "boolean",
-            "description": "Indique si un email a été trouvé."
+            "description": "Indicates if an email was found."
           },
           "email": {
             "type": "string",
-            "description": "L'email professionnel vérifié."
+            "description": "The verified business email."
           }
         },
         "required": [
@@ -156,11 +156,11 @@
         "properties": {
           "found": {
             "type": "boolean",
-            "description": "Succès de la recherche."
+            "description": "Success status."
           },
           "email_domain": {
             "type": "string",
-            "description": "Le nom de domaine (ex: `apple.com`)."
+            "description": "The company domain (e.g., `apple.com`)."
           }
         },
         "required": [
@@ -172,22 +172,22 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "Identifiant partiel de la clé."
+            "description": "Partial API Key ID."
           },
           "credits_balance": {
             "type": "integer",
-            "description": "Solde de crédits restant."
+            "description": "Remaining credits."
           },
           "credits_reset_at": {
             "type": "string",
-            "description": "Date du prochain renouvellement."
+            "description": "Date of the next credit reset."
           },
           "active_plans": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ActivePlan"
             },
-            "description": "Liste des abonnements actifs."
+            "description": "List of active subscriptions."
           }
         },
         "required": [
@@ -202,11 +202,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Nom du plan (Pro, Ultra, Mega)."
+            "description": "Plan name (Pro, Ultra, Mega)."
           },
           "status": {
             "type": "string",
-            "description": "État du plan."
+            "description": "Plan status."
           }
         },
         "required": [
@@ -220,11 +220,11 @@
           "email": {
             "type": "string",
             "format": "email",
-            "description": "L'email analysé."
+            "description": "The analyzed email address."
           },
           "status": {
             "type": "string",
-            "description": "Résultat: `valid`, `invalid`, ou `catch-all`."
+            "description": "Result: `valid`, `invalid`, or `catch-all`."
           }
         },
         "required": [
@@ -237,11 +237,11 @@
         "properties": {
           "key": {
             "type": "string",
-            "description": "Le champ qui a déclenché le match."
+            "description": "The field that matched the search criteria."
           },
           "value": {
             "type": "string",
-            "description": "La valeur trouvée."
+            "description": "The value found."
           }
         },
         "required": [
@@ -283,7 +283,7 @@
           },
           "icp": {
             "type": "integer",
-            "description": "L'index de l'étape de cascade qui a matché (1 = première étape)."
+            "description": "The index of the cascade step that matched (1 = first step)."
           },
           "ranking": {
             "type": "integer"
@@ -293,7 +293,7 @@
             "items": {
               "$ref": "#/components/schemas/MatchDetail"
             },
-            "description": "Détails sur pourquoi ce profil a été sélectionné."
+            "description": "Details on why this profile was selected."
           }
         }
       },
@@ -315,7 +315,7 @@
             "items": {
               "$ref": "#/components/schemas/WaterfallICPResult"
             },
-            "description": "Liste des profils trouvés."
+            "description": "List of found profiles."
           }
         },
         "required": [
@@ -330,7 +330,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Description de l'erreur."
+            "description": "Error description."
           }
         },
         "required": [
@@ -342,7 +342,7 @@
         "properties": {
           "success": {
             "type": "boolean",
-            "description": "Toujours false en cas d'erreur."
+            "description": "Always false for errors."
           },
           "message": {
             "type": "string"
@@ -388,8 +388,8 @@
   "paths": {
     "/api/enrichment/phone": {
       "post": {
-        "summary": "Find Phone Number",
-        "description": "### 💰 Cost: 3 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Note:** Ideal for multichannel cadences or phoning-first strategies.\n\n[View Recipes](/guide/recipes/crm-hygiene#3-find-phone-numbers)",
+        "summary": "Find Business Phone",
+        "description": "### 💰 Cost: 3 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
         "tags": [
           "enrichment"
         ],
@@ -466,8 +466,8 @@
     },
     "/api/enrichment/email": {
       "post": {
-        "summary": "Find work email",
-        "description": "### 💰 Cost: 1 Credit (on success)\n\nFrom a LinkedIn profile URL, instantly find a verified work email. Emails are validated in real time (catch-all included).\n\n[See Quickstart Guide](/guide/getting-started/quickstart)",
+        "summary": "Find Work Email",
+        "description": "### 💰 Cost: 1 Credit (on success)\n\nFrom a LinkedIn profile URL, instantly find a verified work email. Emails are validated in real time (catch-all included).",
         "tags": [
           "enrichment"
         ],
@@ -538,7 +538,7 @@
     },
     "/api/enrichment/email_domain": {
       "post": {
-        "summary": "Email Domain Finder",
+        "summary": "Find Company Domain",
         "description": "### 💰 Cost: 0.5 Credits (on success)\n\nBridge the gap between LinkedIn and email domains. Given a company’s LinkedIn URL, find its verified email domain.",
         "tags": [
           "enrichment"
@@ -611,7 +611,7 @@
     "/api/blitz/key-info": {
       "get": {
         "summary": "Get API Key info",
-        "description": "### 💰 Cost: 0 Credits\n\nCheck your current balance, plan status, and key validity.\n\n[Authentication Guide](/guide/getting-started/authentication)",
+        "description": "### 💰 Cost: 0 Credits\n\nCheck your current balance, plan status, and key validity.",
         "tags": [
           "blitz"
         ],
@@ -680,7 +680,7 @@
         "tags": [
           "email"
         ],
-        "summary": "Catch-all Email Validation",
+        "summary": "Validate Email",
         "description": "### 💰 Cost: 0.5 Credits\n\nPerform a deep SMTP check to validate the deliverability of an email address. Detects catch-all configurations.",
         "security": [
           {
@@ -752,8 +752,8 @@
         "tags": [
           "search"
         ],
-        "summary": "Waterfall ICP",
-        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[Understand the Logic](/guide/concepts/waterfall-logic)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
+        "summary": "Waterfall ICP Search",
+        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
         "security": [
           {
             "APIKey": []
@@ -869,7 +869,7 @@
         "tags": [
           "search"
         ],
-        "summary": "Waterfall ICP Real Time",
+        "summary": "Real-Time Waterfall Search",
         "description": "### 💰 Cost: 3 Credits per result\n\nSimilar to the standard Waterfall search, but queries the LinkedIn network **live**. Use this for niche targets or when the standard search yields no results.\n\n> **Warning:** Latency is higher (3-5 seconds).",
         "security": [
           {
