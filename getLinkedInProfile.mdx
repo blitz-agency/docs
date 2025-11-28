@@ -7,30 +7,37 @@ L'API d'enrichissement LinkedIn de BlitzAPI transforme instantanément des URLs 
 ## Caractéristiques techniques
 
 ### 🚀 Performance
+
 - **Latence ultra-faible** : Réponses en temps réel
 - **Infrastructure scalable** : Gestion de volumes importants
 - **Pass-through natif** : Données brutes sans transformation
 
 ### 💰 Système de crédits
+
 - **Profil personnel** : 1 crédit par enrichissement
 - **Page entreprise** : 1 crédit par enrichissement
 - **Facturation à l'usage** : Payez uniquement ce que vous consommez
 - **Sans engagement** : Flexibilité totale
 
 ### 🔒 Fiabilité
+
 - **Validation stricte** : Contrôle des URLs avant traitement
 - **Gestion d'erreurs robuste** : Codes HTTP standards
 
 ## Processus d'enrichissement
 
 ### 1. Authentification
+
 Utilisez votre clé API unique dans le header `Authorization`:
+
 ```
 Authorization: Bearer YOUR_API_KEY
 ```
 
 ### 2. Appel API
+
 Envoyez l'URL LinkedIn à enrichir :
+
 ```json
 {
   "url": "https://www.linkedin.com/in/john-doe"
@@ -38,14 +45,17 @@ Envoyez l'URL LinkedIn à enrichir :
 ```
 
 ### 3. Réponse structurée
+
 Recevez les données complètes au format JSON, organisées par sections.
 
 ## Endpoints
 
 ### 📤 `POST /enrich/linkedin/person`
+
 **Coût : 1 crédit**
 
 Enrichit un profil personnel LinkedIn avec :
+
 - **Identité** : nom, prénom, headline, photo, localisation
 - **Expérience** : `positionGroups` avec historique complet
 - **Formation** : `educations` avec établissements et diplômes
@@ -56,9 +66,11 @@ Enrichit un profil personnel LinkedIn avec :
 - **Structure paginée** : `totalElements`, `page`, `size`, `contents`
 
 ### 🏢 `POST /enrich/linkedin/company`
+
 **Coût : 1 crédit**
 
 Enrichit une page entreprise LinkedIn avec :
+
 - **Identité** : name, logo, cover, tagline
 - **Données** : type, foundedYear, objectUrn
 - **Effectifs** : `staff` avec total et range
@@ -71,16 +83,20 @@ Enrichit une page entreprise LinkedIn avec :
 ### Validation stricte
 
 #### ✅ URLs acceptées
+
 **Personnes :**
+
 - `https://www.linkedin.com/in/identifier`
 - `https://linkedin.com/in/identifier/`
 - `https://www.linkedin.com/pub/name/1/2/3`
 
 **Entreprises :**
+
 - `https://www.linkedin.com/company/identifier`
 - `https://linkedin.com/company/identifier/`
 
 #### ❌ URLs refusées
+
 - Sous-domaines : `fr.linkedin.com`, `uk.linkedin.com`
 - Pages école : `/school/`
 - Posts/Articles : `/pulse/`, `/feed/`
@@ -88,6 +104,7 @@ Enrichit une page entreprise LinkedIn avec :
 - Groupes : `/groups/`
 
 ### Normalisation automatique
+
 - Ajout HTTPS si manquant
 - Suppression des paramètres UTM
 - Nettoyage des espaces et slash finaux
@@ -95,6 +112,7 @@ Enrichit une page entreprise LinkedIn avec :
 ## Format de réponse
 
 ### Structure paginée (Person)
+
 ```json
 {
   "firstname": "John",
@@ -109,6 +127,7 @@ Enrichit une page entreprise LinkedIn avec :
 ```
 
 ### Structure directe (Company)
+
 ```json
 {
   "name": "Company Name",
@@ -124,13 +143,14 @@ Enrichit une page entreprise LinkedIn avec :
 
 ## Codes d'erreur
 
-| Code | Status | Description | Action |
-|------|--------|-------------|--------|
-| 401 | UNAUTHORIZED | Clé API invalide | Vérifier la clé |
-| 422 | UNPROCESSABLE_ENTITY | URL invalide ou manquante | Corriger l'URL |
-| 500 | INTERNAL_SERVER_ERROR | Erreur serveur | Contacter support |
+| Code | Status                | Description               | Action            |
+| ---- | --------------------- | ------------------------- | ----------------- |
+| 401  | UNAUTHORIZED          | Clé API invalide          | Vérifier la clé   |
+| 422  | UNPROCESSABLE_ENTITY  | URL invalide ou manquante | Corriger l'URL    |
+| 500  | INTERNAL_SERVER_ERROR | Erreur serveur            | Contacter support |
 
 ### Format d'erreur
+
 ```json
 {
   "error": "UNAUTHORIZED",
@@ -141,18 +161,20 @@ Enrichit une page entreprise LinkedIn avec :
 ## Bonnes pratiques
 
 ### ✅ Recommandations
+
 - **Valider les URLs** côté client avant envoi
 - **Gérer les erreurs** avec retry exponential backoff
 - **Logger les appels** pour audit et debug
 - **Respecter la privacy** des données collectées
 
 ### ❌ À éviter
+
 - URLs avec sous-domaines pays
 - Requêtes parallèles massives sans contrôle
 - Ignorer les codes d'erreur 4xx
 
 ---
 
-*BlitzAPI - Enrichissement LinkedIn simple, rapide et fiable*
+_BlitzAPI - Enrichissement LinkedIn simple, rapide et fiable_
 
-*Dernière mise à jour : Septembre 2025*
+_Dernière mise à jour : Septembre 2025_

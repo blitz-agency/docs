@@ -19,7 +19,35 @@
           {
             "group": "Introduction",
             "pages": [
-              "getLinkedInProfile"
+              "guide/introduction",
+              "guide/concepts/unlimited-model"
+            ]
+          },
+          {
+            "group": "Premiers Pas",
+            "pages": [
+              "guide/demarrage/authentication",
+              "guide/demarrage/quickstart"
+            ]
+          },
+          {
+            "group": "Concepts Clés",
+            "pages": [
+              "guide/concepts/waterfall-logic",
+              "guide/concepts/live-signal"
+            ]
+          },
+          {
+            "group": "Recettes (Use Cases)",
+            "pages": [
+              "guide/recettes/enrichment-workflow",
+              "guide/recettes/crm-hygiene"
+            ]
+          },
+          {
+            "group": "Intégrations",
+            "pages": [
+              "guide/integrations/n8n-make-clay"
             ]
           }
         ]
@@ -66,7 +94,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@blitzapi.io"
+        "href": "mailto:support@blitz-api.ai"
       }
     ]
   },
