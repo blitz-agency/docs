@@ -1,72 +1,110 @@
 ---
-title: 'The Unlimited Model'
-description: 'Scale your growth operations without worrying about credit consumption.'
+title: "Pricing & Billing Models"
+description: "Understand the difference between Pay-as-you-go and Unlimited Infrastructure."
 ---
 
-Most B2B data providers charge per credit. This punishes you for scaling. 
-**BlitzAPI is different.** We believe high-volume teams should have predictable costs.
+BlitzAPI offers two distinct billing architectures to match your stage of growth. Whether you are running a small experimental script or a massive production pipeline, we have a model that fits.
 
-## Why Unlimited?
+---
 
-Modern GTM teams don't operate at "1,000 credits per month." They operate at millions of calls.
+## 1. The Pay-as-you-go Model (Classic)
+
+Ideal for prototyping, low-volume needs, or occasional usage. You purchase credits, and you spend them only on successful requests.
+
+| Action               | Cost              |
+| :------------------- | :---------------- |
+| **Enrich Email**     | 1 credit          |
+| **Enrich Phone**     | 3 credits         |
+| **Waterfall Search** | 1 credit / result |
+| **Validation**       | 0.5 credits       |
 
 <Check>
-  **No Seat Licenses**: Share the API key across your whole engineering and sales team.
-</Check>
-<Check>
-  **Predictable Billing**: No surprise overage fees at the end of the month.
-</Check>
-<Check>
-  **High Throughput**: All plans include **5 requests per second** (RPS) by default.
+  **Zero Waste**: If we don't find the data (e.g., email not found), you are not charged.
 </Check>
 
-## Plan Comparison
+---
 
-Choose the tier that matches the *type* of data you need.
+## 2. The Unlimited Model (Infrastructure)
 
-| Feature | PRO ($399) | ULTRA ($499) | MEGA ($599) |
-| :--- | :---: | :---: | :---: |
-| **Waterfall Search** (Find People) | ✅ **Unlimited** | ✅ **Unlimited** | ✅ **Unlimited** |
-| **Domain Enrichment** | ✅ **Unlimited** | ✅ **Unlimited** | ✅ **Unlimited** |
-| **Verified Emails** | ❌ | ✅ **Unlimited** | ✅ **Unlimited** |
-| **Verified Phones** | ❌ | ❌ | ✅ **Unlimited** |
+This is our vision for the future of B2B data. We believe that **data should be a fixed infrastructure cost**, just like your servers or database hosting. You shouldn't be punished for scaling your operations.
 
-<Info>
-  **Fair Use Policy**: To ensure quality of service for everyone, "Unlimited" plans are capped at a massive **10,000,000 requests per month**. This is enough to power even the largest agencies.
-</Info>
+Our Unlimited Plans transform variable costs into a predictable flat fee, enabling you to run **millions of operations** without looking at your balance.
 
-## Which plan is right for you?
+### Core Benefits
 
 <CardGroup cols={3}>
-  <Card title="PRO" icon="user-magnifying-glass">
-    **Best for: ABM & Targeting**
-    
-    You need to find decision-makers (CEOs, VPs) inside companies to build lists, but you enrich them elsewhere.
+  <Card title="Predictable Opex" icon="chart-line">
+    No surprise overage fees. Budget \$499/mo and run your pipelines 24/7.
   </Card>
-  <Card title="ULTRA" icon="envelope">
-    **Best for: Cold Email**
-    
-    You run high-volume email campaigns and need a constant stream of verified contacts. **(Recommended)**
+  <Card title="High Throughput" icon="server">
+    All plans include **5 concurrent requests per second** (RPS) by default.
   </Card>
-  <Card title="MEGA" icon="phone">
-    **Best for: Call Centers**
-    
-    You rely on multi-channel outreach (Cold Call + Email) and need direct dials.
+  <Card title="Team Wide" icon="users">
+    No "Seat Licenses". Share one API Key across your entire engineering team.
   </Card>
 </CardGroup>
 
-## FAQ
+---
+
+## Subscription Tiers
+
+Choose the tier that unlocks the specific _endpoints_ you need for your stack.
+
+| Feature / Endpoint                           | PRO (\$399/mo)  | ULTRA (\$499/mo) | MEGA (\$599/mo) |
+| :------------------------------------------- | :-------------: | :--------------: | :-------------: |
+| **Waterfall Search** (`/search/*`)           | ✅ **Unlimited** | ✅ **Unlimited**  | ✅ **Unlimited** |
+| **Domain Enrichment** (`/enrichment/domain`) | ✅ **Unlimited** | ✅ **Unlimited**  | ✅ **Unlimited** |
+| **Verified Emails** (`/enrichment/email`)    | ❌               | ✅ **Unlimited**  | ✅ **Unlimited** |
+| **Verified Phones** (`/enrichment/phone`)    | ❌               | ❌                | ✅ **Unlimited** |
+
+<Info>
+  **Fair Use Policy**: "Unlimited" implies a massive cap of **10,000,000 requests per month**. This is designed to prevent abuse while supporting even the largest agencies and platforms.
+</Info>
+
+---
+
+## Functional Selection Guide
+
+Which infrastructure is right for your use case?
+
+<CardGroup cols={1}>
+  <Card title="PRO Plan — The Targeting Engine" icon="crosshairs">
+    **Ideal for: Account-Based Marketing (ABM) & List Building.**
+
+    You already have an enrichment provider (like Clay or a waterfall provider), but you need a way to **find decision-makers** at scale.
+
+    - _Use case:_ Mapping 50,000 companies to find every "VP of Sales".
+  </Card>
+  <Card title="ULTRA Plan — The Cold Email Machine" icon="envelope">
+    **Ideal for: High-Volume Outbound Agencies.**
+
+    You need to feed your sending tools (Smartlead, Instantly) with thousands of fresh, verified leads daily. **(Most Popular)**
+
+    - _Use case:_ Automated workflow: Search Companies -\> Find Decision Maker -\> Get Verified Email.
+  </Card>
+  <Card title="MEGA Plan — The Full Contact Suite" icon="phone">
+    **Ideal for: Call Centers & Multi-Channel Ops.**
+
+    Your SDRs perform cold calling and need direct mobile numbers to bypass gatekeepers.
+
+    - _Use case:_ Syncing high-value leads with HubSpot, populated with both Email and Phone.
+  </Card>
+</CardGroup>
+
+---
+
+## Technical FAQ
 
 <AccordionGroup>
-  <Accordion title="Does 'Unlimited' include real-time validation?">
-    Yes. When we provide an email in the Ultra or Mega plans, it is validated in real-time. We don't just give you a database string; we ping the server to ensure it exists.
+  <Accordion title="Does 'Unlimited' really mean real-time data?">
+    **Yes.** We do not serve "stale" database dumps to save costs. Even on Unlimited plans, every email request triggers a real-time SMTP handshake to verify validity, and every search queries the live network.
   </Accordion>
+  <Accordion title="What happens if I hit the 5 RPS limit?">
+    You will receive a standard `429 Too Many Requests` HTTP error.
 
-  <Accordion title="Can I upgrade later?">
-    Absolutely. You can switch from Pro to Ultra instantly from your dashboard if your needs change (e.g., you decide to start emailing your leads).
+    **Solution**: We recommend implementing a "leaky bucket" algorithm or a simple retry with exponential backoff in your code. This ensures your script pauses briefly rather than crashing.
   </Accordion>
-
-  <Accordion title="What happens if I hit the rate limit?">
-    If you exceed 5 requests per second, you will receive a `429 Too Many Requests` error. We recommend implementing a simple retry logic or "backoff" strategy in your code.
+  <Accordion title="Can I switch between Pay-as-you-go and Unlimited?">
+    Absolutely. You can start with \$50 of credits to test the API quality. Once your integration is stable and you're ready to scale, you can upgrade to the **Ultra** plan instantly from the dashboard.
   </Accordion>
 </AccordionGroup>
