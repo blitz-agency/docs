@@ -1,11 +1,12 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "BlitzAPI – LinkedIn Enrichment",
+  "theme": "maple",
+  "name": "BlitzAPI - The API Engine for every GTM Playbook",
+  "description": "Example Co. is a company that provides example content and placeholder text.",
   "colors": {
     "primary": "#0EA5E9",
-    "light": "#38BDF8",
-    "dark": "#0284C7"
+    "light": "#F8FAFC",
+    "dark": "#0F172A"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -99,20 +100,83 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:support@blitz-api.ai"
+        "label": "Pricing",
+        "href": "https://blitz-api.ai/pricing"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Book a demo",
+      "href": "https://cal.com/antoine-blitz-acepmu/blitz-api"
+    }
+  },
+  "footer": {
+    "socials": {
+      "youtube": "https://www.youtube.com/@BlitzAPI",
+      "linkedin": "https://www.linkedin.com/company/blitz-api/"
+    },
+    "links": [
+      {
+        "header": "Resources",
+        "items": [
+          {
+            "label": "Customers",
+            "href": "https://example.com/customers"
+          },
+          {
+            "label": "Enterprise",
+            "href": "https://example.com/enterprise"
+          },
+          {
+            "label": "Request Preview",
+            "href": "https://example.com/preview"
+          }
+        ]
+      },
+      {
+        "header": "Company",
+        "items": [
+          {
+            "label": "Careers",
+            "href": "https://example.com/careers"
+          },
+          {
+            "label": "Blog",
+            "href": "https://example.com/blog"
+          },
+          {
+            "label": "Privacy Policy",
+            "href": "https://example.com/legal/privacy"
+          }
+        ]
       }
     ]
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-XXXXXXXXXX"
+    },
+    "telemetry": {
+      "enabled": true
+    },
+    "cookies": {
+      "key": "example_cookie_key",
+      "value": "example_cookie_value"
+    }
   },
   "contextual": {
     "options": [
       "copy",
-      "view"
+      "view",
+      "chatgpt",
+      "claude"
     ]
   },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/"
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "I can't be found",
+      "description": "What ever **happened** to this _page_?"
     }
   }
 }
