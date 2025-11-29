@@ -1,66 +1,139 @@
 ---
 title: "Waterfall Logic"
-description: "How to use hierarchical search to find the best decision maker."
+description: "Smart Lead Routing: Prioritize quality over quantity."
 ---
 
-The **Waterfall ICP** (`/api/search/waterfall-icp`) is BlitzAPI's flagship feature for Account-Based Marketing.
+In modern B2B growth, **more leads is not the goal. Better leads are.**
 
-Instead of searching for a random contact at a company, you define a **hierarchy of preference**. BlitzAPI searches level-by-level until a matching decision-maker is found.
+The **Waterfall ICP** engine (`/api/search/waterfall-icp`) is designed to solve one specific problem: **Finding the single best decision-maker** at a target company without manual sorting.
 
-## How it works
+## The "Smart Routing" Concept
 
-You send a list of "Cascades". BlitzAPI processes the first cascade. If no one is found, it moves to the second, and so on.
+Most APIs return a list of 50 employees and leave you to filter them. BlitzAPI works differently. You define a **Hierarchy of Preference** (a Cascade), and our engine executes a sequential search logic.
+
+It attempts to find your "Dream Contact." If---and only if---that fails, it moves to your "Plan B."
 
 <Steps>
-  <Step title="Level 1: The Ideal Target">
-    You first request a "CEO" or "Founder" located in the "US".
+  <Step title="Priority 1: The Decision Maker">
+    **"I want the CMO."**
+
+    The API scans the company. If a CMO is found, the search **stops immediately**. You get the top-ranked result.
   </Step>
-  <Step title="Level 2: The Deputy">
-    If Level 1 fails, Blitz searches for a "VP Sales" or "Head of Sales".
+  <Step title="Priority 2: The Deputy">
+    **"If no CMO, give me the Marketing Manager."**
+
+    If Priority 1 yielded no results, the engine automatically triggers the second level of your cascade.
   </Step>
-  <Step title="Level 3: The Backup">
-    As a last resort, you might accept a "Marketing Director".
+  <Step title="Priority 3: The Fallback">
+    **"If no Marketing team, give me the CEO."**
+
+    As a last resort, the engine looks for the founder to ensure you don't leave the account empty-handed.
   </Step>
 </Steps>
 
-## Building a Query
+---
 
-The `cascade` parameter accepts an array of objects. Each object represents a search step.
+## Real-World Example: The "Marketing First" Strategy
+
+Let's look at a complex query. Here, we want to target **Welcome to the Jungle**, but we have a very specific preference order.
+
+**The Strategy:**
+
+1. **Tier 1**: Get the **Marketing Director/CMO** (Global).
+2. **Tier 2**: If missing, get a **Growth Manager** (Global).
+3. **Tier 3**: If missing, get a **Brand/Comms Director** (Global).
+4. **Tier 4**: If missing, try a broader keyword search in **North America only**.
+5. **Tier 5**: If all else fails, get the **CEO**.
 
 ```json
 {
-  "company_linkedin_url": "[https://www.linkedin.com/company/stripe](https://www.linkedin.com/company/stripe)",
+  "company_linkedin_url": "[https://www.linkedin.com/company/wttj-fr](https://www.linkedin.com/company/wttj-fr)",
   "cascade": [
     {
-      "include_title": ["CEO", "Founder"],
-      "location": ["US", "GB"]
+      "include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
+      "exclude_title": ["assistant", "intern", "product", "junior"],
+      "location": ["WORLD"],
+      "include_headline_search": false
     },
     {
-      "include_title": ["VP Sales", "Chief Revenue Officer"],
-      "location": ["US", "GB"]
+      "include_title": ["Marketing Manager", "Head Growth", "Growth manager"],
+      "exclude_title": ["junior", "assistant", "intern", "hacker"],
+      "location": ["WORLD"],
+      "include_headline_search": false
+    },
+    {
+      "include_title": ["Communication Director", "Brand Director", "Content Director"],
+      "exclude_title": ["junior", "assistant", "intern", "UX", "UI", "Design"],
+      "location": ["WORLD"],
+      "include_headline_search": false
+    },
+    {
+      "include_title": ["Communication", "marketing", "growth", "brand"],
+      "exclude_title": ["junior", "assistant", "intern", "product"],
+      "location": ["US", "CA"],
+      "include_headline_search": true
+    },
+    {
+      "include_title": ["CEO", "founder", "cofounder", "owner", "General Director"],
+      "exclude_title": ["junior", "assistant", "intern"],
+      "location": ["WORLD"],
+      "include_headline_search": false
     }
-  ]
+  ],
+  "max_results": 10
 }
 ```
 
-### Key Parameters
+### Why this query is powerful
 
-| **Parameter**             | **Type**  | **Description**                                                            |
-| ------------------------- | --------- | -------------------------------------------------------------------------- |
-| `include_title`           | `array`   | Job titles to search for (e.g., `["CEO", "CTO"]`).                         |
-| `exclude_title`           | `array`   | Titles to strictly ignore (e.g., `["Assistant", "Intern"]`).               |
-| `location`                | `array`   | LinkedIn Country Codes (e.g., `["US", "FR"]`). Use `["WORLD"]` for global. |
-| `include_headline_search` | `boolean` | If `true`, searches the user's bio headline (broader reach).               |
+- **Precision**: By using `exclude_title`, we ensure we don't pay for interns or assistants.
+- **Flexibility**: In step 4, we switch `include_headline_search` to `true`. This allows us to catch people who write "Helping companies grow" in their bio, even if their job title isn't exactly "Growth Manager".
+- **Safety Net**: The final step ensures that if the Marketing team is invisible, we still capture the CEO to start a top-down conversation.
 
-## Search Types & Pricing
+---
 
-We offer two versions of this logic: Standard (Cached/Fast) and Real-Time (Live).
+## Choosing Your Engine: Standard vs. Real-Time
 
-| **Endpoint**                      | **Type**     | **Cost**               | **Latency** |
-| --------------------------------- | ------------ | ---------------------- | ----------- |
-| `/search/waterfall-icp`           | **Standard** | **1 credit** / result  | \< 1s       |
-| `/search/waterfall-icp-real-time` | **Live**     | **3 credits** / result | ~3-5s       |
+We offer two processing modes for this logic. Choose based on your need for speed vs. niche accuracy.
 
-<Tip>
-  Pro Tip: Start with Standard Search to save credits. Use Real-Time only for very specific or hard-to-find targets.
-</Tip>
+<Tabs>
+  <Tab title="Standard (Recommended)">
+    **Endpoint**: `/search/waterfall-icp`
+
+    Best for **high-volume ABM** on well-known companies. It uses a mix of live signals and cached data to deliver results instantly.
+
+    - **Cost**: 1 Credit / result
+    - **Latency**: \< 600ms
+    - **Ideal for**: Building lists of 10k+ leads quickly.
+  </Tab>
+  <Tab title="Real-Time (Live)">
+    **Endpoint**: `/search/waterfall-icp-real-time`
+
+    Best for **niche targeting** or when Standard returns no results. It queries the live network at the moment of the request.
+
+    - **Cost**: 3 Credits / result
+    - **Latency**: 3-6 seconds
+    - **Ideal for**: Finding specific roles in small SMBs or verifying job changes.
+  </Tab>
+</Tabs>
+
+<Note>
+  **Smart Strategy**: Always try the **Standard** endpoint first. It is faster and cheaper. Only switch to **Real-Time** if the standard search returns `results_length: 0`.
+</Note>
+
+---
+
+## Parameter Reference
+
+Optimize your search filters with these parameters.
+
+| Parameter                 | Type      | Description                                                                                   |
+| :------------------------ | :-------- | :-------------------------------------------------------------------------------------------- |
+| `include_title`           | `array`   | **Required**. Job titles to match (e.g., `["CEO", "CTO"]`).                                   |
+| `exclude_title`           | `array`   | Titles to strictly ignore. Useful to filter out `["Assistant", "Intern", "Junior"]`.          |
+| `location`                | `array`   | LinkedIn Country Codes (e.g., `["US", "FR"]`). Use `["WORLD"]` for global search.             |
+| `include_headline_search` | `boolean` | If `true`, keywords are searched in the user's bio/headline, not just their formal Job Title. |
+
+<Info>
+  **Need the Country Codes?** Check our [Reference Appendix](/guide/reference/appendix#common-country-codes-list) for the correct 2-letter ISO codes expected by LinkedIn.
+</Info>
