@@ -1,118 +1,101 @@
 ---
-title: 'Clean & Normalize Data'
-description: 'Functional examples to validate emails and find company domains.'
+title: 'CRM Hygiene Playbooks'
+description: 'Dynamic enrichment and automated cleaning workflows.'
 ---
 
-Use these cURL requests to clean your CRM data or verify inputs before saving them.
 
-## 1. Validate an Email Address
 
-Before sending an email, verify if it is valid, invalid, or a "catch-all" (risky).
+[Image of software architecture diagram]
 
-### Request (cURL)
 
-```bash
-curl -X POST "[https://api.blitz-agency.com/api/email/validate](https://api.blitz-agency.com/api/email/validate)"\
-     -H "Content-Type: application/json"\
-     -H "x-api-key: YOUR_API_KEY"\
-     -d '{
-           "email": "antoine@blitz-agency.com"
-         }'
+Data decay is inevitable, but manual cleaning is obsolete.
+With BlitzAPI's **Unlimited Model**, RevOps teams can shift from "Annual Cleaning" to **"Continuous Hygiene"**.
 
-```
+Instead of buying static lists, you can build **Dynamic Playbooks** that trigger exactly when you need them.
 
-### Response
+---
 
-The `status` field tells you if it is safe to send.
+## Playbook 1: The "Dynamic Account" Enrichment
+*(The "Surgical Strike" Approach)*
 
-JSON
+**The Scenario**: A Sales Rep is working a high-priority Account in Salesforce/HubSpot. The account has potential, but the Rep lacks the *right* contacts (e.g., the VP of Sales is missing).
 
-```
-{
-  "email": "antoine@blitz-agency.com",
-  "status": "valid",
-  "reason": "smtp_connectable",
-  "mx_record": "aspmx.l.google.com"
-}
+**The Solution**: Instead of asking the Rep to go to LinkedIn and manually copy-paste data, you give them an **"Enrich Now" button** in the CRM.
 
-```
+<Steps>
+  <Step title="1. Trigger (The Button)">
+    The Rep clicks a button in the CRM (via a Webhook/Flow).
+  </Step>
+  <Step title="2. The Waterfall Search">
+    The automation sends the Company Domain to BlitzAPI's **Waterfall ICP** endpoint.
+    * *Query*: "Find the VP Sales or CRO in the US for this company."
+  </Step>
+  <Step title="3. Automatic Sync">
+    BlitzAPI returns the **Verified Email** and **Phone**. The automation creates the Contact in the CRM and assigns it to the Rep instantly.
+  </Step>
+</Steps>
 
-<Note> **Cost**: 0.5 credits per check. </Note>
+### Why this changes the game
+You stop enriching *every* company (wasteful). You enrich **only accounts with active intent**, ensuring 100% data freshness for the leads that actually matter.
 
-* * * * *
+<Card title="Tech Enabler: Waterfall ICP" icon="stairs" href="/api-reference/search/waterfall-icp">
+  Use `/search/waterfall-icp` to find the specific decision-maker on-demand.
+</Card>
 
-2\. Find Company Domain
------------------------
+---
 
-Convert a LinkedIn Company URL into a clean website domain (e.g., for data deduplication in HubSpot/Salesforce).
+## Playbook 2: The "Pre-Send" Safety Net
+*(The Anti-Bounce Shield)*
 
-### Request (cURL)
+**The Scenario**: You are about to enroll 5,000 leads into a cold email sequence. Some data is old; some emails might be "Catch-All".
 
-Bash
+**The Solution**: An automated gatekeeper that validates every email *before* it enters the sequence.
 
-```
-curl -X POST "[https://api.blitz-agency.com/api/enrichment/email_domain](https://api.blitz-agency.com/api/enrichment/email_domain)"\
-     -H "Content-Type: application/json"\
-     -H "x-api-key: YOUR_API_KEY"\
-     -d '{
-           "linkedin_company_url": "[https://www.linkedin.com/company/apple](https://www.linkedin.com/company/apple)"
-         }'
+<Steps>
+  <Step title="1. Batch Export">
+    Your automation tool (n8n/Make) pulls the list of emails.
+  </Step>
+  <Step title="2. Strict Validation">
+    Pass every email through `/api/email/validate`.
+    * BlitzAPI checks: Syntax, DNS, and performs a live SMTP handshake.
+  </Step>
+  <Step title="3. Routing">
+    * **Valid**: Enrolled in Sequence A (Aggressive).
+    * **Catch-All**: Enrolled in Sequence B (Manual/LinkedIn).
+    * **Invalid**: Marked as "Do Not Contact" in CRM.
+  </Step>
+</Steps>
 
-```
+<Card title="Tech Enabler: Validation" icon="shield-check" href="/api-reference/email/validate">
+  Use `/email/validate` to filter out risks before they hurt your domain reputation.
+</Card>
 
-### Response
+---
 
-JSON
+## ⚡ Scaling with Low-Code (n8n, Make, Clay)
 
-```
-{
-  "found": true,
-  "email_domain": "apple.com"
-}
+The true power of BlitzAPI is unleashed when combined with automation platforms.
+Because our plans are **Unlimited**, you can run massive loops without worrying about "burning credits."
 
-```
+### Why integrate?
 
-<Note> **Cost**: 0.5 credits per success. </Note>
+| Tool | Ideal For | Why BlitzAPI? |
+| :--- | :--- | :--- |
+| **Clay** | **Bulk Enrichment** | Use our [Clay Integration](/guide/integrations/clay) to enrich 10k rows in minutes. Perfect for building initial lists. |
+| **n8n** | **Complex Logic** | Build self-hosted, infinite loops that clean your CRM every night. [View n8n Guide](/guide/integrations/n8n). |
+| **Make** | **CRM Connectivity** | Easily listen to HubSpot/Salesforce webhooks to trigger "Dynamic Playbooks". [View Make Guide](/guide/integrations/make). |
 
-* * * * *
+> **RevOps Insight**: With the Unlimited Plan, you can set up a "Weekend Job" in n8n that scans your entire CRM, re-validates every email, and updates job titles, ensuring your team walks in on Monday to a pristine database.
 
-3\. Find Phone Numbers
-----------------------
+---
 
-If you need to add direct dials to your contacts.
+## Ready to build?
 
-### Request (cURL)
-
-Bash
-
-```
-curl -X POST "[https://api.blitz-agency.com/api/enrichment/phone](https://api.blitz-agency.com/api/enrichment/phone)"\
-     -H "Content-Type: application/json"\
-     -H "x-api-key: YOUR_API_KEY"\
-     -d '{
-           "linkedin_profile_url": "[https://www.linkedin.com/in/satyanadella](https://www.linkedin.com/in/satyanadella)"
-         }'
-
-```
-
-### Response
-
-JSON
-
-```
-{
-  "found": true,
-  "phone": "+14258828080",
-  "country_code": "US"
-}
-
-```
-
-<Warning> **Cost**: 3 credits per success. This is a premium endpoint. </Warning>
-
-```
-
-C'est concis et purement fonctionnel.
-
-Si tu veux remplacer la section "Integrations" (qui est plus théorique) par une autre page technique cURL, dis-le moi. Sinon, nous avons couvert tous les endpoints clés de manière pratique. **Veux-tu que je génère un fichier ZIP ou un résumé de tous les fichiers créés ?**
-```
+<CardGroup cols={2}>
+  <Card title="Get your API Key" icon="key" href="https://app.blitzapi.io">
+    Start building your dynamic playbooks today.
+  </Card>
+  <Card title="See Integration Guides" icon="puzzle-piece" href="/guide/integrations/n8n-make-clay">
+    Copy-paste recipes for your favorite automation tools.
+  </Card>
+</CardGroup>

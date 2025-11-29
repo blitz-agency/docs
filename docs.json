@@ -21,7 +21,7 @@
             "group": "Introduction",
             "pages": [
               "guide/introduction",
-              "guide/concepts/unlimited-model"
+              "guide/concepts/pricing-unlimited"
             ]
           },
           {
@@ -35,7 +35,7 @@
             "group": "Core Concepts",
             "pages": [
               "guide/concepts/waterfall-logic",
-              "guide/concepts/live-signal"
+              "guide/concepts/quality"
             ]
           },
           {
@@ -48,7 +48,10 @@
           {
             "group": "Integrations",
             "pages": [
-              "guide/integrations/n8n-make-clay"
+              "guide/integrations/clay",
+              "guide/integrations/n8n",
+              "guide/integrations/make"
+              
             ]
           },
           {
