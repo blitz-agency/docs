@@ -1,0 +1,5 @@
+# Mintlify local cache files
+*+_existingInIndexedDbMintlify
+
+# OS files
+.DS_Store
