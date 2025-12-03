@@ -650,7 +650,7 @@
     "/api/enrichment/phone": {
       "post": {
         "summary": "Find Business Phone",
-        "description": "### 💰 Cost: 3 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
+        "description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
         "tags": [
           "enrichment"
         ],
