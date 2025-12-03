@@ -768,29 +768,114 @@
               "example": {
                 "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
                 "cascade": [
-                  {
-                    "include_title": [
-                      "Founder",
-                      "CEO"
-                    ],
-                    "location": [
-                      "US",
-                      "CA"
-                    ],
-                    "include_headline_search": false
-                  },
-                  {
-                    "include_title": [
-                      "VP Sales",
-                      "Head of Sales"
-                    ],
-                    "location": [
-                      "WORLD"
-                    ],
-                    "include_headline_search": true
-                  }
-                ],
-                "max_results": 10
+        		{
+        			"include_title": [
+        				"Marketing Director",
+        				"Head Marketing",
+        				"Chief Marketing Officer"
+        			],
+        			"exclude_title": [
+        				"assistant",
+        				"intern",
+        				"product",
+        				"junior"
+        			],
+        			"location": [
+        				"WORLD"
+        			],
+        			"include_headline_search": false
+        		},
+        		{
+        			"include_title": [
+        				"Marketing Manager",
+        				"Head Growth",
+        				"Growth manager"
+        			],
+        			"exclude_title": [
+        				"junior",
+        				"assistant",
+        				"intern",
+        				"hacker"
+        			],
+        			"location": [
+        				"WORLD"
+        			],
+        			"include_headline_search": false
+        		},
+        		{
+        			"include_title": [
+        				"Communication Director",
+        				"Brand Director",
+        				"Content Director"
+        			],
+        			"exclude_title": [
+        				"junior",
+        				"assistant",
+        				"intern",
+        				"UX",
+        				"UI",
+        				"Design"
+        			],
+        			"location": [
+        				"WORLD"
+        			],
+        			"include_headline_search": false
+        		},
+        		{
+        			"include_title": [
+        				"Communication Manager",
+        				"Brand Manager",
+        				"Content Manager"
+        			],
+        			"exclude_title": [
+        				"junior",
+        				"assistant",
+        				"intern"
+        			],
+        			"location": [
+        				"WORLD"
+        			],
+        			"include_headline_search": false
+        		},
+        		{
+        			"include_title": [
+        				"Communication",
+        				"marketing",
+        				"growth",
+        				"brand"
+        			],
+        			"exclude_title": [
+        				"junior",
+        				"assistant",
+        				"intern",
+        				"product"
+        			],
+        			"location": [
+        				"US",
+        				"CA"
+        			],
+        			"include_headline_search": true
+        		},
+        		{
+        			"include_title": [
+        				"CEO",
+        				"founder",
+        				"cofounder",
+        				"owner",
+        				"General Director"
+        			],
+        			"exclude_title": [
+        				"junior",
+        				"assistant",
+        				"intern"
+        			],
+        			"location": [
+        				"WORLD"
+        			],
+        			"include_headline_search": false
+        		}
+        	],
+              	"max_results": 10
               }
             }
           }
@@ -805,29 +890,148 @@
                 },
                 "example": {
                   "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                  "max_results": 2,
-                  "results_length": 2,
-                  "results": [
-                    {
-                      "full_name": "Lionel Pereira",
-                      "first_name": "Lionel",
-                      "last_name": "Pereira",
-                      "job_title": "Director Sales",
-                      "company_domain": "welcometothejungle.com",
-                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                      "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
-                      "country": "France",
-                      "icp": 2,
-                      "ranking": 1,
-                      "what_matched": [
-                        {
-                          "value": "Director Sales",
-                          "key": "job_title"
-                        }
-                      ]
-                    }
-                  ]
-                }
+	"max_results": 7,
+	"results_length": 7,
+	"results": [
+		{
+			"full_name": "Melissa Rumor",
+			"first_name": "Melissa",
+			"last_name": "Rumor",
+			"job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
+			"linkedin_headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
+			"country": "FR",
+			"icp": 2,
+			"ranking": 1,
+			"what_matched": [
+				{
+					"value": "Growth Marketing Manager Welcome to the Jungle (France)",
+					"key": "job_title"
+				},
+				{
+					"value": "Growth Marketing Manager Welcome to the Jungle (France)",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Saâd Amouzigh",
+			"first_name": "Saâd",
+			"last_name": "Amouzigh",
+			"job_title": "Growth Manager - B2b Paid Acquisition",
+			"linkedin_headline": "Webmarketing Project Manager @Seenk",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/samouzigh",
+			"country": "FR",
+			"icp": 2,
+			"ranking": 2,
+			"what_matched": [
+				{
+					"value": "Growth Manager - B2b Paid Acquisition",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Wendy Carré",
+			"first_name": "Wendy",
+			"last_name": "Carré",
+			"job_title": "Senior Content Marketing Manager",
+			"linkedin_headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
+			"country": "FR",
+			"icp": 2,
+			"ranking": 3,
+			"what_matched": [
+				{
+					"value": "Senior Content Marketing Manager",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Ellora Ainadjoglou",
+			"first_name": "Ellora",
+			"last_name": "Ainadjoglou",
+			"job_title": "Growth Manager",
+			"linkedin_headline": null,
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/ellora-ainadjoglou",
+			"country": "FR",
+			"icp": 2,
+			"ranking": 4,
+			"what_matched": [
+				{
+					"value": "Growth Manager",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Marie Poirier Villemin",
+			"first_name": "Marie",
+			"last_name": "Villemin",
+			"job_title": "Brand Manager Welcome to the Jungle (France)",
+			"linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/marie-villemin",
+			"country": "FR",
+			"icp": 4,
+			"ranking": 5,
+			"what_matched": [
+				{
+					"value": "Brand Manager Welcome to the Jungle (France)",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Laura Huline Scognamiglio",
+			"first_name": "Laura",
+			"last_name": "Scognamiglio",
+			"job_title": "Senior Content Manager",
+			"linkedin_headline": "Senior Content Manager",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
+			"country": "FR",
+			"icp": 4,
+			"ranking": 6,
+			"what_matched": [
+				{
+					"value": "Senior Content Manager",
+					"key": "job_title"
+				}
+			]
+		},
+		{
+			"full_name": "Marie Poirier Villemin",
+			"first_name": "Marie",
+			"last_name": "Villemin",
+			"job_title": "Brand Manager Welcome to the Jungle (France)",
+			"linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+			"company_domain": "welcometothejungle.com",
+			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+			"person_linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
+			"country": "FR",
+			"icp": 4,
+			"ranking": 7,
+			"what_matched": [
+				{
+					"value": "Brand Manager Welcome to the Jungle (France)",
+					"key": "job_title"
+				}
+			]
+		}
+	]
+}
               }
             }
           },
