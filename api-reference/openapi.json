@@ -1209,8 +1209,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/WaterfallICPResponse"
                 },
-                "example":
-                  {
+                "example":{
   "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
   "max_results": 5,
   "results_length": 5,
@@ -2359,7 +2358,6 @@
     }
   ]
 }
-                }
               }
             }
           },
