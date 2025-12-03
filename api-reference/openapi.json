@@ -383,89 +383,219 @@
           "error"
         ]
       },
+      "RealTimeLocation": {
+        "type": "object",
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "full": {
+            "type": "string"
+          },
+          "country_code": {
+            "type": "string"
+          }
+        }
+      },
+      "RealTimeBasicInfo": {
+        "type": "object",
+        "description": "Core LinkedIn profile information.",
+        "properties": {
+          "fullname": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "headline": {
+            "type": "string"
+          },
+          "public_identifier": {
+            "type": "string"
+          },
+          "profile_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "profile_picture_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "about": {
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/RealTimeLocation"
+          },
+          "is_creator": {
+            "type": "boolean"
+          },
+          "is_influencer": {
+            "type": "boolean"
+          },
+          "is_premium": {
+            "type": "boolean"
+          },
+          "open_to_work": {
+            "type": "boolean"
+          },
+          "follower_count": {
+            "type": "integer"
+          },
+          "connection_count": {
+            "type": "integer"
+          },
+          "current_company": {
+            "type": "string"
+          },
+          "current_company_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "top_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RealTimeDateInfo": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "month": {
+            "type": "string"
+          }
+        }
+      },
+      "RealTimeExperience": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "start_date": {
+            "$ref": "#/components/schemas/RealTimeDateInfo"
+          },
+          "end_date": {
+            "$ref": "#/components/schemas/RealTimeDateInfo"
+          },
+          "is_current": {
+            "type": "boolean"
+          },
+          "company_linkedin_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "employment_type": {
+            "type": "string"
+          }
+        }
+      },
+      "RealTimeEducation": {
+        "type": "object",
+        "properties": {
+          "school": {
+            "type": "string"
+          },
+          "degree": {
+            "type": "string"
+          },
+          "field_of_study": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          },
+          "school_linkedin_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "RealTimeCertification": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "issued_date": {
+            "type": "string"
+          }
+        }
+      },
+      "RealTimeLanguage": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "string"
+          }
+        }
+      },
       "WaterfallICPRealTimeResult": {
         "type": "object",
         "description": "Detailed profile result from real-time LinkedIn search.",
         "properties": {
           "basic_info": {
-            "type": "object",
-            "description": "Core LinkedIn profile information.",
-            "properties": {
-              "fullname": { "type": "string" },
-              "first_name": { "type": "string" },
-              "last_name": { "type": "string" },
-              "headline": { "type": "string" },
-              "public_identifier": { "type": "string" },
-              "profile_url": { "type": "string", "format": "uri" },
-              "profile_picture_url": { "type": "string", "format": "uri" },
-              "about": { "type": "string" },
-              "location": { "type": "object", "properties": { "country": { "type": "string" }, "city": { "type": "string" }, "full": { "type": "string" }, "country_code": { "type": "string" } } },
-              "is_creator": { "type": "boolean" },
-              "is_influencer": { "type": "boolean" },
-              "is_premium": { "type": "boolean" },
-              "open_to_work": { "type": "boolean" },
-              "follower_count": { "type": "integer" },
-              "connection_count": { "type": "integer" },
-              "current_company": { "type": "string" },
-              "current_company_url": { "type": "string", "format": "uri" },
-              "top_skills": { "type": "array", "items": { "type": "string" } },
-              "email": { "type": "string", "nullable": true }
-            }
+            "$ref": "#/components/schemas/RealTimeBasicInfo"
           },
           "experience": {
             "type": "array",
             "description": "Work experience history.",
             "items": {
-              "type": "object",
-              "properties": {
-                "title": { "type": "string" },
-                "company": { "type": "string" },
-                "location": { "type": "string" },
-                "description": { "type": "string" },
-                "duration": { "type": "string" },
-                "start_date": { "type": "object", "properties": { "year": { "type": "integer" }, "month": { "type": "string" } } },
-                "end_date": { "type": "object", "properties": { "year": { "type": "integer" }, "month": { "type": "string" } } },
-                "is_current": { "type": "boolean" },
-                "company_linkedin_url": { "type": "string", "format": "uri" },
-                "employment_type": { "type": "string" }
-              }
+              "$ref": "#/components/schemas/RealTimeExperience"
             }
           },
           "education": {
             "type": "array",
             "description": "Education history.",
             "items": {
-              "type": "object",
-              "properties": {
-                "school": { "type": "string" },
-                "degree": { "type": "string" },
-                "field_of_study": { "type": "string" },
-                "duration": { "type": "string" },
-                "school_linkedin_url": { "type": "string", "format": "uri" }
-              }
+              "$ref": "#/components/schemas/RealTimeEducation"
             }
           },
           "certifications": {
             "type": "array",
             "description": "Professional certifications.",
             "items": {
-              "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "issuer": { "type": "string" },
-                "issued_date": { "type": "string" }
-              }
+              "$ref": "#/components/schemas/RealTimeCertification"
             }
           },
           "languages": {
             "type": "array",
             "description": "Languages and proficiency levels.",
             "items": {
-              "type": "object",
-              "properties": {
-                "language": { "type": "string" },
-                "proficiency": { "type": "string" }
-              }
+              "$ref": "#/components/schemas/RealTimeLanguage"
             }
           },
           "ranking": {
