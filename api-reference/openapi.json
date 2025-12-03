@@ -382,6 +382,88 @@
           "success",
           "error"
         ]
+      },
+      "WaterfallICPRealTimeResult": {
+        "type": "object",
+        "description": "Detailed profile result from real-time LinkedIn search.",
+        "properties": {
+          "basic_info": {
+            "type": "object",
+            "description": "Core LinkedIn profile information (name, headline, location, profile URLs, follower count, skills, etc.)."
+          },
+          "experience": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Work experience history (title, company, duration, dates, etc.)."
+          },
+          "education": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Education history (school, degree, field of study, dates)."
+          },
+          "certifications": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Professional certifications."
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Languages and proficiency levels."
+          },
+          "ranking": {
+            "type": "integer",
+            "description": "Position in results."
+          },
+          "icp": {
+            "type": "integer",
+            "description": "The index of the cascade step that matched (1 = first step)."
+          },
+          "what_matched": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchDetail"
+            },
+            "description": "Details on why this profile was selected."
+          }
+        }
+      },
+      "WaterfallICPRealTimeResponse": {
+        "type": "object",
+        "description": "Response from the real-time Waterfall ICP search with detailed profile data.",
+        "properties": {
+          "company_linkedin_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "max_results": {
+            "type": "integer"
+          },
+          "results_length": {
+            "type": "integer"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WaterfallICPRealTimeResult"
+            },
+            "description": "List of detailed profiles found."
+          }
+        },
+        "required": [
+          "company_linkedin_url",
+          "max_results",
+          "results_length",
+          "results"
+        ]
       }
     }
   },
@@ -1207,7 +1289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WaterfallICPResponse"
+                  "$ref": "#/components/schemas/WaterfallICPRealTimeResponse"
                 },
                 "example":{
   "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
