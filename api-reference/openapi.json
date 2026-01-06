@@ -47,19 +47,6 @@
           "linkedin_company_url"
         ]
       },
-      "EmailValidationRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The email address to analyze."
-          }
-        },
-        "required": [
-          "email"
-        ]
-      },
       "CascadeStep": {
         "type": "object",
         "properties": {
@@ -214,24 +201,6 @@
           "status"
         ]
       },
-      "EmailValidationResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The analyzed email address."
-          },
-          "status": {
-            "type": "string",
-            "description": "Result: `valid`, `invalid`, or `catch-all`."
-          }
-        },
-        "required": [
-          "email",
-          "status"
-        ]
-      },
       "MatchDetail": {
         "type": "object",
         "properties": {
@@ -381,267 +350,6 @@
         "required": [
           "success",
           "error"
-        ]
-      },
-      "RealTimeLocation": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "full": {
-            "type": "string"
-          },
-          "country_code": {
-            "type": "string"
-          }
-        }
-      },
-      "RealTimeBasicInfo": {
-        "type": "object",
-        "description": "Core LinkedIn profile information.",
-        "properties": {
-          "fullname": {
-            "type": "string"
-          },
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "headline": {
-            "type": "string"
-          },
-          "public_identifier": {
-            "type": "string"
-          },
-          "profile_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "profile_picture_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "about": {
-            "type": "string"
-          },
-          "location": {
-            "$ref": "#/components/schemas/RealTimeLocation"
-          },
-          "is_creator": {
-            "type": "boolean"
-          },
-          "is_influencer": {
-            "type": "boolean"
-          },
-          "is_premium": {
-            "type": "boolean"
-          },
-          "open_to_work": {
-            "type": "boolean"
-          },
-          "follower_count": {
-            "type": "integer"
-          },
-          "connection_count": {
-            "type": "integer"
-          },
-          "current_company": {
-            "type": "string"
-          },
-          "current_company_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "top_skills": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "RealTimeDateInfo": {
-        "type": "object",
-        "properties": {
-          "year": {
-            "type": "integer"
-          },
-          "month": {
-            "type": "string"
-          }
-        }
-      },
-      "RealTimeExperience": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "company": {
-            "type": "string"
-          },
-          "location": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "start_date": {
-            "$ref": "#/components/schemas/RealTimeDateInfo"
-          },
-          "end_date": {
-            "$ref": "#/components/schemas/RealTimeDateInfo"
-          },
-          "is_current": {
-            "type": "boolean"
-          },
-          "company_linkedin_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "employment_type": {
-            "type": "string"
-          }
-        }
-      },
-      "RealTimeEducation": {
-        "type": "object",
-        "properties": {
-          "school": {
-            "type": "string"
-          },
-          "degree": {
-            "type": "string"
-          },
-          "field_of_study": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "string"
-          },
-          "school_linkedin_url": {
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      },
-      "RealTimeCertification": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "issuer": {
-            "type": "string"
-          },
-          "issued_date": {
-            "type": "string"
-          }
-        }
-      },
-      "RealTimeLanguage": {
-        "type": "object",
-        "properties": {
-          "language": {
-            "type": "string"
-          },
-          "proficiency": {
-            "type": "string"
-          }
-        }
-      },
-      "WaterfallICPRealTimeResult": {
-        "type": "object",
-        "description": "Detailed profile result from real-time LinkedIn search.",
-        "properties": {
-          "basic_info": {
-            "$ref": "#/components/schemas/RealTimeBasicInfo"
-          },
-          "experience": {
-            "type": "array",
-            "description": "Work experience history.",
-            "items": {
-              "$ref": "#/components/schemas/RealTimeExperience"
-            }
-          },
-          "education": {
-            "type": "array",
-            "description": "Education history.",
-            "items": {
-              "$ref": "#/components/schemas/RealTimeEducation"
-            }
-          },
-          "certifications": {
-            "type": "array",
-            "description": "Professional certifications.",
-            "items": {
-              "$ref": "#/components/schemas/RealTimeCertification"
-            }
-          },
-          "languages": {
-            "type": "array",
-            "description": "Languages and proficiency levels.",
-            "items": {
-              "$ref": "#/components/schemas/RealTimeLanguage"
-            }
-          },
-          "ranking": {
-            "type": "integer",
-            "description": "Position in results."
-          },
-          "icp": {
-            "type": "integer",
-            "description": "The index of the cascade step that matched (1 = first step)."
-          },
-          "what_matched": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MatchDetail"
-            },
-            "description": "Details on why this profile was selected."
-          }
-        }
-      },
-      "WaterfallICPRealTimeResponse": {
-        "type": "object",
-        "description": "Response from the real-time Waterfall ICP search with detailed profile data.",
-        "properties": {
-          "company_linkedin_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "max_results": {
-            "type": "integer"
-          },
-          "results_length": {
-            "type": "integer"
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WaterfallICPRealTimeResult"
-            },
-            "description": "List of detailed profiles found."
-          }
-        },
-        "required": [
-          "company_linkedin_url",
-          "max_results",
-          "results_length",
-          "results"
         ]
       }
     }
@@ -936,85 +644,13 @@
         }
       }
     },
-    "/api/email/validate": {
-      "post": {
-        "tags": [
-          "email"
-        ],
-        "summary": "Validate Email",
-        "description": "### 💰 Cost: 0.5 Credits\n\nPerform a deep SMTP check to validate the deliverability of an email address. Detects catch-all configurations.",
-        "security": [
-          {
-            "APIKey": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailValidationRequest"
-              },
-              "example": {
-                "email": "antoine@blitz-agency.com"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmailValidationResponse"
-                },
-                "example": {
-                  "email": "antoine@blitz-agency.com",
-                  "status": "valid"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment Required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/search/waterfall-icp": {
       "post": {
         "tags": [
           "search"
         ],
         "summary": "Waterfall ICP Search",
-        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
+        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
         "security": [
           {
             "APIKey": []
@@ -1029,114 +665,114 @@
               "example": {
                 "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
                 "cascade": [
-        		{
-        			"include_title": [
-        				"Marketing Director",
-        				"Head Marketing",
-        				"Chief Marketing Officer"
-        			],
-        			"exclude_title": [
-        				"assistant",
-        				"intern",
-        				"product",
-        				"junior"
-        			],
-        			"location": [
-        				"WORLD"
-        			],
-        			"include_headline_search": false
-        		},
-        		{
-        			"include_title": [
-        				"Marketing Manager",
-        				"Head Growth",
-        				"Growth manager"
-        			],
-        			"exclude_title": [
-        				"junior",
-        				"assistant",
-        				"intern",
-        				"hacker"
-        			],
-        			"location": [
-        				"WORLD"
-        			],
-        			"include_headline_search": false
-        		},
-        		{
-        			"include_title": [
-        				"Communication Director",
-        				"Brand Director",
-        				"Content Director"
-        			],
-        			"exclude_title": [
-        				"junior",
-        				"assistant",
-        				"intern",
-        				"UX",
-        				"UI",
-        				"Design"
-        			],
-        			"location": [
-        				"WORLD"
-        			],
-        			"include_headline_search": false
-        		},
-        		{
-        			"include_title": [
-        				"Communication Manager",
-        				"Brand Manager",
-        				"Content Manager"
-        			],
-        			"exclude_title": [
-        				"junior",
-        				"assistant",
-        				"intern"
-        			],
-        			"location": [
-        				"WORLD"
-        			],
-        			"include_headline_search": false
-        		},
-        		{
-        			"include_title": [
-        				"Communication",
-        				"marketing",
-        				"growth",
-        				"brand"
-        			],
-        			"exclude_title": [
-        				"junior",
-        				"assistant",
-        				"intern",
-        				"product"
-        			],
-        			"location": [
-        				"US",
-        				"CA"
-        			],
-        			"include_headline_search": true
-        		},
-        		{
-        			"include_title": [
-        				"CEO",
-        				"founder",
-        				"cofounder",
-        				"owner",
-        				"General Director"
-        			],
-        			"exclude_title": [
-        				"junior",
-        				"assistant",
-        				"intern"
-        			],
-        			"location": [
-        				"WORLD"
-        			],
-        			"include_headline_search": false
-        		}
-        	],
-              	"max_results": 10
+                  {
+                    "include_title": [
+                      "Marketing Director",
+                      "Head Marketing",
+                      "Chief Marketing Officer"
+                    ],
+                    "exclude_title": [
+                      "assistant",
+                      "intern",
+                      "product",
+                      "junior"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Marketing Manager",
+                      "Head Growth",
+                      "Growth manager"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "hacker"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication Director",
+                      "Brand Director",
+                      "Content Director"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "UX",
+                      "UI",
+                      "Design"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication Manager",
+                      "Brand Manager",
+                      "Content Manager"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication",
+                      "marketing",
+                      "growth",
+                      "brand"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "product"
+                    ],
+                    "location": [
+                      "US",
+                      "CA"
+                    ],
+                    "include_headline_search": true
+                  },
+                  {
+                    "include_title": [
+                      "CEO",
+                      "founder",
+                      "cofounder",
+                      "owner",
+                      "General Director"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  }
+                ],
+                "max_results": 10
               }
             }
           }
@@ -1151,1474 +787,148 @@
                 },
                 "example": {
                   "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-	"max_results": 7,
-	"results_length": 7,
-	"results": [
-		{
-			"full_name": "Melissa Rumor",
-			"first_name": "Melissa",
-			"last_name": "Rumor",
-			"job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
-			"linkedin_headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
-			"country": "FR",
-			"icp": 2,
-			"ranking": 1,
-			"what_matched": [
-				{
-					"value": "Growth Marketing Manager Welcome to the Jungle (France)",
-					"key": "job_title"
-				},
-				{
-					"value": "Growth Marketing Manager Welcome to the Jungle (France)",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Saâd Amouzigh",
-			"first_name": "Saâd",
-			"last_name": "Amouzigh",
-			"job_title": "Growth Manager - B2b Paid Acquisition",
-			"linkedin_headline": "Webmarketing Project Manager @Seenk",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/samouzigh",
-			"country": "FR",
-			"icp": 2,
-			"ranking": 2,
-			"what_matched": [
-				{
-					"value": "Growth Manager - B2b Paid Acquisition",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Wendy Carré",
-			"first_name": "Wendy",
-			"last_name": "Carré",
-			"job_title": "Senior Content Marketing Manager",
-			"linkedin_headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
-			"country": "FR",
-			"icp": 2,
-			"ranking": 3,
-			"what_matched": [
-				{
-					"value": "Senior Content Marketing Manager",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Ellora Ainadjoglou",
-			"first_name": "Ellora",
-			"last_name": "Ainadjoglou",
-			"job_title": "Growth Manager",
-			"linkedin_headline": null,
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/ellora-ainadjoglou",
-			"country": "FR",
-			"icp": 2,
-			"ranking": 4,
-			"what_matched": [
-				{
-					"value": "Growth Manager",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Marie Poirier Villemin",
-			"first_name": "Marie",
-			"last_name": "Villemin",
-			"job_title": "Brand Manager Welcome to the Jungle (France)",
-			"linkedin_headline": "Brand Manager @ Welcome to the Jungle",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/marie-villemin",
-			"country": "FR",
-			"icp": 4,
-			"ranking": 5,
-			"what_matched": [
-				{
-					"value": "Brand Manager Welcome to the Jungle (France)",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Laura Huline Scognamiglio",
-			"first_name": "Laura",
-			"last_name": "Scognamiglio",
-			"job_title": "Senior Content Manager",
-			"linkedin_headline": "Senior Content Manager",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
-			"country": "FR",
-			"icp": 4,
-			"ranking": 6,
-			"what_matched": [
-				{
-					"value": "Senior Content Manager",
-					"key": "job_title"
-				}
-			]
-		},
-		{
-			"full_name": "Marie Poirier Villemin",
-			"first_name": "Marie",
-			"last_name": "Villemin",
-			"job_title": "Brand Manager Welcome to the Jungle (France)",
-			"linkedin_headline": "Brand Manager @ Welcome to the Jungle",
-			"company_domain": "welcometothejungle.com",
-			"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-			"person_linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
-			"country": "FR",
-			"icp": 4,
-			"ranking": 7,
-			"what_matched": [
-				{
-					"value": "Brand Manager Welcome to the Jungle (France)",
-					"key": "job_title"
-				}
-			]
-		}
-	]
-}
-              }
-            }
-          },
-          "402": {
-            "description": "Payment Required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
+                  "max_results": 7,
+                  "results_length": 7,
+                  "results": [
+                    {
+                      "full_name": "Melissa Rumor",
+                      "first_name": "Melissa",
+                      "last_name": "Rumor",
+                      "job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 1,
+                      "what_matched": [
+                        {
+                          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        },
+                        {
+                          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Saâd Amouzigh",
+                      "first_name": "Saâd",
+                      "last_name": "Amouzigh",
+                      "job_title": "Growth Manager - B2b Paid Acquisition",
+                      "linkedin_headline": "Webmarketing Project Manager @Seenk",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/samouzigh",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 2,
+                      "what_matched": [
+                        {
+                          "value": "Growth Manager - B2b Paid Acquisition",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Wendy Carré",
+                      "first_name": "Wendy",
+                      "last_name": "Carré",
+                      "job_title": "Senior Content Marketing Manager",
+                      "linkedin_headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 3,
+                      "what_matched": [
+                        {
+                          "value": "Senior Content Marketing Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Ellora Ainadjoglou",
+                      "first_name": "Ellora",
+                      "last_name": "Ainadjoglou",
+                      "job_title": "Growth Manager",
+                      "linkedin_headline": null,
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/ellora-ainadjoglou",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 4,
+                      "what_matched": [
+                        {
+                          "value": "Growth Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Marie Poirier Villemin",
+                      "first_name": "Marie",
+                      "last_name": "Villemin",
+                      "job_title": "Brand Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/marie-villemin",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 5,
+                      "what_matched": [
+                        {
+                          "value": "Brand Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Laura Huline Scognamiglio",
+                      "first_name": "Laura",
+                      "last_name": "Scognamiglio",
+                      "job_title": "Senior Content Manager",
+                      "linkedin_headline": "Senior Content Manager",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 6,
+                      "what_matched": [
+                        {
+                          "value": "Senior Content Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Marie Poirier Villemin",
+                      "first_name": "Marie",
+                      "last_name": "Villemin",
+                      "job_title": "Brand Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 7,
+                      "what_matched": [
+                        {
+                          "value": "Brand Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        }
+                      ]
+                    }
+                  ]
                 }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable Entity",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/search/waterfall-icp-real-time": {
-      "post": {
-        "tags": [
-          "search"
-        ],
-        "summary": "Real-Time Waterfall Search",
-        "description": "### 💰 Cost: 3 Credits per result\n\nSimilar to the standard Waterfall search, but queries the LinkedIn network **live**. Use this for niche targets or when the standard search yields no results.\n\n> **Warning:** Latency is higher (3-5 seconds).",
-        "security": [
-          {
-            "APIKey": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WaterfallICPRequest"
-              },
-              "example": {
-                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-            	"cascade": [
-            		{
-            			"include_title": [
-            				"Marketing Director",
-            				"Head Marketing",
-            				"Chief Marketing Officer"
-            			],
-            			"exclude_title": [
-            				"assistant",
-            				"intern",
-            				"product",
-            				"junior"
-            			],
-            			"location": [
-            				"WORLD"
-            			],
-            			"include_headline_search": false
-            		},
-            		{
-            			"include_title": [
-            				"Marketing Manager",
-            				"Head Growth",
-            				"Growth manager"
-            			],
-            			"exclude_title": [
-            				"junior",
-            				"assistant",
-            				"intern",
-            				"hacker"
-            			],
-            			"location": [
-            				"WORLD"
-            			],
-            			"include_headline_search": false
-            		},
-            		{
-            			"include_title": [
-            				"Communication Director",
-            				"Brand Director",
-            				"Content Director"
-            			],
-            			"exclude_title": [
-            				"junior",
-            				"assistant",
-            				"intern",
-            				"UX",
-            				"UI",
-            				"Design"
-            			],
-            			"location": [
-            				"WORLD"
-            			],
-            			"include_headline_search": false
-            		},
-            		{
-            			"include_title": [
-            				"Communication Manager",
-            				"Brand Manager",
-            				"Content Manager"
-            			],
-            			"exclude_title": [
-            				"junior",
-            				"assistant",
-            				"intern"
-            			],
-            			"location": [
-            				"WORLD"
-            			],
-            			"include_headline_search": false
-            		},
-            		{
-            			"include_title": [
-            				"Communication",
-            				"marketing",
-            				"growth",
-            				"brand"
-            			],
-            			"exclude_title": [
-            				"junior",
-            				"assistant",
-            				"intern",
-            				"product"
-            			],
-            			"location": [
-            				"US",
-            				"CA"
-            			],
-            			"include_headline_search": true
-            		},
-            		{
-            			"include_title": [
-            				"CEO",
-            				"founder",
-            				"cofounder",
-            				"owner",
-            				"General Director"
-            			],
-            			"exclude_title": [
-            				"junior",
-            				"assistant",
-            				"intern"
-            			],
-            			"location": [
-            				"WORLD"
-            			],
-            			"include_headline_search": false
-            		}
-            	],
-            	"max_results": 10
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK - Live Results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WaterfallICPRealTimeResponse"
-                },
-                "example":{
-  "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-  "max_results": 5,
-  "results_length": 5,
-  "results": [
-    {
-      "basic_info": {
-        "fullname": "Melissa RUMOR",
-        "first_name": "Melissa",
-        "last_name": "RUMOR",
-        "headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
-        "public_identifier": "melissa-rumor",
-        "profile_url": "https://linkedin.com/in/melissa-rumor",
-        "profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQGMYh2BdU4Jbg/profile-displayphoto-crop_800_800/B4EZd_SY8dHgAU-/0/1750187217580?e=1766620800&v=beta&t=ZhN8U_gl81t5BZQ6tB5SZRGfxFDMQy7xQontEsXHaxg",
-        "about": "Chez Welcome to the Jungle, nous travaillons pour rendre le travail excitant et soutenable. Comment ? En offrant des solutions innovantes aux entreprises pour qu’elles développent leur marque employeur et renforcent leur attractivité. Mais aussi en créant une expérience et des contenus inspirants qui donnent les clefs aux travailleurs et aux entreprises pour redéfinir les règles du travail.",
-        "location": {
-          "country": "France",
-          "city": "Paris, Île-de-France",
-          "full": "Paris, Île-de-France, France",
-          "country_code": "FR"
-        },
-        "creator_hashtags": [],
-        "is_creator": false,
-        "is_influencer": false,
-        "is_premium": false,
-        "open_to_work": false,
-        "created_timestamp": 1559156947806,
-        "show_follower_count": false,
-        "background_picture_url": "https://media.licdn.com/dms/image/v2/D4E16AQF18OSjyR8O4w/profile-displaybackgroundimage-shrink_350_1400/B4EZp83IPtIQAY-/0/1763031418278?e=1766620800&v=beta&t=n2Tt8aVWTRJnfKL1_NBjOp14qRC90iWGeEAdKDG8IIM",
-        "urn": "ACoAACwWEHwBfEFliZHhM7Oi4Y3trjIcpyRm87M",
-        "follower_count": 743,
-        "connection_count": 727,
-        "current_company": "Welcome to the Jungle France",
-        "current_company_urn": "5233683",
-        "current_company_url": "https://www.linkedin.com/company/wttj-fr",
-        "top_skills": [
-          "Communication",
-          "Marketing digital",
-          "Stratégie marketing",
-          "Compétences interpersonnelles",
-          "Environnement de start-up"
-        ],
-        "email": null
-      },
-      "experience": [
-        {
-          "title": "Growth Marketing Manager",
-          "company": "Welcome to the Jungle",
-          "location": "Ville de Paris, Île-de-France, France",
-          "duration": "Jun 2025 - Present · 7 mos",
-          "start_date": {
-            "year": 2025,
-            "month": "Jun"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "location_type": "Hybrid",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Responsable Marketing & Communication ",
-          "company": "MyFit Solutions",
-          "location": "Remote",
-          "description": "Création et consolidation de l'image de marque\nMarketing stratégique et opérationnel\nGestion des différents canaux de communication",
-          "duration": "Sep 2023 - Apr 2025 · 1 yr 8 mos",
-          "start_date": {
-            "year": 2023,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2025,
-            "month": "Apr"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/18371337/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEbdaUQytVZbA/company-logo_400_400/company-logo_400_400/0/1664371864218/myfitsolutions_logo?e=1766620800&v=beta&t=Q7v3l1ZM3vLb7bh8lwAv_9BPz1FZRMWD7HguFLQ8wzs",
-          "company_id": "18371337"
-        },
-        {
-          "title": "Chargée de marketing et communication",
-          "company": "MyFit Solutions",
-          "duration": "Sep 2021 - Sep 2023 · 2 yrs 1 mo",
-          "start_date": {
-            "year": 2021,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "Sep"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/18371337/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEbdaUQytVZbA/company-logo_400_400/company-logo_400_400/0/1664371864218/myfitsolutions_logo?e=1766620800&v=beta&t=Q7v3l1ZM3vLb7bh8lwAv_9BPz1FZRMWD7HguFLQ8wzs",
-          "company_id": "18371337"
-        },
-        {
-          "title": "Marketing Project/Product Manager",
-          "company": "SteamOne",
-          "duration": "Sep 2020 - Sep 2021 · 1 yr 1 mo",
-          "start_date": {
-            "year": 2020,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2021,
-            "month": "Sep"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/3009403/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQHaB2npoQ_OGA/company-logo_400_400/company-logo_400_400/0/1636453257259/steam_one_logo?e=1766620800&v=beta&t=z_y_HsKCLSBt-xy7p7YDtdmqacx3-9ZoBzxt4kdPKqI",
-          "employment_type": "Apprenticeship",
-          "company_id": "3009403"
-        },
-        {
-          "title": "Assistante marketing ",
-          "company": "M&C ASSOCIÉS",
-          "location": "Paris, Ile-de-France, France",
-          "duration": "Apr 2020 - Jun 2020 · 3 mos",
-          "start_date": {
-            "year": 2020,
-            "month": "Apr"
-          },
-          "end_date": {
-            "year": 2020,
-            "month": "Jun"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/18333898/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQE6AT8YMwsA1w/company-logo_400_400/company-logo_400_400/0/1630494198534/m_c_mounet_chiffoleau_logo?e=1766620800&v=beta&t=tq2HoYmRCxZ8tdBBYOeezf6kZ1G7sWQkIPxX3CH1BVY",
-          "employment_type": "Internship",
-          "company_id": "18333898"
-        }
-      ],
-      "education": [
-        {
-          "school": "Esdes Business School",
-          "degree": "Master, Marketing et digital business",
-          "degree_name": "Master",
-          "field_of_study": "Marketing et digital business",
-          "duration": "Sep 2021 - Aug 2023",
-          "school_linkedin_url": "https://www.linkedin.com/company/226175/",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQHGteXstCS5Vg/company-logo_400_400/company-logo_400_400/0/1663140886642/esdes_business_school_logo?e=1766620800&v=beta&t=6BgX8fu6qJjCrnO3HdottHCu29BPrPSsjNxsLDLk28k",
-          "start_date": {
-            "year": 2021,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "Aug"
-          },
-          "school_id": "226175"
-        },
-        {
-          "school": "PPA Business School",
-          "degree": "Bachelor's degree, Marketing",
-          "degree_name": "Bachelor's degree",
-          "field_of_study": "Marketing",
-          "duration": "2020 - 2021",
-          "school_linkedin_url": "https://www.linkedin.com/company/15097420/",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQH6ZvFRdTZQFQ/company-logo_400_400/B4EZpTzCMQIQAY-/0/1762342479007/ppabusinessschool_logo?e=1766620800&v=beta&t=vL20QWWb42eE7x8GMywAh__jPa6r--1N07Ip-KvjW7c",
-          "start_date": {
-            "year": 2020
-          },
-          "end_date": {
-            "year": 2021
-          },
-          "school_id": "15097420"
-        }
-      ],
-      "certifications": [
-        {
-          "name": "Gérer les éléments d'identité visuelle d'une marque",
-          "issuer": "LinkedIn",
-          "issued_date": "Issued Mar 2021"
-        },
-        {
-          "name": "Améliorer sa concentration",
-          "issuer": "LinkedIn",
-          "issued_date": "Issued Feb 2021"
-        }
-      ],
-      "ranking": 1,
-      "icp": 2,
-      "what_matched": [
-        {
-          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
-          "key": "job_title"
-        },
-        {
-          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
-          "key": "job_title"
-        }
-      ]
-    },
-    {
-      "basic_info": {
-        "fullname": "Wendy Carré",
-        "first_name": "Wendy",
-        "last_name": "Carré",
-        "headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
-        "public_identifier": "wendy-carré-6663848a",
-        "profile_url": "https://linkedin.com/in/wendy-carré-6663848a",
-        "profile_picture_url": "",
-        "about": "",
-        "location": {
-          "country": "France",
-          "city": "Paris, Île-de-France",
-          "full": "Paris, Île-de-France, France",
-          "country_code": "FR"
-        },
-        "creator_hashtags": [],
-        "is_creator": false,
-        "is_influencer": false,
-        "is_premium": false,
-        "open_to_work": false,
-        "created_timestamp": 1390760582757,
-        "show_follower_count": false,
-        "background_picture_url": "https://media.licdn.com/dms/image/v2/D4E16AQFJIqxMgD4AGA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1733842667281?e=1766620800&v=beta&t=6Je5IueoPhRJZjYItlxJptQ3YLmVeostMygJD6XBBtY",
-        "urn": "ACoAABLrqq4BmehSZAFxhrq-GCaMW7v01NnKOT4",
-        "follower_count": 1082,
-        "connection_count": 1029,
-        "current_company": "Welcome to the Jungle France",
-        "current_company_urn": "5233683",
-        "current_company_url": "https://www.linkedin.com/company/wttj-fr",
-        "top_skills": [],
-        "email": null
-      },
-      "experience": [
-        {
-          "title": "Senior Content Marketing Manager",
-          "company": "Welcome to the Jungle France",
-          "location": "Paris, Île-de-France, France",
-          "duration": "May 2023 - Present · 2 yrs 8 mos",
-          "start_date": {
-            "year": 2023,
-            "month": "May"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "location_type": "Hybrid",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Membre du Content Club",
-          "company": "Content Club",
-          "duration": "Jan 2023 - Present · 3 yrs",
-          "start_date": {
-            "year": 2023,
-            "month": "Jan"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/92895251/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQErgoteyB2Jtg/company-logo_400_400/company-logo_400_400/0/1675414774566?e=1766620800&v=beta&t=jeJhsL0UykOZzA4iG_FF7w6KtDoYldSVG8XLaA-dsxg",
-          "company_id": "92895251"
-        },
-        {
-          "title": "Senior Content Specialist",
-          "company": "Contentsquare",
-          "duration": "Aug 2022 - May 2023 · 10 mos",
-          "start_date": {
-            "year": 2022,
-            "month": "Aug"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "May"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2566485/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGpzLHxc-Go4Q/company-logo_400_400/company-logo_400_400/0/1730983021705/contentsquare_logo?e=1766620800&v=beta&t=kY9jOzqeGR5cuEpIxZgrrGfPfEmINrwOxSaZbhaW3q8",
-          "company_id": "2566485"
-        },
-        {
-          "title": "Content Marketing Manager",
-          "company": "Contentsquare",
-          "description": "Objectives: \n- Lead generation through content creation & optimisation\n- Awareness + position Contentsquare as an expert \n- Support the French marketing team in developing digital campaigns to drive business\n- Ensure adoption of content produced by Contentsquare internally & externally\n\nAchievements:\n1/ Business:\n- increased contribution from digital: in 2019, 26% of leads, in 2021, 55%\n- increased number of downloads: 2019 -> 2022 :  +210%\n- increased number of opportunities from content: 2020 -> 2021 +69%\n\n2/ Content, Awareness & thought-leadership:\n- implementation of an editorial content strategy: moving from ad-hoc & evergreen content to macro campaigns based on content\n- Creation of a podcast: CX circle by Contentsquare, 32 episodes, recycling and/or creating content\n- Development of the CX circle Magazine: 1 per year, 4 editions in total, print & digital, top brands interviewed: Le Printemps, Accor, Cnam, Zoom, Le Monde, Carrefour, Kusmi Tea…\n- Creation of a monthly newsletter: La Lettre de l’Expérience Digitale\n- Event content: prepping exec speakers and creating their keynotes (topic, content & slides), support external C-level speakers in their preparation \n- Development of key content assets: Digital Experience Benchmark, use cases, interviews, ebooks, guides, videos…\n\n3/ Enablement & internal voice:\n- close work with teams such as Design, SDRs, Sales, CSMs, Comms, global teams… \n- creation of an enablement system to both identify business needs and topics for the content roadmap (verticals, markets…) + to ensure all teams are comfortable with the content and that they can pitch it/use it \n=> monthly meetings, dedicated ad hoc sessions, dedicated presentations, slack channel, content for each team and library…\n\n4/Campaign Management:\n- implementation of kick off & post mortem sessions for major campaigns\n- creation of campaign working documents: key messaging, key figures & objectives, comm plan, to do, budget, dashboards…\n- project management",
-          "duration": "May 2020 - Aug 2022 · 2 yrs 4 mos",
-          "start_date": {
-            "year": 2020,
-            "month": "May"
-          },
-          "end_date": {
-            "year": 2022,
-            "month": "Aug"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2566485/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGpzLHxc-Go4Q/company-logo_400_400/company-logo_400_400/0/1730983021705/contentsquare_logo?e=1766620800&v=beta&t=kY9jOzqeGR5cuEpIxZgrrGfPfEmINrwOxSaZbhaW3q8",
-          "company_id": "2566485"
-        },
-        {
-          "title": "Content Project Manager - Esports BAR Cannes, Miami & Seoul",
-          "company": "Reed MIDEM - a member of Reed Exhibitions",
-          "location": "Région de Boulogne-Billancourt, France",
-          "description": "Context: Create & implement a brand and content strategy to raise awareness & achieve lead generation for sales growth\n\nAchievements:\n→ Editorial Content: Editorial strategy creation & brand development, content material creation (white papers, videos, prints & visuals, articles & interviews…), reporting & benchmarks\n→ Marketing & Communication -> Implementation of the content and the brand strategy according to the communication plan, within all channels: website, paid campaigns, social media, emailing, media partnerships, press, print branding…\n→ Project Management -> Communication management of the Awards Ceremony, coordination of the conference programme, PR management, reporting...\n\nKPIs: +900% leads between 2018/2019 & +68%  Feb. to Oct. 2019\n         +54% show attendees in 2019 vs 2018, +24% in turnover",
-          "duration": "Oct 2018 - May 2020 · 1 yr 8 mos",
-          "start_date": {
-            "year": 2018,
-            "month": "Oct"
-          },
-          "end_date": {
-            "year": 2020,
-            "month": "May"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/12857/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFwcgSyN67xPA/company-logo_400_400/company-logo_400_400/0/1630662753056/reed_midem_logo?e=1766620800&v=beta&t=0HZE9SHT9hQEUN3ddVP1UUt6lRrX3uButCQ1774BMYI",
-          "employment_type": "Full-time",
-          "company_id": "12857"
-        },
-        {
-          "title": "Digital Marketing Manager ",
-          "company": "Reed MIDEM - a member of Reed Exhibitions",
-          "location": "Boulogne-Billancourt, Île-de-France, France",
-          "description": "MIPCOM - MIPJunior - MIP China - MAPIC F&B - MAPIC Italy - MIPIM Asia  \n\n-> Digital Marketing plans for each show,  deployed on all digital channel (Web, SEA, direct marketing.\n-> Reporting and debriefs \n-> Close work with show teams  (digital transition, recommendations,...)\n-> Dedicated  communications strategies to engage clients to our online networking services (Online Database, Mobile app, Conference and events search tool, Screenings Library...)",
-          "duration": "Jul 2017 - Oct 2018 · 1 yr 4 mos",
-          "start_date": {
-            "year": 2017,
-            "month": "Jul"
-          },
-          "end_date": {
-            "year": 2018,
-            "month": "Oct"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/12857/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFwcgSyN67xPA/company-logo_400_400/company-logo_400_400/0/1630662753056/reed_midem_logo?e=1766620800&v=beta&t=0HZE9SHT9hQEUN3ddVP1UUt6lRrX3uButCQ1774BMYI",
-          "employment_type": "Full-time",
-          "company_id": "12857"
-        },
-        {
-          "title": "Online Services Product Manager",
-          "company": "Reed MIDEM - a member of Reed Exhibitions",
-          "location": "Boulogne-Billancourt, Île-de-France, France",
-          "description": "Ensure adoption & engagement of Online services (Online Database, Mobile app,...) for all the shows (18, in Entertainment & Real Estate ): dedicated marketing campaigns, regular analysis and data reports, constant optimisation.\nClose  work with Product and show teams, with suppliers and agencies ",
-          "duration": "Mar 2016 - Jul 2017 · 1 yr 5 mos",
-          "start_date": {
-            "year": 2016,
-            "month": "Mar"
-          },
-          "end_date": {
-            "year": 2017,
-            "month": "Jul"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/12857/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFwcgSyN67xPA/company-logo_400_400/company-logo_400_400/0/1630662753056/reed_midem_logo?e=1766620800&v=beta&t=0HZE9SHT9hQEUN3ddVP1UUt6lRrX3uButCQ1774BMYI",
-          "employment_type": "Full-time",
-          "company_id": "12857"
-        },
-        {
-          "title": "Chef de Produit Vidéo",
-          "company": "FRANCE TELEVISIONS DISTRIBUTION",
-          "location": "Issy-les-Moulineaux, Île-de-France, France",
-          "description": "MARKETING - DEVELOPPEMENT PRODUITS :\n. Suivi de la création du produit (packaging, ligne éditoriale, conception jaquettes…)\n. Suivi du processus de production (habillage menus, bonus, authoring DVD et Blu-Ray) \n. Gestion de la relation avec les prestataires et partenaires (agences de créa, pub, média, studios…) ainsi que les ayants-droits (producteurs, réalisateurs, co-éditeurs,...)\n\nMARKETING – PROMOTION DES PRODUITS\n. Conception des plans marketing, assurer leur mise en œuvre et leur suivi (plan média avec création des spots TV & radio et des pages pub, promotion, partenariats…) \n. Gestion des validations auprès des ayant-droits \n\nCOMMERCIAL & TRADE\n. Préparer et réaliser les argumentaires et présentations produits (distributeurs, réunions commerciales …)",
-          "duration": "Apr 2014 - Mar 2016 · 2 yrs",
-          "start_date": {
-            "year": 2014,
-            "month": "Apr"
-          },
-          "end_date": {
-            "year": 2016,
-            "month": "Mar"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/26168972/",
-          "employment_type": "Full-time",
-          "company_id": "26168972"
-        }
-      ],
-      "education": [
-        {
-          "school": "Rennes School of Business",
-          "degree": "Master of Science in International Marketing",
-          "degree_name": "Master of Science in International Marketing",
-          "duration": "2010 - 2014",
-          "school_linkedin_url": "https://www.linkedin.com/company/15092681/",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHMdjVAIUHWFA/company-logo_400_400/company-logo_400_400/0/1733242147925/renneschoolofbusiness_logo?e=1766620800&v=beta&t=0icxOSr4FqVvCX9vAUg3yCjHzN7P7Gjv6DaAZrS4u4s",
-          "start_date": {
-            "year": 2010
-          },
-          "end_date": {
-            "year": 2014
-          },
-          "school_id": "15092681"
-        },
-        {
-          "school": "The University of Sheffield",
-          "degree": "Marketing Communications, Human Resources, International Business",
-          "degree_name": "Marketing Communications",
-          "field_of_study": "Human Resources, International Business",
-          "duration": "2012 - 2012",
-          "school_linkedin_url": "https://www.linkedin.com/company/8421/",
-          "activities": "Echange universitaire de six mois",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEORSKOZDnu4A/company-logo_400_400/company-logo_400_400/0/1667299950450/university_of_sheffield_logo?e=1766620800&v=beta&t=OZSft2s_3GBgqlwaD8Vgapla2KBDVzCM-PdbtDN0Qko",
-          "start_date": {
-            "year": 2012
-          },
-          "end_date": {
-            "year": 2012
-          },
-          "school_id": "8421"
-        }
-      ],
-      "languages": [
-        {
-          "language": "Allemand",
-          "proficiency": "Limited working proficiency"
-        },
-        {
-          "language": "Anglais",
-          "proficiency": "Native or bilingual proficiency"
-        }
-      ],
-      "ranking": 2,
-      "icp": 2,
-      "what_matched": [
-        {
-          "value": "Senior Content Marketing Manager",
-          "key": "job_title"
-        }
-      ]
-    },
-    {
-      "basic_info": {
-        "fullname": "Ellora Ainadjoglou",
-        "first_name": "Ellora",
-        "last_name": "Ainadjoglou",
-        "headline": "B2B Marketing Team Lead @ Welcome to the Jungle France",
-        "public_identifier": "ellora-ainadjoglou",
-        "profile_url": "https://linkedin.com/in/ellora-ainadjoglou",
-        "profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQHha7812mDdSg/profile-displayphoto-shrink_800_800/B4EZVMAUi9HgAc-/0/1740736908592?e=1766620800&v=beta&t=wGBlPSu35wMp5DB76tTX0FleIe78lJBSsuhYZtwVPG4",
-        "about": "",
-        "location": {
-          "country": "France",
-          "city": "Paris, Île-de-France",
-          "full": "Paris, Île-de-France, France",
-          "country_code": "FR"
-        },
-        "creator_hashtags": [],
-        "is_creator": false,
-        "is_influencer": false,
-        "is_premium": false,
-        "open_to_work": false,
-        "created_timestamp": 1446803183504,
-        "show_follower_count": false,
-        "background_picture_url": "https://media.licdn.com/dms/image/v2/D4E16AQH7tbvo_8PY5Q/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1736428676960?e=1766620800&v=beta&t=8RBYJLUlbRYU6VU6E38hutdDE0L0LN_paVHwDL9Xx2Q",
-        "urn": "ACoAABtgzb8BOdyj43jbR1-3WlDmE9XfRxPdlLI",
-        "follower_count": 3032,
-        "connection_count": 2996,
-        "current_company": "Welcome to the Jungle France",
-        "current_company_urn": "5233683",
-        "current_company_url": "https://www.linkedin.com/company/wttj-fr",
-        "top_skills": [],
-        "email": null
-      },
-      "experience": [
-        {
-          "title": "Team Lead Growth Marketing B2B",
-          "company": "Welcome to the Jungle France",
-          "duration": "Sep 2024 - Present · 1 yr 4 mos",
-          "start_date": {
-            "year": 2024,
-            "month": "Sep"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Team Lead Inbound Marketing",
-          "company": "Welcome to the Jungle France",
-          "duration": "Mar 2023 - Sep 2024 · 1 yr 7 mos",
-          "start_date": {
-            "year": 2023,
-            "month": "Mar"
-          },
-          "end_date": {
-            "year": 2024,
-            "month": "Sep"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Growth Marketing Manager",
-          "company": "Welcome to the Jungle France",
-          "location": "Paris, Île-de-France, France",
-          "duration": "Jun 2021 - Mar 2023 · 1 yr 10 mos",
-          "start_date": {
-            "year": 2021,
-            "month": "Jun"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "Mar"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Consulting Manager || Consultante Inbound Marketing, Marketing Automation, Sales & CRM",
-          "company": "MARKENTIVE",
-          "location": "Greater Paris Metropolitan Region",
-          "description": "Gestion d'une équipe de 12 personnes : Consultants, Content Managers, UX/UI Designers et Développeurs Front\n- Montée en compétence et formation des équipes\n- Suivi et optimisation de la qualité des projets\n- Reporting et optimisation de la rentabilité des équipes\n- Innovation et amélioration continue\n- Forecast et gestion de la charge des équipes\n- Recrutement",
-          "duration": "Dec 2019 - Jun 2021 · 1 yr 7 mos",
-          "start_date": {
-            "year": 2019,
-            "month": "Dec"
-          },
-          "end_date": {
-            "year": 2021,
-            "month": "Jun"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2869501/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQF9vc3nc8Ld4A/company-logo_400_400/B4EZde8onpHIAY-/0/1749644643305/markentive_logo?e=1766620800&v=beta&t=-7TFj-O5QmO9IUD-XxMHs8ooyqoq38jgH81dr4nfiN0",
-          "company_id": "2869501"
-        },
-        {
-          "title": "Consultante Inbound Marketing | Marketing Automation | CRM",
-          "company": "MARKENTIVE",
-          "location": "Greater Paris Metropolitan Region",
-          "description": "Conseil et accompagnement de plus de 25 clients B2B dans différents secteurs : Saas, Education, Finance, E-commerce, Influence, Médical, Fond d'investissement, Événementiel, etc. \n- Conseil en stratégie marketing : Inbound marketing, Marketing Automation, Acquisition, Nurturing\n- Réalisation d'actions et campagnes marketing : Création de contenu, Google Ads et Social ads, SEO, Emailing, nurturing, etc.)\n- Refonte et création de sites internet (HubSpot CMS)\n- Conseil en productivité commerciale et optimisation du CRM (HubSpot Sales)\n- Alignement Marketing et Sales : Synchronisation des outils et processus \n- Analytics et Reportings mensuels\n- Animation de formations",
-          "duration": "Nov 2017 - Jan 2020 · 2 yrs 3 mos",
-          "start_date": {
-            "year": 2017,
-            "month": "Nov"
-          },
-          "end_date": {
-            "year": 2020,
-            "month": "Jan"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2869501/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQF9vc3nc8Ld4A/company-logo_400_400/B4EZde8onpHIAY-/0/1749644643305/markentive_logo?e=1766620800&v=beta&t=-7TFj-O5QmO9IUD-XxMHs8ooyqoq38jgH81dr4nfiN0",
-          "company_id": "2869501"
-        },
-        {
-          "title": "Responsable marketing",
-          "company": "SteerFox",
-          "location": "Greater Paris Metropolitan Region",
-          "description": "- Création de contenu et mise à jour du site internet (Wordpress, Unbounce)\n- Mise en place de scénarios de nurturing (Autopilot, HubSpot CRM)\n- Coordination des campagnes d'acquisition payantes (Google Ads, Facebook Ads, Linkedin Ads)\n- Gestion des réseaux sociaux : Calendrier éditorial, Production des textes et  visuels, Community Management et Reporting (Canva, Buffer)\n- Organisation d'événements (Paris Retail Week, Google Events)\n- Gestion des partenariats",
-          "duration": "May 2017 - Nov 2017 · 7 mos",
-          "start_date": {
-            "year": 2017,
-            "month": "May"
-          },
-          "end_date": {
-            "year": 2017,
-            "month": "Nov"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/10516030/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEsoqWffPWy6A/company-logo_400_400/company-logo_400_400/0/1713095264213/steerfox_logo?e=1766620800&v=beta&t=tUpUheKvhB0VJkCX1gkpumhStWbd9Wy4-1i8etadBKU",
-          "company_id": "10516030"
-        },
-        {
-          "title": "Chargée de Vente et Marketing",
-          "company": "Camping Iceland",
-          "location": "Iceland",
-          "description": "• Marketing digital \n• Community management \n• Vente \n• Gestion des commandes \n• Conseil et relation client \n• Veille concurrentielle\n• Gestion des partenariats",
-          "duration": "May 2016 - Aug 2016 · 4 mos",
-          "start_date": {
-            "year": 2016,
-            "month": "May"
-          },
-          "end_date": {
-            "year": 2016,
-            "month": "Aug"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/search/results/all/?keywords=Camping+Iceland"
-        },
-        {
-          "title": "Chargée de Marketing",
-          "company": "Millsaps College",
-          "location": "Greater Jackson Area",
-          "description": "• Marketing stratégique \n• Community management \n• Gestion de projet \n• Design et création de matériel marketing \n• Audit \n• Organisation d’événements",
-          "duration": "Jan 2015 - May 2015 · 5 mos",
-          "start_date": {
-            "year": 2015,
-            "month": "Jan"
-          },
-          "end_date": {
-            "year": 2015,
-            "month": "May"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/37629/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQH_NFNDr63VAQ/company-logo_400_400/company-logo_400_400/0/1719607238785/millsaps_college_logo?e=1766620800&v=beta&t=eczTVqkyd6BTLmKTGQ5ola1E-QypzYTKGBa21RGforw",
-          "company_id": "37629"
-        }
-      ],
-      "education": [
-        {
-          "school": "EM Normandie Business School",
-          "degree": "Master 2 Cross Cultural Marketing and Negotiation, Marketing international et negotiations",
-          "degree_name": "Master 2 Cross Cultural Marketing and Negotiation",
-          "field_of_study": "Marketing international et negotiations",
-          "duration": "2016 - 2017",
-          "school_linkedin_url": "https://www.linkedin.com/company/101603/",
-          "description": "Programme enseigné intégralement en anglais dans un contexte multi-culturel.\nModules: International Business Environment, Marketing in Cross-Cultural Context, Negotiation in Cross-Cultural Context, Intercultural issues in Human Interaction, Region Specific Issues.\nProfessionnalisation: Business Challenge (One Fantastic Shop), Export Booster (La Maison de Parfums Berry), Mission (MyCreateur.com).",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQF3QWGEUaz8pg/company-logo_400_400/company-logo_400_400/0/1630607801839/em_normandie_logo?e=1766620800&v=beta&t=8S5jFExBUa5qY2aRUNaVrVB1ffD6przggsmj4Mfouys",
-          "start_date": {
-            "year": 2016
-          },
-          "end_date": {
-            "year": 2017
-          },
-          "school_id": "101603"
-        },
-        {
-          "school": "University of Louisiana at Lafayette",
-          "degree": "Master's degree, International business",
-          "degree_name": "Master's degree",
-          "field_of_study": "International business",
-          "duration": "2016 - 2016",
-          "school_linkedin_url": "https://www.linkedin.com/company/15681/",
-          "description": "Study abroad semester",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGChZGoLwOLeA/company-logo_400_400/company-logo_400_400/0/1631318969229?e=1766620800&v=beta&t=60WsZtjMuyJjdhQ1hRWeNXwP2gOXTN2RhfPAN6bzVxo",
-          "start_date": {
-            "year": 2016
-          },
-          "end_date": {
-            "year": 2016
-          },
-          "school_id": "15681"
-        }
-      ],
-      "certifications": [
-        {
-          "name": "Content Marketing",
-          "issuer": "HubSpot",
-          "issued_date": "Issued Nov 2019 · Expired Dec 2021"
-        },
-        {
-          "name": "Email Marketing",
-          "issuer": "HubSpot",
-          "issued_date": "Issued Nov 2019 · Expired Dec 2021"
-        }
-      ],
-      "languages": [
-        {
-          "language": "Anglais",
-          "proficiency": "Native or bilingual proficiency"
-        },
-        {
-          "language": "Espagnol",
-          "proficiency": "Professional working proficiency"
-        }
-      ],
-      "ranking": 3,
-      "icp": 2,
-      "what_matched": [
-        {
-          "value": "Growth Manager",
-          "key": "job_title"
-        }
-      ]
-    },
-    {
-      "basic_info": {
-        "fullname": "Marie Poirier Villemin",
-        "first_name": "Marie",
-        "last_name": "Poirier Villemin",
-        "headline": "Brand Manager @ Welcome to the Jungle",
-        "public_identifier": "marie-poiriervillemin",
-        "profile_url": "https://linkedin.com/in/marie-poiriervillemin",
-        "profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQHVijReogjAZw/profile-displayphoto-crop_800_800/B4EZpPdm6.KoAQ-/0/1762269754309?e=1766620800&v=beta&t=GOWxySYPpcAoqzpoyZHWthTXeQFTPBk8pzl-UsFNP2U",
-        "about": "",
-        "location": {
-          "country": "France",
-          "city": "Greater Paris Metropolitan Region",
-          "full": "Greater Paris Metropolitan Region",
-          "country_code": "FR"
-        },
-        "creator_hashtags": [],
-        "is_creator": true,
-        "is_influencer": false,
-        "is_premium": false,
-        "open_to_work": false,
-        "created_timestamp": 1447938150244,
-        "show_follower_count": true,
-        "background_picture_url": "https://media.licdn.com/dms/image/v2/D4E16AQEs6fnVmyV2mg/profile-displaybackgroundimage-shrink_350_1400/B4EZpPdaNtIQAY-/0/1762269701453?e=1766620800&v=beta&t=xQEp2Sw1YmK5dejH14xS5t14Pn1n692qC-yUv-By32M",
-        "urn": "ACoAABuOPJwBZiQ7Q6AjwmhSOgOh07gyLTIOcNI",
-        "follower_count": 1048,
-        "connection_count": 853,
-        "current_company": "Welcome to the Jungle France",
-        "current_company_urn": "5233683",
-        "current_company_url": "https://www.linkedin.com/company/wttj-fr",
-        "top_skills": [],
-        "email": null
-      },
-      "experience": [
-        {
-          "title": "Brand Manager @ Welcome to the Jungle (France)",
-          "company": "Welcome to the Jungle France",
-          "location": "Paris, France",
-          "duration": "Jan 2025 - Present · 1 yr",
-          "start_date": {
-            "year": 2025,
-            "month": "Jan"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "location_type": "Hybrid",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Cheffe de groupe",
-          "company": "Marcel Worldwide",
-          "location": "Paris, France",
-          "description": "• Actuellement en lead de compte avec les directeurs associés ou directeurs généraux sur les comptes FDJ Social Room et Hollywood Chewing Gum (groupe Mondelez), Edenred et Orangina\n• Prise de brief client / réflexion stratégique / brief créatif et rédaction des recommandations et présentation clients \n• Suivi de projets et productions 360° (Digital / Social Média / TV / Print)\n• Organisation des équipes ad hoc en fonction du brief et encadrement\n• Supervision de profils juniors (alternants / chef de pub)\n• Participation à des AO",
-          "duration": "Apr 2022 - Present · 3 yrs 9 mos",
-          "start_date": {
-            "year": 2022,
-            "month": "Apr"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/2266495/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEDucswXFITBQ/company-logo_400_400/company-logo_400_400/0/1718791869663?e=1766620800&v=beta&t=nJyy8lFIKXtCYN37g8XAdSLFXr2IKGMimEB2vF3-L9s",
-          "company_id": "2266495"
-        },
-        {
-          "title": "Chargé de clientèle",
-          "company": "Marcel Worldwide",
-          "location": "Paris, Île-de-France, France",
-          "description": "• Recommandations stratégiques pour les clients de l’agence (Banque Populaire, Groupama, Deliveroo, Coinhouse, SK-II Groupe P&G)\n• Définition de stratégies de communication de marque, et positionnement RSE\n• Développement de chartes graphiques internationales\n• Coordination et collaboration avec différents métiers : production, marketing, création, média, planning stratégique.\n• Suivi des budgets et consolidation de la relation client.",
-          "duration": "Oct 2020 - Apr 2022 · 1 yr 7 mos",
-          "start_date": {
-            "year": 2020,
-            "month": "Oct"
-          },
-          "end_date": {
-            "year": 2022,
-            "month": "Apr"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2266495/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEDucswXFITBQ/company-logo_400_400/company-logo_400_400/0/1718791869663?e=1766620800&v=beta&t=nJyy8lFIKXtCYN37g8XAdSLFXr2IKGMimEB2vF3-L9s",
-          "company_id": "2266495"
-        },
-        {
-          "title": "Account Executive en Alternance",
-          "company": "Marcel Worldwide",
-          "location": "Région de Paris, France",
-          "duration": "Sep 2018 - Oct 2020 · 2 yrs 2 mos",
-          "start_date": {
-            "year": 2018,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2020,
-            "month": "Oct"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/2266495/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEDucswXFITBQ/company-logo_400_400/company-logo_400_400/0/1718791869663?e=1766620800&v=beta&t=nJyy8lFIKXtCYN37g8XAdSLFXr2IKGMimEB2vF3-L9s",
-          "company_id": "2266495"
-        },
-        {
-          "title": "Internship Communication Manager",
-          "company": "GRAND PRIX GROUP",
-          "location": "Asnières-sur-Seine, Île-de-France, France",
-          "description": "During my 4 months internship, I was in charge of the communication before, during and right after the 3-weeks horse course in Fontainebleau, France. I was managing the social medias, the 5 Facebook pages, 4 for each countries were Grand Prix magazine is implanted, and one dedicated to the event. I did all the communication in the Instagram page of the event. I was in charge to communicate with the international riders on site. For the event Longines Deauville Classic, I had to get in touch with all the horse clubs in Normandy to invite them to discover the first edition of this championship.",
-          "duration": "Apr 2017 - Aug 2017 · 5 mos",
-          "start_date": {
-            "year": 2017,
-            "month": "Apr"
-          },
-          "end_date": {
-            "year": 2017,
-            "month": "Aug"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/10589876/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQGuhfGhaSceBA/company-logo_400_400/company-logo_400_400/0/1630588692142/grand_prix_group_logo?e=1766620800&v=beta&t=nNqTel4rakvXDJQxKmkx67cD3oefu3cDKHUAf7gIFiY",
-          "company_id": "10589876"
-        },
-        {
-          "title": "School Ambassador (internship)",
-          "company": "ISCPA - Institut Supérieur des Médias (page officielle)",
-          "location": "Greater Paris Metropolitan Region",
-          "description": "During this half-time internship, I was in charge to get in touch with potential future students, that showed interests in the school either during an education fair, either by visiting the school website. During Education Fair, I was in charge to explain to visitors the different cursus in the school.",
-          "duration": "Sep 2016 - Jun 2017 · 10 mos",
-          "start_date": {
-            "year": 2016,
-            "month": "Sep"
-          },
-          "end_date": {
-            "year": 2017,
-            "month": "Jun"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/15099342/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQEI6AzEjY3ABQ/company-logo_400_400/B56Zo5kNCaIcAY-/0/1761902384002/iscpa_institut_superieur_des_medias_logo?e=1766620800&v=beta&t=J-xL_6b3f5hiUISkKEOBj0Ogc84dY2T9d6upK-mP6f4",
-          "company_id": "15099342"
-        },
-        {
-          "title": "communication & marketing internship",
-          "company": "Seaver Horse",
-          "location": "Paris 15ème",
-          "description": "In charge of the community management, I also took part in the brainstorming and made me force of proposal.\nDuring this internship I also had as mission the creation of digital graphic contents, print as well as a crowdfunding campaign page on Kickstarter.",
-          "duration": "Apr 2016 - Jun 2016 · 3 mos",
-          "start_date": {
-            "year": 2016,
-            "month": "Apr"
-          },
-          "end_date": {
-            "year": 2016,
-            "month": "Jun"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/search/results/all/?keywords=Seaver+Horse"
-        }
-      ],
-      "education": [
-        {
-          "school": "Sup de Pub",
-          "degree": "Master 2 (M2), Planning Stratégique",
-          "degree_name": "Master 2 (M2)",
-          "field_of_study": "Planning Stratégique",
-          "duration": "2019 - 2020",
-          "school_linkedin_url": "https://www.linkedin.com/company/15100368/",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQHJXIdUG0bSfw/company-logo_400_400/company-logo_400_400/0/1730218159909/supdepub_logo?e=1766620800&v=beta&t=4Sf_cKtHR1CW3aCivt0rGI_N7b6ayIs_if82510p404",
-          "start_date": {
-            "year": 2019
-          },
-          "end_date": {
-            "year": 2020
-          },
-          "school_id": "15100368"
-        },
-        {
-          "school": "ISCPA - Institut Supérieur des Médias",
-          "duration": "2015 - 2020",
-          "school_linkedin_url": "https://www.linkedin.com/company/15099342/",
-          "activities": "Présidente de l'association Open ISCPA",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQEI6AzEjY3ABQ/company-logo_400_400/B56Zo5kNCaIcAY-/0/1761902384002/iscpa_institut_superieur_des_medias_logo?e=1766620800&v=beta&t=J-xL_6b3f5hiUISkKEOBj0Ogc84dY2T9d6upK-mP6f4",
-          "start_date": {
-            "year": 2015
-          },
-          "end_date": {
-            "year": 2020
-          },
-          "school_id": "15099342"
-        }
-      ],
-      "languages": [
-        {
-          "language": "Anglais",
-          "proficiency": "Full professional proficiency"
-        },
-        {
-          "language": "Espagnol",
-          "proficiency": "Limited working proficiency"
-        }
-      ],
-      "ranking": 4,
-      "icp": 4,
-      "what_matched": [
-        {
-          "value": "Brand Manager Welcome to the Jungle (France)",
-          "key": "job_title"
-        }
-      ]
-    },
-    {
-      "basic_info": {
-        "fullname": "Laura Huline Scognamiglio",
-        "first_name": "Laura",
-        "last_name": "Huline Scognamiglio",
-        "headline": "Senior Content Manager",
-        "public_identifier": "laura-huline-scognamiglio-74a16564",
-        "profile_url": "https://linkedin.com/in/laura-huline-scognamiglio-74a16564",
-        "profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFK8jeL20G48w/profile-displayphoto-shrink_800_800/B4EZWuERuRHgAc-/0/1742382112170?e=1766620800&v=beta&t=DqZjZ4MOv0rhHkAmmGYRqnTiiGMwsoY9lyMIuF5wUSs",
-        "about": "Expertise Digitale/Marketing & Communication,  forte attraction pour l'Hôtellerie Internationale, la Gastronomie et le Tourisme.",
-        "location": {
-          "country": "France",
-          "city": "Greater Paris Metropolitan Region",
-          "full": "Greater Paris Metropolitan Region",
-          "country_code": "FR"
-        },
-        "creator_hashtags": [],
-        "is_creator": false,
-        "is_influencer": false,
-        "is_premium": false,
-        "open_to_work": false,
-        "created_timestamp": 1358791580970,
-        "show_follower_count": false,
-        "background_picture_url": "https://media.licdn.com/dms/image/v2/D4E16AQGEIeGcB729-Q/profile-displaybackgroundimage-shrink_350_1400/B4EZmBIaPTKkAY-/0/1758808098922?e=1766620800&v=beta&t=GODVt43sWOr443fyBJrbkeH5cEdMij1YQWspKdRn-Fg",
-        "urn": "ACoAAA2Ml-oB5ls6HbbU9dZsSoVnD8OWH5GChY4",
-        "follower_count": 1457,
-        "connection_count": 1438,
-        "current_company": "Welcome to the Jungle France",
-        "current_company_urn": "5233683",
-        "current_company_url": "https://www.linkedin.com/company/wttj-fr",
-        "top_skills": [],
-        "email": null
-      },
-      "experience": [
-        {
-          "title": "Senior B2C Content Manager ",
-          "company": "Welcome to the Jungle France",
-          "location": "Hybrid",
-          "duration": "May 2025 - Present · 8 mos",
-          "start_date": {
-            "year": 2025,
-            "month": "May"
-          },
-          "is_current": true,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Growth Marketing Manager",
-          "company": "Welcome to the Jungle France",
-          "location": "Hybrid",
-          "duration": "Nov 2024 - May 2025 · 7 mos",
-          "start_date": {
-            "year": 2024,
-            "month": "Nov"
-          },
-          "end_date": {
-            "year": 2025,
-            "month": "May"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Senior B2B Content Manager",
-          "company": "Welcome to the Jungle France",
-          "location": "Hybrid",
-          "description": "Elaboration d'une stratégie de contenu B2B engageante sur tous les canaux afin d'attirer de nouveaux clients et de fidéliser et valoriser la communauté de clients Welcome to the Jungle.\nAlimentation des campagnes Growth avec du contenu qualitatif et pertinent pour répondre aux enjeux des professionnels des RH et du Recrutement et convertir les prospects en clients ( Ebook, Live, Quizz...)\nConstruction des campagnes de communication email afin d'optimiser la transition de Lead en MQL pour soutenir la réussite commerciale.\nContrôle, analyse et compte rendu de l'impact du contenu sur les revenus.\nContribution à la production de contenu pour nourrir les actions SEO et SEA.\nCollaboration avec les équipes Social Media pour maximiser la visibilité des contenus et nouveautés produit auprès de la communauté Welcome to the Jungle.\nCollaboration étroite avec l'équipe product marketing et les équipes Sales et AM pour valoriser les lancements produits et obtenir des retours du marché.",
-          "duration": "Nov 2023 - Oct 2024 · 1 yr",
-          "start_date": {
-            "year": 2023,
-            "month": "Nov"
-          },
-          "end_date": {
-            "year": 2024,
-            "month": "Oct"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/5233683/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG5YswAT1MACg/company-logo_400_400/company-logo_400_400/0/1730738837796/wttj_fr_logo?e=1766620800&v=beta&t=HpSlyekBM1jyk16ODL1SSpVrdcDZigDS2F-rm0uEDq4",
-          "employment_type": "Permanent",
-          "company_id": "5233683"
-        },
-        {
-          "title": "Responsable marketing et communications",
-          "company": "DIRECTSKILLS",
-          "location": "Ville de Paris, Île-de-France, France",
-          "description": "Élaboration de la roadmap marketing & communication \nMise en place de la stratégie de lead génération\nBoost de la notoriété de marque auprès des personae clés et stratégie marque employeur\nMise en place de campagnes marketing 360°\nCreation de contenus impactants\nGestion du site web et optimisation Seo \nGestion des partenariats",
-          "duration": "Jan 2023 - Sep 2023 · 9 mos",
-          "start_date": {
-            "year": 2023,
-            "month": "Jan"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "Sep"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/3068822/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQGNGmjJqeGbGw/company-logo_400_400/company-logo_400_400/0/1684751592520/directskills_logo?e=1766620800&v=beta&t=bCSDP6F9LesjKzxDuN6B6emR98zJLLTtNveYypGMHGk",
-          "employment_type": "Permanent",
-          "location_type": "Hybrid",
-          "company_id": "3068822"
-        },
-        {
-          "title": "Content Marketing Manager",
-          "company": "DIRECTSKILLS",
-          "location": "Paris et périphérie",
-          "description": "Élaboration de l'ensemble des contenus online et des supports rédactionnels offline.Création, coordination et optimisation des contenus s'inscrivant dans la stratégie SEO. Diffusion des contenus stratégiques sur l'ensemble des canaux  pour augmenter le trafic, l'engagement et la notoriété de la marque Directskills.",
-          "duration": "Jun 2022 - Jan 2023 · 8 mos",
-          "start_date": {
-            "year": 2022,
-            "month": "Jun"
-          },
-          "end_date": {
-            "year": 2023,
-            "month": "Jan"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/3068822/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQGNGmjJqeGbGw/company-logo_400_400/company-logo_400_400/0/1684751592520/directskills_logo?e=1766620800&v=beta&t=bCSDP6F9LesjKzxDuN6B6emR98zJLLTtNveYypGMHGk",
-          "employment_type": "Permanent",
-          "company_id": "3068822"
-        },
-        {
-          "title": "Senior Content Manager",
-          "company": "TheFork, a TripAdvisor company",
-          "location": "Ville de Paris, Île-de-France, France",
-          "description": "Définition de la stratégie éditoriale et animation du blog B2B pour les 12 marchés TheFork. Création de contenu (blog post B2B et B2C, livres blancs, content email, paid social ad copies) à destinations des restaurateurs et des utilisateurs TheFork. Participation à la refonte totale du Blog B2C, élaboration de guidelines édito/SEO et formation drupal aux relais locaux.",
-          "duration": "Mar 2021 - Jun 2022 · 1 yr 4 mos",
-          "start_date": {
-            "year": 2021,
-            "month": "Mar"
-          },
-          "end_date": {
-            "year": 2022,
-            "month": "Jun"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/10001198/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQFkySxs4WTDOQ/company-logo_400_400/company-logo_400_400/0/1687431624308/the_fork_a_tripadvisor_company_logo?e=1766620800&v=beta&t=PYnhNZtilzvTUlvnk4Xs6Gkk5wI91sI1mpePD-wO_-g",
-          "employment_type": "Permanent",
-          "skills": [
-            "Marketing digital",
-            "Rédaction and +1 skill"
-          ],
-          "company_id": "10001198",
-          "skills_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564/overlay/urn:li:fsd_profilePosition:(ACoAAA2Ml-oB5ls6HbbU9dZsSoVnD8OWH5GChY4,1763670034)/skill-associations-details?profileUrn=urn%3Ali%3Afsd_profile%3AACoAAA2Ml-oB5ls6HbbU9dZsSoVnD8OWH5GChY4"
-        },
-        {
-          "title": "B2B Content Marketing Manager",
-          "company": "LaFourchette",
-          "location": "Région de Paris, France",
-          "description": "Animation du blog B2B et gestion de l'agence de traduction \nDéfinition du contenu à destination du site nouveau internet LaFourchette Manager et préparation à la migration \nCréation de contenu à destination des restaurateurs (infographies, livres blancs, sondages) -Optimisation SEO \nFormation aux relais pays ( training wordpress, introduction SEO, support à la création de contenu local)",
-          "duration": "May 2018 - Mar 2021 · 2 yrs 11 mos",
-          "start_date": {
-            "year": 2018,
-            "month": "May"
-          },
-          "end_date": {
-            "year": 2021,
-            "month": "Mar"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/1122985/",
-          "employment_type": "Full-time",
-          "skills": [
-            "Marketing digital and Rédaction"
-          ],
-          "skills_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564/overlay/urn:li:fsd_profilePosition:(ACoAAA2Ml-oB5ls6HbbU9dZsSoVnD8OWH5GChY4,1344804441)/skill-associations-details?profileUrn=urn%3Ali%3Afsd_profile%3AACoAAA2Ml-oB5ls6HbbU9dZsSoVnD8OWH5GChY4"
-        },
-        {
-          "title": "Digital Marketing Manager",
-          "company": "Hyatt Hotels Corporation",
-          "location": "2 rue volney 75002",
-          "description": "Campagnes SEA & Paid Social en collaboration avec une agence. \nCréation de campagnes de visibilité de marque \nConception et mise en place de la stratégie SEM pour les 7 hôtels en France. \nProduction de contenus optimisés SEO\nReporting & Analyse des performances digitales\nPartenariats media & influenceurs. \nFormation des équipes : standards de marque, best practices...",
-          "duration": "Dec 2016 - Feb 2018 · 1 yr 3 mos",
-          "start_date": {
-            "year": 2016,
-            "month": "Dec"
-          },
-          "end_date": {
-            "year": 2018,
-            "month": "Feb"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/220336/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQHZVNCUIfytag/company-logo_400_400/company-logo_400_400/0/1719848403661/hyatt_logo?e=1766620800&v=beta&t=IMZGYSMxwTPHfnpZKWo1j_YVIWuAp-wccJ7fY3AxTIM",
-          "company_id": "220336"
-        },
-        {
-          "title": "Assistant Manager Content Marketing- France",
-          "company": "Hyatt Hotels Corporation",
-          "description": "Création de contenu pour les 7 sites internet des hôtels Hyatt en France & Optimisation SEO.\nOptimisation du Content Score des OTA (Online Travel Agencies) & sites tiers.\nSuivi et Coordination de la mise en place et du déroulement des campagnes SEA avec agence (Adwords +Display + Retargeting)\nReporting sur les performances des campagnes digitales via Omniture",
-          "duration": "Oct 2015 - Dec 2016 · 1 yr 3 mos",
-          "start_date": {
-            "year": 2015,
-            "month": "Oct"
-          },
-          "end_date": {
-            "year": 2016,
-            "month": "Dec"
-          },
-          "is_current": false,
-          "company_linkedin_url": "https://www.linkedin.com/company/220336/",
-          "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQHZVNCUIfytag/company-logo_400_400/company-logo_400_400/0/1719848403661/hyatt_logo?e=1766620800&v=beta&t=IMZGYSMxwTPHfnpZKWo1j_YVIWuAp-wccJ7fY3AxTIM",
-          "company_id": "220336"
-        }
-      ],
-      "education": [
-        {
-          "school": "Vatel Paris",
-          "degree": "M2, Hospitality Administration/Management",
-          "degree_name": "M2",
-          "field_of_study": "Hospitality Administration/Management",
-          "duration": "2010 - 2013",
-          "school_linkedin_url": "https://www.linkedin.com/search/results/all/?keywords=Vatel+Paris",
-          "start_date": {
-            "year": 2010
-          },
-          "end_date": {
-            "year": 2013
-          }
-        },
-        {
-          "school": "Université Paris Nanterre",
-          "degree": "Licence, Modern languages",
-          "degree_name": "Licence",
-          "field_of_study": "Modern languages",
-          "duration": "2007 - 2010",
-          "school_linkedin_url": "https://www.linkedin.com/company/352250/",
-          "school_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQF-aQ6o5egnhQ/company-logo_400_400/company-logo_400_400/0/1631369494138?e=1766620800&v=beta&t=jvVAngxhL20VwjbjjiO5m2JXRotamN1pPauapBRr_Qk",
-          "start_date": {
-            "year": 2007
-          },
-          "end_date": {
-            "year": 2010
-          },
-          "school_id": "352250"
-        }
-      ],
-      "languages": [
-        {
-          "language": "Espagnol",
-          "proficiency": "Full professional proficiency"
-        },
-        {
-          "language": "Italien",
-          "proficiency": "Elementary proficiency"
-        }
-      ],
-      "ranking": 5,
-      "icp": 4,
-      "what_matched": [
-        {
-          "value": "Senior Content Manager",
-          "key": "job_title"
-        }
-      ]
-    }
-  ]
-}
               }
             }
           },
