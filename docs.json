@@ -80,16 +80,9 @@
             ]
           },
           {
-            "group": "Email",
-            "pages": [
-              "api-reference/openapi.json post /api/email/validate"
-            ]
-          },
-          {
             "group": "Search",
             "pages": [
-              "api-reference/openapi.json post /api/search/waterfall-icp",
-              "api-reference/openapi.json post /api/search/waterfall-icp-real-time"
+              "api-reference/openapi.json post /api/search/waterfall-icp"
             ]
           }
         ]
