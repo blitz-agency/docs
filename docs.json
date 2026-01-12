@@ -51,7 +51,6 @@
               "guide/integrations/clay",
               "guide/integrations/n8n",
               "guide/integrations/make"
-              
             ]
           },
           {
@@ -64,26 +63,14 @@
       },
       {
         "tab": "API reference",
-        "groups": [
+        "versions": [
           {
-            "group": "Enrichment",
-            "pages": [
-              "api-reference/openapi.json post /api/enrichment/phone",
-              "api-reference/openapi.json post /api/enrichment/email",
-              "api-reference/openapi.json post /api/enrichment/email_domain"
-            ]
+            "version": "v2",
+            "openapi": "api-reference/v2.openapi.json"
           },
           {
-            "group": "Blitz",
-            "pages": [
-              "api-reference/openapi.json get /api/blitz/key-info"
-            ]
-          },
-          {
-            "group": "Search",
-            "pages": [
-              "api-reference/openapi.json post /api/search/waterfall-icp"
-            ]
+            "version": "v1",
+            "openapi": "api-reference/openapi.json"
           }
         ]
       }
