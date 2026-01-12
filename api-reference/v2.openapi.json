@@ -2,25 +2,109 @@
 	"openapi": "3.1.0",
 	"info": {
 		"title": "Blitz OpenAPI Reference",
-		"version": "1.0.0"
+		"version": "2.0.0",
+		"description": "Welcome to the Blitz API Reference.\n\nUse this interactive documentation to test endpoints directly in your browser. Authentication is required via the `x-api-key` header."
 	},
+	"servers": [
+		{
+			"url": "https://api.blitz-api.ai",
+			"description": "Production server"
+		}
+	],
 	"components": {
 		"securitySchemes": {
 			"APIKey": {
 				"type": "apiKey",
 				"in": "header",
 				"name": "x-api-key",
-				"description": "API key for the Blitz API"
+				"description": "Your Blitz API Key."
 			}
 		},
 		"schemas": {},
 		"parameters": {}
 	},
 	"paths": {
+		"/v2/blitz/key-info": {
+			"get": {
+				"summary": "Get API Key info",
+				"description": "### 💰 Cost: 0 Credits\n\nCheck your current balance, plan status, and key validity.",
+				"tags": [
+					"blitz"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"id": "ID",
+										"credits_balance": 278,
+										"credits_reset_at": "12/01/2026, 00:00:00 AM",
+										"active_plans": [
+											{
+												"name": "plan name",
+												"status": "active"
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "API Key not found"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v2/enrichment/phone-to-person": {
 			"post": {
-				"summary": "Find person by phone number",
-				"description": "cost: 5 credits on success",
+				"summary": "Find Person by Phone Number",
+				"description": "### 💰 Cost: 5 Credits (on success)\n\nReverse-lookup a person by their verified direct business phone number",
 				"tags": [
 					"enrichment"
 				],
@@ -139,8 +223,8 @@
 		},
 		"/v2/enrichment/email-to-person": {
 			"post": {
-				"summary": "Find person by email address",
-				"description": "cost: 1 credit on success",
+				"summary": "Find Person by Email Address",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nReverse-lookup a person by their verified work email address.",
 				"tags": [
 					"enrichment"
 				],
@@ -259,8 +343,8 @@
 		},
 		"/v2/enrichment/person": {
 			"post": {
-				"summary": "Linkedin profile",
-				"description": "cost: 1 credit on success",
+				"summary": "Find Person by LinkedIn Profile URL",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nExtract comprehensive person details from a LinkedIn profile URL. Includes verified work email, direct phone number, and LinkedIn profile data.",
 				"tags": [
 					"enrichment"
 				],
@@ -377,8 +461,8 @@
 		},
 		"/v2/enrichment/email-domain": {
 			"post": {
-				"summary": "Email Domain Finder",
-				"description": "cost: 0.5 credits on success",
+				"summary": "Find Company Domain",
+				"description": "### 💰 Cost: 0.5 Credits (on success)\n\nBridge the gap between LinkedIn and email domains. Given a company’s LinkedIn URL, find its verified email domain.",
 				"tags": [
 					"enrichment"
 				],
@@ -459,8 +543,8 @@
 		},
 		"/v2/enrichment/phone": {
 			"post": {
-				"summary": "Find Phone Number",
-				"description": "cost: 5 credits on success",
+				"summary": "Find Business Phone",
+				"description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
 				"tags": [
 					"enrichment"
 				],
@@ -541,8 +625,8 @@
 		},
 		"/v2/enrichment/email": {
 			"post": {
-				"summary": "Find work email",
-				"description": "cost: 1 credit on success",
+				"summary": "Find Work Email",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nFrom a LinkedIn profile URL, instantly find a verified work email. Emails are validated in real time (catch-all included).",
 				"tags": [
 					"enrichment"
 				],
@@ -635,90 +719,13 @@
 				}
 			}
 		},
-		"/v2/blitz/key-info": {
-			"get": {
-				"summary": "Get API Key info",
-				"description": "cost: 0 credits",
-				"tags": [
-					"blitz"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"id": "ID",
-										"credits_balance": 278,
-										"credits_reset_at": "12/01/2026, 00:00:00 AM",
-										"active_plans": [
-											{
-												"name": "plan name",
-												"status": "active"
-											}
-										]
-									}
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Not found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "API Key not found"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
 		"/v2/search/waterfall-icp": {
 			"post": {
 				"tags": [
 					"search"
 				],
-				"summary": "Waterfall ICP",
-				"description": "cost: 1 credit per result (max = max_results)",
+				"summary": "Waterfall ICP Search",
+				"description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -958,7 +965,7 @@
 					"search"
 				],
 				"summary": "Employee finder",
-				"description": "cost: 1 credit per result (max = max_results)",
+				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for employees within a company by filtering on job level, function, and location.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -1178,8 +1185,8 @@
 				"tags": [
 					"search"
 				],
-				"summary": "Domain to LinkedIn company",
-				"description": "cost: 1 credit",
+				"summary": "Find LinkedIn Company by Domain",
+				"description": "### 💰 Cost: 1 Credit\n\nGiven a company website domain, find its verified LinkedIn company page URL.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -1262,8 +1269,8 @@
 				"tags": [
 					"utils"
 				],
-				"summary": "Current Date and Time",
-				"description": "0 Credit",
+				"summary": "Get Current Date and Time",
+				"description": "### 💰 Cost: 0 Credits\n\nGet the current date and time in a specific timezone.",
 				"requestBody": {
 					"content": {
 						"application/json": {
