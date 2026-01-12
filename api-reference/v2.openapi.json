@@ -461,7 +461,7 @@
 		},
 		"/v2/enrichment/email-domain": {
 			"post": {
-				"summary": "Find Company Domain",
+				"summary": "Find Company Domain v2",
 				"description": "### 💰 Cost: 0.5 Credits (on success)\n\nBridge the gap between LinkedIn and email domains. Given a company’s LinkedIn URL, find its verified email domain.",
 				"tags": [
 					"enrichment"
@@ -543,7 +543,7 @@
 		},
 		"/v2/enrichment/phone": {
 			"post": {
-				"summary": "Find Business Phone",
+				"summary": "Find Business Phone v2",
 				"description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
 				"tags": [
 					"enrichment"
@@ -625,7 +625,7 @@
 		},
 		"/v2/enrichment/email": {
 			"post": {
-				"summary": "Find Work Email",
+				"summary": "Find Work Email v2",
 				"description": "### 💰 Cost: 1 Credit (on success)\n\nFrom a LinkedIn profile URL, instantly find a verified work email. Emails are validated in real time (catch-all included).",
 				"tags": [
 					"enrichment"
@@ -729,7 +729,7 @@
 						"APIKey": []
 					}
 				],
-				"summary": "Waterfall ICP Search",
+				"summary": "Waterfall ICP Search v2",
 				"description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
 				"requestBody": {
 					"content": {
