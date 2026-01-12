@@ -1,0 +1,1334 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Blitz OpenAPI Reference",
+		"version": "1.0.0"
+	},
+	"components": {
+		"securitySchemes": {
+			"APIKey": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "x-api-key",
+				"description": "API key for the Blitz API"
+			}
+		},
+		"schemas": {},
+		"parameters": {}
+	},
+	"paths": {
+		"/v2/enrichment/phone-to-person": {
+			"post": {
+				"summary": "Find person by phone number",
+				"description": "cost: 5 credits on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"phone": "+1234567890"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"person": {
+											"person": {
+												"first_name": "Antoine",
+												"last_name": "Blitz",
+												"full_name": "Antoine Blitz",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Founder @BlitzAPI — B2B Data APIs for Prospecting, Enrichment & Personalization at Scale | GTME",
+												"about_me": "I build developer-first tools for scalable, intelligent B2B prospecting. I\\'m the…",
+												"location": {
+													"city": null,
+													"state_code": "NY",
+													"country_code": "US",
+													"continent": "North America"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
+												"connections_count": 500,
+												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFbZDn8ju8JZg/profile-displayphoto-scale_200_200/B4EZfgsajLGcAY-/0/1751821433134",
+												"experiences": [
+													{
+														"job_title": "Founder Blitzapi",
+														"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
+														"company_linkedin_id": "be578414-239f-522e-b2e1-9246e22a52d1",
+														"job_description": "We help GTM teams win faster by making high-quality B2B data and intent signals instantly available — directly in your existing stack. What we doBlitzAPI is an API-only platform for Growth, RevOps, and SalesOps teams to: Search: find the right people & companies (Waterfall ICP, LinkedIn/company/domain lookups, engagement search) Enrich: add verified emails, direct phone numbers & LinkedIn details in real time Validate: advanced catch-all email verification to maximize deliverability Scrape LinkedIn signals: posts, reactions, comments & activity for hyper-relevant outreach Why BlitzAPI- Real-time & precise — no stale databases- API-first & composable — works with N8N, Make, Clay, HubSpot, Salesforce, Smartlead…- Transparent pricing — credits instead of per-seat fees- Speed-to-market — prototype and scale playbooks in days, not months Use cases our customers loveHigh-deliverability outbound campaignsABM with Waterfall ICP targetingSocial selling with LinkedIn engagement triggersReal-time lead routing & enrichment",
+														"job_start_date": "2025-05-01",
+														"job_end_date": null,
+														"job_is_current": true,
+														"job_location": {
+															"city": null,
+															"state_code": null,
+															"country_code": null
+														}
+													}
+												],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/enrichment/email-to-person": {
+			"post": {
+				"summary": "Find person by email address",
+				"description": "cost: 1 credit on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"email": "antoine@blitz-agency.com"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"person": {
+											"person": {
+												"first_name": "Antoine",
+												"last_name": "Blitz",
+												"full_name": "Antoine Blitz",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Founder @BlitzAPI — B2B Data APIs for Prospecting, Enrichment & Personalization at Scale | GTME",
+												"about_me": "I build developer-first tools for scalable, intelligent B2B prospecting. I\\'m the…",
+												"location": {
+													"city": null,
+													"state_code": "NY",
+													"country_code": "US",
+													"continent": "North America"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
+												"connections_count": 500,
+												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFbZDn8ju8JZg/profile-displayphoto-scale_200_200/B4EZfgsajLGcAY-/0/1751821433134",
+												"experiences": [
+													{
+														"job_title": "Founder Blitzapi",
+														"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
+														"company_linkedin_id": "be578414-239f-522e-b2e1-9246e22a52d1",
+														"job_description": "We help GTM teams win faster by making high-quality B2B data and intent signals instantly available — directly in your existing stack. What we doBlitzAPI is an API-only platform for Growth, RevOps, and SalesOps teams to: Search: find the right people & companies (Waterfall ICP, LinkedIn/company/domain lookups, engagement search) Enrich: add verified emails, direct phone numbers & LinkedIn details in real time Validate: advanced catch-all email verification to maximize deliverability Scrape LinkedIn signals: posts, reactions, comments & activity for hyper-relevant outreach Why BlitzAPI- Real-time & precise — no stale databases- API-first & composable — works with N8N, Make, Clay, HubSpot, Salesforce, Smartlead…- Transparent pricing — credits instead of per-seat fees- Speed-to-market — prototype and scale playbooks in days, not months Use cases our customers loveHigh-deliverability outbound campaignsABM with Waterfall ICP targetingSocial selling with LinkedIn engagement triggersReal-time lead routing & enrichment",
+														"job_start_date": "2025-05-01",
+														"job_end_date": null,
+														"job_is_current": true,
+														"job_location": {
+															"city": null,
+															"state_code": null,
+															"country_code": null
+														}
+													}
+												],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/enrichment/person": {
+			"post": {
+				"summary": "Linkedin profile",
+				"description": "cost: 1 credit on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"linkedin_profile_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"person": {
+											"first_name": "Antoine",
+											"last_name": "Blitz",
+											"full_name": "Antoine Blitz",
+											"nickname": null,
+											"civility_title": null,
+											"headline": "Founder @BlitzAPI — B2B Data APIs for Prospecting, Enrichment & Personalization at Scale | GTME",
+											"about_me": "I build developer-first tools for scalable, intelligent B2B prospecting. I\\'m the…",
+											"location": {
+												"city": null,
+												"state_code": "NY",
+												"country_code": "US",
+												"continent": "North America"
+											},
+											"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
+											"connections_count": 500,
+											"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFbZDn8ju8JZg/profile-displayphoto-scale_200_200/B4EZfgsajLGcAY-/0/1751821433134",
+											"experiences": [
+												{
+													"job_title": "Founder Blitzapi",
+													"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
+													"company_linkedin_id": "be578414-239f-522e-b2e1-9246e22a52d1",
+													"job_description": "We help GTM teams win faster by making high-quality B2B data and intent signals instantly available — directly in your existing stack. What we doBlitzAPI is an API-only platform for Growth, RevOps, and SalesOps teams to: Search: find the right people & companies (Waterfall ICP, LinkedIn/company/domain lookups, engagement search) Enrich: add verified emails, direct phone numbers & LinkedIn details in real time Validate: advanced catch-all email verification to maximize deliverability Scrape LinkedIn signals: posts, reactions, comments & activity for hyper-relevant outreach Why BlitzAPI- Real-time & precise — no stale databases- API-first & composable — works with N8N, Make, Clay, HubSpot, Salesforce, Smartlead…- Transparent pricing — credits instead of per-seat fees- Speed-to-market — prototype and scale playbooks in days, not months Use cases our customers loveHigh-deliverability outbound campaignsABM with Waterfall ICP targetingSocial selling with LinkedIn engagement triggersReal-time lead routing & enrichment",
+													"job_start_date": "2025-05-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": null,
+														"state_code": null,
+														"country_code": null
+													}
+												}
+											],
+											"education": [],
+											"skills": [],
+											"certifications": []
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/enrichment/email-domain": {
+			"post": {
+				"summary": "Email Domain Finder",
+				"description": "cost: 0.5 credits on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"company_linkedin_url": "https://www.linkedin.com/company/blitz-api"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"email_domain": "example.com"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/enrichment/phone": {
+			"post": {
+				"summary": "Find Phone Number",
+				"description": "cost: 5 credits on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"phone": "+1234567890"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/enrichment/email": {
+			"post": {
+				"summary": "Find work email",
+				"description": "cost: 1 credit on success",
+				"tags": [
+					"enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"example": {
+									"person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"email": "antoine@blitz-agency.com",
+										"all_emails": [
+											{
+												"email": "antoine@blitz-agency.com",
+												"job_order_in_profile": 1,
+												"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
+												"email_domain": "blitz-agency.com"
+											},
+											{
+												"email": "antoine@blitz-agency.com",
+												"job_order_in_profile": 2,
+												"company_linkedin_url": "https://www.linkedin.com/company/blitz-agency-gtm",
+												"email_domain": "blitz-agency.com"
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/blitz/key-info": {
+			"get": {
+				"summary": "Get API Key info",
+				"description": "cost: 0 credits",
+				"tags": [
+					"blitz"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"id": "ID",
+										"credits_balance": 278,
+										"credits_reset_at": "12/01/2026, 00:00:00 AM",
+										"active_plans": [
+											{
+												"name": "plan name",
+												"status": "active"
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "API Key not found"
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/search/waterfall-icp": {
+			"post": {
+				"tags": [
+					"search"
+				],
+				"summary": "Waterfall ICP",
+				"description": "cost: 1 credit per result (max = max_results)",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/wttj-fr"
+									},
+									"cascade": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"include_title": {
+													"type": "array",
+													"items": {
+														"type": "string"
+													}
+												},
+												"exclude_title": {
+													"type": "array",
+													"items": {
+														"type": "string"
+													}
+												},
+												"location": {
+													"type": "array",
+													"items": {
+														"type": "string"
+													}
+												},
+												"include_headline_search": {
+													"type": "boolean"
+												}
+											}
+										},
+										"example": [
+											{
+												"include_title": [
+													"Founder",
+													"Co-Founder",
+													"Chief Executive Officer",
+													"CEO",
+													"Owner",
+													"President"
+												],
+												"location": [
+													"US",
+													"CA"
+												],
+												"include_headline_search": false
+											},
+											{
+												"include_title": [
+													"Chief Sales Officer",
+													"CSO",
+													"VP Sales",
+													"Vice President Sales",
+													"Head of Sales",
+													"Sales Director"
+												],
+												"location": [
+													"WORLD"
+												],
+												"include_headline_search": true
+											},
+											{
+												"include_title": [
+													"Chief Marketing Officer",
+													"CMO",
+													"Marketing Director",
+													"Director of Marketing"
+												],
+												"exclude_title": [
+													"Assistant",
+													"Executive Assistant",
+													"Intern"
+												],
+												"include_headline_search": true
+											}
+										]
+									},
+									"max_results": {
+										"type": "number",
+										"example": 10
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"max_results": 1,
+										"results_length": 1,
+										"results": [
+											{
+												"person": {
+													"first_name": "Lionel",
+													"last_name": "Pereira",
+													"full_name": "Lionel Pereira",
+													"nickname": null,
+													"civility_title": null,
+													"headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+													"about_me": "As a value-based and compassionate leader, I strive to bring out the best in people, nurturing happy, high-performing teams, and consistently receiving positive employee feedback. Dedicated to Diversity & Inclusion, I am committed to diversity hiring, and raising awareness among employees. My leadership style is characterized by a willingness to roll up my sleeves and get things done, helping my teams thrive and succeed. With a passion for sales and a results-driven approach, I have successfully led diverse teams through periods of hyper-growth at different stages (startup, scale up & big tech), earning five promotions in eight years through dedication and a hands-on approach. I have extensive experience in adtech, media, content creation, marketing and with a deep understanding of the Technology, Financial Services, Automotive, and Luxury verticals.",
+													"location": {
+														"city": "Paris",
+														"state_code": null,
+														"country_code": "FR",
+														"continent": "Europe"
+													},
+													"linkedin_url": "https://www.linkedin.com/in/lionelpereira",
+													"connections_count": 500,
+													"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4D03AQEM1RNs6XJc3Q/profile-displayphoto-shrink_200_200/B4DZWGGACCHIAg-/0/1741711475241",
+													"experiences": [
+														{
+															"job_title": "Director Sales Enterprise & Agency",
+															"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+															"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+															"job_description": "Enterprise & Agency Sales Director at Welcome to the Jungle, leading sales team (KAM, Strategic Account, BDR & CSM teams) to drive revenue growth, expand key partnerships, and enhance client retention. Committed to our mission of making work actually exciting by helping companies attract talent through innovative Employer Branding solutions and empowering workers to shape a more sustainable work environment.",
+															"job_start_date": "2025-03-01",
+															"job_end_date": null,
+															"job_is_current": true,
+															"job_location": {
+																"city": "Paris",
+																"state_code": null,
+																"country_code": "FR"
+															}
+														}
+													],
+													"education": [],
+													"skills": [
+														"strategy",
+														"lead generation",
+														"social media",
+														"project management",
+														"consultative selling",
+														"team leadership",
+														"team building",
+														"yammer",
+														"digital media",
+														"web project management",
+														"public speaking",
+														"coaching",
+														"online marketing",
+														"digital strategy",
+														"online advertising",
+														"management",
+														"social media marketing",
+														"cms",
+														"training delivery",
+														"account management",
+														"marketing strategy",
+														"content strategy",
+														"digital marketing"
+													],
+													"certifications": []
+												},
+												"icp": 2,
+												"ranking": 1,
+												"what_matched": [
+													{
+														"value": "Director Sales Enterprise & Agency",
+														"key": "job_title"
+													},
+													{
+														"value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
+														"key": "linkedin_headline"
+													}
+												]
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"error": {
+											"code": "INVALID_INPUT",
+											"message": "Missing required fields"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/search/employee-finder": {
+			"post": {
+				"tags": [
+					"search"
+				],
+				"summary": "Employee finder",
+				"description": "cost: 1 credit per result (max = max_results)",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/wttj-fr"
+									},
+									"country_code": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"example": [
+											"US",
+											"FR"
+										]
+									},
+									"continent": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"example": [
+											"Africa",
+											"Antarctica",
+											"Asia",
+											"Europe",
+											"North America",
+											"Oceania",
+											"South America"
+										]
+									},
+									"sales_region": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"example": [
+											"NORAM",
+											"LATAM",
+											"EMEA",
+											"APAC"
+										]
+									},
+									"job_level": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"example": [
+											"C-Team",
+											"Director",
+											"Manager",
+											"Other",
+											"Staff",
+											"VP"
+										]
+									},
+									"job_function": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"example": [
+											"Advertising & Marketing",
+											"Art, Culture and Creative Professionals",
+											"Construction",
+											"Customer/Client Service",
+											"Education",
+											"Engineering",
+											"Finance & Accounting",
+											"General Business & Management",
+											"Healthcare & Human Services",
+											"Human Resources",
+											"Information Technology",
+											"Legal",
+											"Manufacturing & Production",
+											"Operations",
+											"Other",
+											"Public Administration & Safety",
+											"Purchasing",
+											"Research & Development",
+											"Sales & Business Development",
+											"Science",
+											"Supply Chain & Logistics",
+											"Writing/Editing"
+										]
+									},
+									"min_connections_count": {
+										"type": "number",
+										"example": 200,
+										"minimum": 0,
+										"maximum": 500
+									},
+									"max_results": {
+										"type": "number",
+										"example": 10
+									},
+									"page": {
+										"type": "number",
+										"example": 1
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"max_results": 1,
+										"results_length": 1,
+										"page": 1,
+										"total_pages": 244,
+										"results": [
+											{
+												"first_name": "Hélène",
+												"last_name": "Pillon",
+												"full_name": "Hélène Pillon",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Journaliste freelance",
+												"about_me": "Depuis Marseille, je travaille pour différents médias français et européens en tant que…",
+												"location": {
+													"city": null,
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/h%c3%a9l%c3%a8ne-pillon-2a57155a",
+												"connections_count": 361,
+												"profile_picture_url": "https://media.licdn.com/dms/image/v2/C5103AQGChE55b4tmFA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517400935573",
+												"experiences": [
+													{
+														"job_title": "Journaliste Indépendante",
+														"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+														"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+														"job_description": "Rédaction de portraits pour le site web",
+														"job_start_date": "2019-12-01",
+														"job_end_date": null,
+														"job_is_current": true,
+														"job_location": {
+															"city": null,
+															"state_code": null,
+															"country_code": null
+														}
+													}
+												],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"error": {
+											"code": "INVALID_INPUT",
+											"message": "Missing required fields"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/search/domain-to-linkedin-company": {
+			"post": {
+				"tags": [
+					"search"
+				],
+				"summary": "Domain to LinkedIn company",
+				"description": "cost: 1 credit",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"domain": {
+										"type": "string",
+										"example": "https://www.blitz-api.ai"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"company_linkedin_url": "https://www.linkedin.com/company/blitz-api"
+									}
+								}
+							}
+						}
+					},
+					"402": {
+						"description": "Payment Required",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"message": "Insufficient credits balance"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"error": {
+											"code": "INVALID_INPUT",
+											"message": "Missing required fields"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v2/utils/current-date": {
+			"post": {
+				"tags": [
+					"utils"
+				],
+				"summary": "Current Date and Time",
+				"description": "0 Credit",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"region": {
+										"type": "string",
+										"example": "America/New_York"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"datetime": "2026-01-08 12:00:00 -05:00",
+										"timestamp": 1736385600,
+										"timezone": "America/New_York",
+										"timezone_name": "(GMT-05:00) New York"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"error": {
+											"code": "INVALID_INPUT",
+											"message": "Missing required fields"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
