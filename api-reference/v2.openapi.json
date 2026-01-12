@@ -724,6 +724,11 @@
 				"tags": [
 					"search"
 				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
 				"summary": "Waterfall ICP Search",
 				"description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
 				"requestBody": {
@@ -964,6 +969,11 @@
 				"tags": [
 					"search"
 				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
 				"summary": "Employee finder",
 				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for employees within a company by filtering on job level, function, and location.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
 				"requestBody": {
@@ -1185,6 +1195,11 @@
 				"tags": [
 					"search"
 				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
 				"summary": "Find LinkedIn Company by Domain",
 				"description": "### 💰 Cost: 1 Credit\n\nGiven a company website domain, find its verified LinkedIn company page URL.",
 				"requestBody": {
@@ -1268,6 +1283,11 @@
 			"post": {
 				"tags": [
 					"utils"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
 				],
 				"summary": "Get Current Date and Time",
 				"description": "### 💰 Cost: 0 Credits\n\nGet the current date and time in a specific timezone.",
