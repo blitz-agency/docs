@@ -10,86 +10,171 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "global": {
-      "anchors": []
-    },
-    "tabs": [
+    "versions": [
       {
-        "tab": "Guide",
-        "groups": [
+        "version": "v1",
+        "tabs": [
           {
-            "group": "Introduction",
-            "pages": [
-              "guide/introduction",
-              "guide/concepts/pricing-unlimited"
+            "tab": "Guide",
+            "groups": [
+              {
+                "group": "Introduction",
+                "pages": [
+                  "guide/introduction",
+                  "guide/concepts/pricing-unlimited"
+                ]
+              },
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "guide/getting-started/authentication",
+                  "guide/getting-started/quickstart"
+                ]
+              },
+              {
+                "group": "Core Concepts",
+                "pages": [
+                  "guide/concepts/waterfall-logic",
+                  "guide/concepts/quality"
+                ]
+              },
+              {
+                "group": "Recipes (Use Cases)",
+                "pages": [
+                  "guide/recipes/enrichment-workflow",
+                  "guide/recipes/crm-hygiene"
+                ]
+              },
+              {
+                "group": "Integrations",
+                "pages": [
+                  "guide/integrations/clay",
+                  "guide/integrations/n8n",
+                  "guide/integrations/make"
+                ]
+              },
+              {
+                "group": "Appendix",
+                "pages": [
+                  "guide/reference/appendix"
+                ]
+              }
             ]
           },
           {
-            "group": "Getting Started",
-            "pages": [
-              "guide/getting-started/authentication",
-              "guide/getting-started/quickstart"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "guide/concepts/waterfall-logic",
-              "guide/concepts/quality"
-            ]
-          },
-          {
-            "group": "Recipes (Use Cases)",
-            "pages": [
-              "guide/recipes/enrichment-workflow",
-              "guide/recipes/crm-hygiene"
-            ]
-          },
-          {
-            "group": "Integrations",
-            "pages": [
-              "guide/integrations/clay",
-              "guide/integrations/n8n",
-              "guide/integrations/make"
-              
-            ]
-          },
-          {
-            "group": "Appendix",
-            "pages": [
-              "guide/reference/appendix"
+            "tab": "API reference",
+            "groups": [
+              {
+                "group": "Enrichment",
+                "pages": [
+                  "api-reference/openapi.json post /api/enrichment/phone",
+                  "api-reference/openapi.json post /api/enrichment/email",
+                  "api-reference/openapi.json post /api/enrichment/email_domain"
+                ]
+              },
+              {
+                "group": "Blitz",
+                "pages": [
+                  "api-reference/openapi.json get /api/blitz/key-info"
+                ]
+              },
+              {
+                "group": "Email",
+                "pages": [
+                  "api-reference/openapi.json post /api/email/validate"
+                ]
+              },
+              {
+                "group": "Search",
+                "pages": [
+                  "api-reference/openapi.json post /api/search/waterfall-icp",
+                  "api-reference/openapi.json post /api/search/waterfall-icp-real-time"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
+        "version": "v2",
+        "tabs": [
           {
-            "group": "Enrichment",
-            "pages": [
-              "api-reference/openapi.json post /api/enrichment/phone",
-              "api-reference/openapi.json post /api/enrichment/email",
-              "api-reference/openapi.json post /api/enrichment/email_domain"
+            "tab": "Guide",
+            "groups": [
+              {
+                "group": "Introduction",
+                "pages": [
+                  "guide/introduction-copied-1",
+                  "guide/concepts/pricing-unlimited-copied-1"
+                ]
+              },
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "guide/getting-started/authentication-copied-1",
+                  "guide/getting-started/quickstart-copied-1"
+                ]
+              },
+              {
+                "group": "Core Concepts",
+                "pages": [
+                  "guide/concepts/waterfall-logic-copied-1",
+                  "guide/concepts/quality-copied-1"
+                ]
+              },
+              {
+                "group": "Recipes (Use Cases)",
+                "pages": [
+                  "guide/recipes/enrichment-workflow-copied-1",
+                  "guide/recipes/crm-hygiene-copied-1"
+                ]
+              },
+              {
+                "group": "Integrations",
+                "pages": [
+                  "guide/integrations/clay-copied-1",
+                  "guide/integrations/n8n-copied-1",
+                  "guide/integrations/make-copied-1"
+                ]
+              },
+              {
+                "group": "Appendix",
+                "pages": [
+                  "guide/reference/appendix-copied-1"
+                ]
+              }
             ]
           },
           {
-            "group": "Blitz",
-            "pages": [
-              "api-reference/openapi.json get /api/blitz/key-info"
-            ]
-          },
-          {
-            "group": "Email",
-            "pages": [
-              "api-reference/openapi.json post /api/email/validate"
-            ]
-          },
-          {
-            "group": "Search",
-            "pages": [
-              "api-reference/openapi.json post /api/search/waterfall-icp",
-              "api-reference/openapi.json post /api/search/waterfall-icp-real-time"
+            "tab": "API reference",
+            "groups": [
+              {
+                "group": "Enrichment",
+                "pages": [
+                  "api-reference/openapi.json post /api/enrichment/phone-copied-1",
+                  "api-reference/openapi.json post /api/enrichment/email-copied-1",
+                  "api-reference/openapi.json post /api/enrichment/email_domain-copied-1"
+                ]
+              },
+              {
+                "group": "Blitz",
+                "pages": [
+                  "api-reference/openapi.json get /api/blitz/key-info-copied-1"
+                ]
+              },
+              {
+                "group": "Email",
+                "pages": [
+                  "api-reference/openapi.json post /api/email/validate-copied-1"
+                ]
+              },
+              {
+                "group": "Search",
+                "pages": [
+                  "api-reference/openapi.json post /api/search/waterfall-icp-copied-1",
+                  "api-reference/openapi.json post /api/search/waterfall-icp-real-time-copied-1"
+                ]
+              }
             ]
           }
         ]

@@ -1,0 +1,113 @@
+---
+title: "Welcome to BlitzAPI"
+description: "High-performance B2B data infrastructure for Growth & Revenue teams."
+---
+
+**BlitzAPI** provides a programmable interface to access **real-time, verified B2B data** derived from live LinkedIn signals. We enable Growth Engineers and RevOps teams to build automated lead pipelines without the maintenance overhead of scrapers or the data decay of static databases.
+
+<img
+  src="/images/blitzapi-cover.png"
+  alt="Blitzapi Cover Png+ Existing In Indexed Db Mintlif"
+  style={{ width:"100%" }}
+/>
+
+---
+
+## ⚡ Core Logic: Waterfall ICP
+
+BlitzAPI’s most popular feature is the **Waterfall ICP Search**. It solves a common engineering challenge: mapping a target account to a specific decision-maker without manual filtering.
+
+Instead of retrieving a raw list of employees, you define a **priority hierarchy**. The API executes a cascading search until it matches your criteria.
+
+<Steps>
+  <Step title="1. Define the Cascade">
+    You configure a JSON rule: _"First, look for the CEO in the US. If not found, look for the VP of Sales. If not found, look for a Sales Director."_
+  </Step>
+  <Step title="2. Intelligent Routing">
+    The API queries live data layers in real-time, respecting your priority order.
+  </Step>
+  <Step title="3. Structured Output">
+    You receive the single most relevant decision-maker for that company, ready for enrichment.
+  </Step>
+</Steps>
+
+<Card title="Read the Waterfall Logic Docs" icon="stairs" href="/guide/concepts/waterfall-logic">
+  See how to construct hierarchical queries to maximize relevance.
+</Card>
+
+---
+
+## ♾️ The Unlimited Model
+
+For high-volume operations, we offer **Unlimited Plans** (Pro, Ultra, Mega). These plans remove per-request costs for our four core infrastructure endpoints.
+
+This allows you to scale enrichment workflows without calculating marginal costs per lead.
+
+<CardGroup cols={2}>
+  <Card title="Waterfall ICP Search" icon="magnifying-glass-chart">
+    Target decision-makers by job title and location.
+  </Card>
+  <Card title="Find Work Email" icon="envelope">
+    Enrich profiles with verified professional emails (SMTP validated).
+  </Card>
+  <Card title="Find Phone Number" icon="phone">
+    Access direct mobile or line numbers (available on Mega plan).
+  </Card>
+  <Card title="LinkedIn to Domain" icon="globe">
+    Resolve Company LinkedIn URLs to verified website domains.
+  </Card>
+</CardGroup>
+
+---
+
+## What do you want to build?
+
+Select the documentation path that matches your technical goal.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="bolt" href="/guide/getting-started/quickstart">
+    Get your API Key and execute your first enrichment request via cURL.
+  </Card>
+  <Card title="Full Workflow" icon="rotate" href="/guide/recipes/enrichment-workflow">
+    Learn how to chain Search, Enrichment, and Validation into a single automated pipeline.
+  </Card>
+  <Card title="Pricing & Limits" icon="server" href="/guide/concepts/pricing-unlimited">
+    Technical details on rate limits (RPS), concurrency, and fair use policies.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference">
+    Interactive OpenAPI documentation to test endpoints and view schema definitions.
+  </Card>
+</CardGroup>
+
+---
+
+## Technical Differentiators
+
+Why do engineering teams choose BlitzAPI over static databases?
+
+<CardGroup cols={3}>
+  <Card title="Live Signal" icon="tower-broadcast">
+    We do not serve cached data older than 30 days. We query the network in real-time (1-3s latency) to ensure employment status is current.
+  </Card>
+  <Card title="Strict Validation" icon="shield-check">
+    We do not guess emails based on patterns (e.g., `first.last`). We only return data that passes a live SMTP handshake or identity match.
+  </Card>
+  <Card title="Developer Native" icon="terminal">
+    Standard REST principles, predictable JSON responses, and native integrations with low-code orchestrators.
+  </Card>
+</CardGroup>
+
+## Supported Integrations
+
+BlitzAPI acts as the data engine behind your existing stack.
+
+| Category            | Compatible Tools               |
+| :------------------ | :----------------------------- |
+| **Orchestrators**   | n8n, Make (Integromat), Zapier |
+| **Data Operations** | Clay, Airtable, Google Sheets  |
+| **CRM & Sales**     | HubSpot, Salesforce, Pipedrive |
+| **Outreach**        | Smartlead, Instantly, Lemlist  |
+
+<Note>
+  **Building a custom integration?** Our API is platform-agnostic. As long as your tool can make an HTTP POST request, it works with BlitzAPI.
+</Note>

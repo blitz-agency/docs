@@ -1,0 +1,74 @@
+---
+title: "Reference & Standards"
+description: "Country codes, data logic, and performance details."
+---
+
+This section covers technical standards and logic details to help you optimize your API usage.
+
+## 🌍 Country Codes (LinkedIn)
+
+The Waterfall Search API uses **LinkedIn country codes**, not ISO codes. Using the wrong code (e.g., `USA` instead of `US`) will return 0 results.
+
+<Tip>
+  Use `"WORLD"` to search globally without geographic restriction.
+</Tip>
+
+<Accordion title="Common Country Codes List">
+  | Country            | Code |
+  | :----------------- | :--- |
+  | **United States**  | `US` |
+  | **United Kingdom** | `GB` |
+  | **France**         | `FR` |
+  | **Canada**         | `CA` |
+  | **Germany**        | `DE` |
+  | **Australia**      | `AU` |
+  | **India**          | `IN` |
+  | **Brazil**         | `BR` |
+  | **Singapore**      | `SG` |
+
+  [_For a full list of supported codes, refer to the Microsoft LinkedIn Documentation._](https://learn.microsoft.com/en-us/linkedin/shared/references/reference-tables/country-codes)
+</Accordion>
+
+---
+
+## ⚡ Waterfall: Standard vs. Real-Time
+
+We offer two versions of the Waterfall ICP endpoint. Choosing the right one is key to managing your credits and latency.
+
+| Feature         | Standard `/waterfall-icp`                    | Real-Time `/waterfall-icp-real-time`                                 |
+| :-------------- | :------------------------------------------- | :------------------------------------------------------------------- |
+| **Data Source** | Freshly Cached Data                          | Live Network Query                                                   |
+| **Latency**     | **\< 1 second**                              | **3-5 seconds**                                                      |
+| **Cost**        | 1 Credit / result                            | 3 Credits / result                                                   |
+| **Use Case**    | High volume, large audiences, broad mapping. | Specific targets, niche roles, or when "Standard" yields no results. |
+
+<Note>
+  **Strategy**: We recommend attempting the **Standard** endpoint first. Only switch to **Real-Time** if the standard search returns `results_length: 0`.
+</Note>
+
+---
+
+## 📧 Email Logic: Matching vs. Guessing
+
+A common misconception is that enrichment APIs "guess" emails (permutations like `first.last@domain.com`). **BlitzAPI does not do this.**
+
+### How we work
+
+1. **Identity Matching**: We match the LinkedIn profile against a massive dataset of known, verified identities.
+2. **No Permutations**: We only return an email if we have a concrete record of it linked to that specific individual.
+3. **Freshness Guarantee**:
+   - We do not serve stale data.
+   - Every email in our database is re-validated **at least once every 30 days**.
+   - If an email bounces during our internal checks, it is immediately removed from the circulation.
+
+This approach ensures a significantly lower bounce rate compared to "pattern-matching" tools.
+
+---
+
+## 🚦 Rate Limits & Latency
+
+To ensure stability for all users:
+
+- **Concurrency**: All plans include **5 concurrent requests per second**.
+- **Burst**: Short bursts above this limit may be queued, but sustained overage will return `429 Too Many Requests`.
+- **Timeouts**: Set your client timeout to at least **15 seconds** if you are using Real-Time endpoints or Email Validation, as live verification involves network handshakes with external mail servers.
