@@ -9,6 +9,85 @@
     "dark": "#0F172A"
   },
   "favicon": "/favicon.svg",
+  "navigation": {
+    "global": {
+      "anchors": []
+    },
+    "tabs": [
+      {
+        "tab": "Guide",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "guide/introduction",
+              "guide/concepts/pricing-unlimited"
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "pages": [
+              "guide/getting-started/authentication",
+              "guide/getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "guide/concepts/waterfall-logic",
+              "guide/concepts/quality"
+            ]
+          },
+          {
+            "group": "Recipes (Use Cases)",
+            "pages": [
+              "guide/recipes/enrichment-workflow",
+              "guide/recipes/crm-hygiene"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "guide/integrations/clay",
+              "guide/integrations/n8n",
+              "guide/integrations/make"
+            ]
+          },
+          {
+            "group": "Appendix",
+            "pages": [
+              "guide/reference/appendix"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Enrichment",
+            "pages": [
+              "api-reference/openapi.json post /api/enrichment/phone",
+              "api-reference/openapi.json post /api/enrichment/email",
+              "api-reference/openapi.json post /api/enrichment/email_domain"
+            ]
+          },
+          {
+            "group": "Blitz",
+            "pages": [
+              "api-reference/openapi.json get /api/blitz/key-info"
+            ]
+          },
+          {
+            "group": "Search",
+            "pages": [
+              "api-reference/openapi.json post /api/search/waterfall-icp"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "logo": {
     "light": "/logo/blitz.png",
     "dark": "/logo/logo-blitz-dark.png"
