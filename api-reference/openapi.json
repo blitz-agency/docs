@@ -47,19 +47,6 @@
           "linkedin_company_url"
         ]
       },
-      "EmailValidationRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The email address to analyze."
-          }
-        },
-        "required": [
-          "email"
-        ]
-      },
       "CascadeStep": {
         "type": "object",
         "properties": {
@@ -211,24 +198,6 @@
         },
         "required": [
           "name",
-          "status"
-        ]
-      },
-      "EmailValidationResponse": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The analyzed email address."
-          },
-          "status": {
-            "type": "string",
-            "description": "Result: `valid`, `invalid`, or `catch-all`."
-          }
-        },
-        "required": [
-          "email",
           "status"
         ]
       },
@@ -389,7 +358,7 @@
     "/api/enrichment/phone": {
       "post": {
         "summary": "Find Business Phone",
-        "description": "### 💰 Cost: 3 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
+        "description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
         "tags": [
           "enrichment"
         ],
@@ -675,85 +644,13 @@
         }
       }
     },
-    "/api/email/validate": {
-      "post": {
-        "tags": [
-          "email"
-        ],
-        "summary": "Validate Email",
-        "description": "### 💰 Cost: 0.5 Credits\n\nPerform a deep SMTP check to validate the deliverability of an email address. Detects catch-all configurations.",
-        "security": [
-          {
-            "APIKey": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailValidationRequest"
-              },
-              "example": {
-                "email": "antoine@blitz-agency.com"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmailValidationResponse"
-                },
-                "example": {
-                  "email": "antoine@blitz-agency.com",
-                  "status": "valid"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment Required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/search/waterfall-icp": {
       "post": {
         "tags": [
           "search"
         ],
         "summary": "Waterfall ICP Search",
-        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
+        "description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
         "security": [
           {
             "APIKey": []
@@ -770,24 +667,109 @@
                 "cascade": [
                   {
                     "include_title": [
-                      "Founder",
-                      "CEO"
+                      "Marketing Director",
+                      "Head Marketing",
+                      "Chief Marketing Officer"
+                    ],
+                    "exclude_title": [
+                      "assistant",
+                      "intern",
+                      "product",
+                      "junior"
                     ],
                     "location": [
-                      "US",
-                      "CA"
+                      "WORLD"
                     ],
                     "include_headline_search": false
                   },
                   {
                     "include_title": [
-                      "VP Sales",
-                      "Head of Sales"
+                      "Marketing Manager",
+                      "Head Growth",
+                      "Growth manager"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "hacker"
                     ],
                     "location": [
                       "WORLD"
                     ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication Director",
+                      "Brand Director",
+                      "Content Director"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "UX",
+                      "UI",
+                      "Design"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication Manager",
+                      "Brand Manager",
+                      "Content Manager"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
+                  },
+                  {
+                    "include_title": [
+                      "Communication",
+                      "marketing",
+                      "growth",
+                      "brand"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern",
+                      "product"
+                    ],
+                    "location": [
+                      "US",
+                      "CA"
+                    ],
                     "include_headline_search": true
+                  },
+                  {
+                    "include_title": [
+                      "CEO",
+                      "founder",
+                      "cofounder",
+                      "owner",
+                      "General Director"
+                    ],
+                    "exclude_title": [
+                      "junior",
+                      "assistant",
+                      "intern"
+                    ],
+                    "location": [
+                      "WORLD"
+                    ],
+                    "include_headline_search": false
                   }
                 ],
                 "max_results": 10
@@ -805,108 +787,147 @@
                 },
                 "example": {
                   "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                  "max_results": 2,
-                  "results_length": 2,
+                  "max_results": 7,
+                  "results_length": 7,
                   "results": [
                     {
-                      "full_name": "Lionel Pereira",
-                      "first_name": "Lionel",
-                      "last_name": "Pereira",
-                      "job_title": "Director Sales",
+                      "full_name": "Melissa Rumor",
+                      "first_name": "Melissa",
+                      "last_name": "Rumor",
+                      "job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
                       "company_domain": "welcometothejungle.com",
                       "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                      "person_linkedin_url": "https://www.linkedin.com/in/lionelpereira",
-                      "country": "France",
+                      "person_linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
+                      "country": "FR",
                       "icp": 2,
                       "ranking": 1,
                       "what_matched": [
                         {
-                          "value": "Director Sales",
+                          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        },
+                        {
+                          "value": "Growth Marketing Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Saâd Amouzigh",
+                      "first_name": "Saâd",
+                      "last_name": "Amouzigh",
+                      "job_title": "Growth Manager - B2b Paid Acquisition",
+                      "linkedin_headline": "Webmarketing Project Manager @Seenk",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/samouzigh",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 2,
+                      "what_matched": [
+                        {
+                          "value": "Growth Manager - B2b Paid Acquisition",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Wendy Carré",
+                      "first_name": "Wendy",
+                      "last_name": "Carré",
+                      "job_title": "Senior Content Marketing Manager",
+                      "linkedin_headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 3,
+                      "what_matched": [
+                        {
+                          "value": "Senior Content Marketing Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Ellora Ainadjoglou",
+                      "first_name": "Ellora",
+                      "last_name": "Ainadjoglou",
+                      "job_title": "Growth Manager",
+                      "linkedin_headline": null,
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/ellora-ainadjoglou",
+                      "country": "FR",
+                      "icp": 2,
+                      "ranking": 4,
+                      "what_matched": [
+                        {
+                          "value": "Growth Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Marie Poirier Villemin",
+                      "first_name": "Marie",
+                      "last_name": "Villemin",
+                      "job_title": "Brand Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/marie-villemin",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 5,
+                      "what_matched": [
+                        {
+                          "value": "Brand Manager Welcome to the Jungle (France)",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Laura Huline Scognamiglio",
+                      "first_name": "Laura",
+                      "last_name": "Scognamiglio",
+                      "job_title": "Senior Content Manager",
+                      "linkedin_headline": "Senior Content Manager",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 6,
+                      "what_matched": [
+                        {
+                          "value": "Senior Content Manager",
+                          "key": "job_title"
+                        }
+                      ]
+                    },
+                    {
+                      "full_name": "Marie Poirier Villemin",
+                      "first_name": "Marie",
+                      "last_name": "Villemin",
+                      "job_title": "Brand Manager Welcome to the Jungle (France)",
+                      "linkedin_headline": "Brand Manager @ Welcome to the Jungle",
+                      "company_domain": "welcometothejungle.com",
+                      "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                      "person_linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
+                      "country": "FR",
+                      "icp": 4,
+                      "ranking": 7,
+                      "what_matched": [
+                        {
+                          "value": "Brand Manager Welcome to the Jungle (France)",
                           "key": "job_title"
                         }
                       ]
                     }
                   ]
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Payment Required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable Entity",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/search/waterfall-icp-real-time": {
-      "post": {
-        "tags": [
-          "search"
-        ],
-        "summary": "Real-Time Waterfall Search",
-        "description": "### 💰 Cost: 3 Credits per result\n\nSimilar to the standard Waterfall search, but queries the LinkedIn network **live**. Use this for niche targets or when the standard search yields no results.\n\n> **Warning:** Latency is higher (3-5 seconds).",
-        "security": [
-          {
-            "APIKey": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WaterfallICPRequest"
-              },
-              "example": {
-                "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                "cascade": [
-                  {
-                    "include_title": [
-                      "CEO"
-                    ],
-                    "location": [
-                      "US"
-                    ],
-                    "include_headline_search": false
-                  }
-                ],
-                "max_results": 10
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK - Live Results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WaterfallICPResponse"
                 }
               }
             }

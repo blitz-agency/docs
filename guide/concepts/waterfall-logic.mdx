@@ -7,6 +7,12 @@ In modern B2B growth, **more leads is not the goal. Better leads are.**
 
 The **Waterfall ICP** engine (`/api/search/waterfall-icp`) is designed to solve one specific problem: **Finding the single best decision-maker** at a target company without manual sorting.
 
+<img
+  src="/images/waterfall-icp-blitz.png"
+  alt="Waterfall ICP - BlitzAPI"
+  style={{ width:"48%" }}
+/>
+
 ## The "Smart Routing" Concept
 
 Most APIs return a list of 50 employees and leave you to filter them. BlitzAPI works differently. You define a **Hierarchy of Preference** (a Cascade), and our engine executes a sequential search logic.
@@ -47,7 +53,7 @@ Let's look at a complex query. Here, we want to target **Welcome to the Jungle**
 
 ```json
 {
-  "company_linkedin_url": "[https://www.linkedin.com/company/wttj-fr](https://www.linkedin.com/company/wttj-fr)",
+  "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
   "cascade": [
     {
       "include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
