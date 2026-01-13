@@ -579,7 +579,7 @@
     },
     "/api/blitz/key-info": {
       "get": {
-        "summary": "Get API Key info",
+        "summary": "Get API Key info v1",
         "description": "### 💰 Cost: 0 Credits\n\nCheck your current balance, plan status, and key validity.",
         "tags": [
           "blitz"

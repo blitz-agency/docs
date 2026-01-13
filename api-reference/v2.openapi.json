@@ -1282,7 +1282,7 @@
 		"/v2/utils/current-date": {
 			"post": {
 				"tags": [
-					"utils"
+					"utilities"
 				],
 				"security": [
 					{
