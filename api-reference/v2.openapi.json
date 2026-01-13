@@ -26,7 +26,7 @@
 	"paths": {
 		"/v2/account/key-info": {
 			"get": {
-				"summary": "Account management",
+				"summary": "Get API Key Details",
 				"description": "### 💰 Cost: 0 Credits\n\nCheck the API key information, current credit balance and plan status",
 				"tags": [
 					"Account"
