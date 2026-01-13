@@ -26,10 +26,10 @@
 	"paths": {
 		"/v2/blitz/key-info": {
 			"get": {
-				"summary": "Get API Key info",
-				"description": "### 💰 Cost: 0 Credits\n\nCheck your current balance, plan status, and key validity.",
+				"summary": "Account management",
+				"description": "### 💰 Cost: 0 Credits\n\nCheck the API key information, current credit balance and plan status",
 				"tags": [
-					"blitz"
+					"Account"
 				],
 				"security": [
 					{
@@ -103,10 +103,10 @@
 		},
 		"/v2/enrichment/phone-to-person": {
 			"post": {
-				"summary": "Find Person by Phone Number",
-				"description": "### 💰 Cost: 5 Credits (on success)\n\nReverse-lookup a person by their verified direct business phone number",
+				"summary": "Reverse Phone Lookup",
+				"description": "### 💰 Cost: 5 Credits (on success)\n\nIdentify a professional and retrieve their full profile starting from a verified phone number.",
 				"tags": [
-					"enrichment"
+					"People Enrichment"
 				],
 				"security": [
 					{
@@ -223,10 +223,10 @@
 		},
 		"/v2/enrichment/email-to-person": {
 			"post": {
-				"summary": "Find Person by Email Address",
-				"description": "### 💰 Cost: 1 Credit (on success)\n\nReverse-lookup a person by their verified work email address.",
+				"summary": "Reverse Email Lookup",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nIdentify a professional and retrieve their full profile starting from a verified work email address.",
 				"tags": [
-					"enrichment"
+					"People Enrichment"
 				],
 				"security": [
 					{
@@ -341,12 +341,12 @@
 				}
 			}
 		},
-		"/v2/enrichment/email-domain": {
+		"/v2/enrichment/linkedin-to-domain": {
 			"post": {
-				"summary": "Find Company Domain",
-				"description": "### 💰 Cost: 0.5 Credits (on success)\n\nBridge the gap between LinkedIn and email domains. Given a company’s LinkedIn URL, find its verified email domain.",
+				"summary": "Linkedin URL to Domain",
+				"description": "### 💰 Cost: 0.5 Credits (on success)\n\nExtract the primary verified email domain pattern associated with a Company LinkedIn URL.",
 				"tags": [
-					"enrichment"
+					"Company Enrichment"
 				],
 				"security": [
 					{
@@ -425,10 +425,10 @@
 		},
 		"/v2/enrichment/phone": {
 			"post": {
-				"summary": "Find Business Phone",
-				"description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified direct business phone number using LinkedIn context.\n\n> **Use case:** Ideal for multichannel cadences or cold calling strategies.",
+				"summary": "Find Mobile & Direct Phone",
+				"description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified mobile or direct business line for a specific person using their LinkedIn profile URL.",
 				"tags": [
-					"enrichment"
+					"People Enrichment"
 				],
 				"security": [
 					{
@@ -508,9 +508,9 @@
 		"/v2/enrichment/email": {
 			"post": {
 				"summary": "Find Work Email",
-				"description": "### 💰 Cost: 1 Credit (on success)\n\nFrom a LinkedIn profile URL, instantly find a verified work email. Emails are validated in real time (catch-all included).",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nFind verified work email addresses (including catch-all status) for a specific person using their LinkedIn profile URL.",
 				"tags": [
-					"enrichment"
+					"People Enrichment"
 				],
 				"security": [
 					{
@@ -604,7 +604,7 @@
 		"/v2/search/waterfall-icp": {
 			"post": {
 				"tags": [
-					"search"
+					"People Search"
 				],
 				"security": [
 					{
@@ -612,7 +612,7 @@
 					}
 				],
 				"summary": "Waterfall ICP Search",
-				"description": "### 💰 Cost: 1 Credit per result\n\nThis is the core engine for Account-Based Prospecting. Define an ICP hierarchy (e.g. CEO → VP Sales), and BlitzAPI will search progressively through each level until a decision-maker is found.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
+				"description": "### 💰 Cost: 1 Credit per result\n\nFind decision-makers using a hierarchical search logic (e.g., search for C-Level; if not found, cascade to VP level).",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -849,15 +849,15 @@
 		"/v2/search/employee-finder": {
 			"post": {
 				"tags": [
-					"search"
+					"People Search"
 				],
 				"security": [
 					{
 						"APIKey": []
 					}
 				],
-				"summary": "Employee finder",
-				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for employees within a company by filtering on job level, function, and location.\n\n[See Country Codes List](/guide/reference/appendix#common-country-codes-list)\n\n#### How to use `cascade`\nThis parameter is an array of objects. Each object represents a search step:\n1.  **Level 1**: Search for C-Levels.\n2.  **Level 2**: Search for VPs.\n3.  **Level 3**: Search for Directors.",
+				"summary": "Employee Finder",
+				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for specific employees within a company by filtering on job title, department, level, and location.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -1072,18 +1072,18 @@
 				}
 			}
 		},
-		"/v2/search/domain-to-linkedin-company": {
+		"/v2/enrichment/domain-to-linkedin": {
 			"post": {
 				"tags": [
-					"search"
+					"Company Enrichment"
 				],
 				"security": [
 					{
 						"APIKey": []
 					}
 				],
-				"summary": "Find LinkedIn Company by Domain",
-				"description": "### 💰 Cost: 1 Credit\n\nGiven a company website domain, find its verified LinkedIn company page URL.",
+				"summary": "Domain to Linkedin URL",
+				"description": "### 💰 Cost: 1 Credit\n\nRetrieve the official LinkedIn Company Page URL associated with a corporate website domain.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -1161,10 +1161,10 @@
 				}
 			}
 		},
-		"/v2/utils/current-date": {
+		"/v2/utilities/current-date": {
 			"post": {
 				"tags": [
-					"utilities"
+					"Utilities"
 				],
 				"security": [
 					{
@@ -1172,7 +1172,7 @@
 					}
 				],
 				"summary": "Get Current Date and Time",
-				"description": "### 💰 Cost: 0 Credits\n\nGet the current date and time in a specific timezone.",
+				"description": "### 💰 Cost: 0 Credits\n\nRetrieve the current server date and time for a specific timezone to synchronize your requests.",
 				"requestBody": {
 					"content": {
 						"application/json": {
