@@ -9,6 +9,12 @@
     "dark": "#0F172A"
   },
   "favicon": "/favicon.svg",
+  "api":{
+    "examples":{
+      "defaults": "required",
+      "prefill": true
+    }
+  },
   "navigation": {
     "global": {
       "anchors": []
