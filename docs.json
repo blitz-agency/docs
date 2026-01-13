@@ -71,12 +71,12 @@
         "tab": "API reference",
         "versions": [
           {
-            "version": "v1",
-            "openapi": "api-reference/openapi.json"
-          },
-          {
             "version": "v2",
             "openapi": "api-reference/v2.openapi.json"
+          },
+          {
+            "version": "v1",
+            "openapi": "api-reference/openapi.json"
           }
         ]
       }
