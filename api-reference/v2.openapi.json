@@ -24,7 +24,7 @@
 		"parameters": {}
 	},
 	"paths": {
-		"/v2/blitz/key-info": {
+		"/v2/account/key-info": {
 			"get": {
 				"summary": "Account management",
 				"description": "### 💰 Cost: 0 Credits\n\nCheck the API key information, current credit balance and plan status",
