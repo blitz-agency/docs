@@ -1083,7 +1083,7 @@
 					}
 				],
 				"summary": "Domain to Linkedin URL",
-				"description": "### 💰 Cost: 1 Credit\n\nRetrieve the official LinkedIn Company Page URL associated with a corporate website domain.",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nRetrieve the official LinkedIn Company Page URL associated with a corporate website domain.",
 				"requestBody": {
 					"content": {
 						"application/json": {
