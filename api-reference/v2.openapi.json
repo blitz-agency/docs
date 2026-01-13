@@ -26,7 +26,7 @@
 	"paths": {
 		"/v2/account/key-info": {
 			"get": {
-				"summary": "Account management",
+				"summary": "Get API Key Details",
 				"description": "### 💰 Cost: 0 Credits\n\nCheck the API key information, current credit balance and plan status",
 				"tags": [
 					"Account"
@@ -357,10 +357,9 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"example": {
-									"company_linkedin_url": "https://www.linkedin.com/company/blitz-api"
-								}
+								"required": [
+									"company_linkedin_url"
+								]
 							}
 						}
 					}
@@ -371,11 +370,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"example": {
-										"found": true,
-										"email_domain": "example.com"
-									}
+									"type": "object"
 								}
 							}
 						}
@@ -1088,13 +1083,9 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"properties": {
-									"domain": {
-										"type": "string",
-										"example": "https://www.blitz-api.ai"
-									}
-								}
+								"required": [
+									"domain"
+								]
 							}
 						}
 					}
