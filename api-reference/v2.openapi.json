@@ -44,15 +44,13 @@
 								"schema": {
 									"type": "object",
 									"example": {
-										"id": "ID",
-										"credits_balance": 278,
-										"credits_reset_at": "12/01/2026, 00:00:00 AM",
-										"active_plans": [
-											{
-												"name": "plan name",
-												"status": "active"
-											}
-										]
+										"valid":true,
+										"id":"XXX",
+										"remaining_credits":99.5,
+										"next_reset_at":"2026-02-12T17:48:25.199Z",
+										"max_requests_per_seconds":5,
+										"allowed_apis":["/search/waterfall-icp","/enrichment/email_domain","/enrichment/email"],
+										"active_plans":[{"name":"Startup Trial","status":"active","started_at":"2026-01-12T17:48:25.200Z"}]
 									}
 								}
 							}
@@ -118,9 +116,15 @@
 						"application/json": {
 							"schema": {
 								"type": "object",
-								"example": {
-									"phone": "+1234567890"
-								}
+								"properties": {
+									"phone": {
+										"type": "string",
+										"example": "+1234567890"
+									}
+								},
+								"required": [
+									"phone"
+								]
 							}
 						}
 					}
@@ -238,9 +242,15 @@
 						"application/json": {
 							"schema": {
 								"type": "object",
-								"example": {
-									"email": "antoine@blitz-agency.com"
-								}
+								"properties": {
+									"email": {
+										"type": "string",
+										"example": "antoine@blitz-agency.com"
+									}
+								},
+								"required": [
+									"email"
+								]
 							}
 						}
 					}
@@ -357,6 +367,13 @@
 					"content": {
 						"application/json": {
 							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/blitz-api"
+									}
+								},
 								"required": [
 									"company_linkedin_url"
 								]
@@ -370,7 +387,11 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object"
+									"type": "object",
+									"example": {
+										"found": true,
+										"email_domain": "blitz-agency.com"
+									}
 								}
 							}
 						}
@@ -435,9 +456,15 @@
 						"application/json": {
 							"schema": {
 								"type": "object",
-								"example": {
-									"person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-								}
+								"properties": {
+									"person_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+									}
+								},
+								"required": [
+									"person_linkedin_url"
+								]
 							}
 						}
 					}
@@ -517,9 +544,15 @@
 						"application/json": {
 							"schema": {
 								"type": "object",
-								"example": {
-									"person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-								}
+								"properties": {
+									"person_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+									}
+								},
+								"required": [
+									"person_linkedin_url"
+								]
 							}
 						}
 					}
@@ -539,12 +572,6 @@
 												"email": "antoine@blitz-agency.com",
 												"job_order_in_profile": 1,
 												"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-												"email_domain": "blitz-agency.com"
-											},
-											{
-												"email": "antoine@blitz-agency.com",
-												"job_order_in_profile": 2,
-												"company_linkedin_url": "https://www.linkedin.com/company/blitz-agency-gtm",
 												"email_domain": "blitz-agency.com"
 											}
 										]
@@ -696,7 +723,11 @@
 										"type": "number",
 										"example": 10
 									}
-								}
+								},
+								"required": [
+									"company_linkedin_url",
+									"cascade"
+								]
 							}
 						}
 					}
@@ -958,7 +989,10 @@
 										"type": "number",
 										"example": 1
 									}
-								}
+								},
+								"required": [
+									"company_linkedin_url"
+								]
 							}
 						}
 					}
@@ -1083,6 +1117,13 @@
 					"content": {
 						"application/json": {
 							"schema": {
+								"type": "object",
+								"properties": {
+									"domain": {
+										"type": "string",
+										"example": "https://www.blitz-agency.com"
+									}
+								},
 								"required": [
 									"domain"
 								]
@@ -1174,7 +1215,10 @@
 										"type": "string",
 										"example": "America/New_York"
 									}
-								}
+								},
+								"required": [
+									"region"
+								]
 							}
 						}
 					}
