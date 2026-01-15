@@ -676,48 +676,110 @@
 										"example": [
 											{
 												"include_title": [
-													"Founder",
-													"Co-Founder",
-													"Chief Executive Officer",
-													"CEO",
-													"Owner",
-													"President"
+													"Marketing Director",
+													"Head Marketing",
+													"Chief Marketing Officer"																			  
+												],
+												"exclude_title": [
+													"assistant",
+													"intern",
+													"product",
+													"junior"
 												],
 												"location": [
-													"US",
-													"CA"
+													"WORLD"
 												],
 												"include_headline_search": false
 											},
 											{
 												"include_title": [
-													"Chief Sales Officer",
-													"CSO",
-													"VP Sales",
-													"Vice President Sales",
-													"Head of Sales",
-													"Sales Director"
+													"Marketing Manager",
+													"Head Growth",
+													"Growth manager"
+												],
+												"exclude_title": [
+													"junior",
+													"assistant",
+													"intern",
+													"hacker"
 												],
 												"location": [
 													"WORLD"
+												],
+												"include_headline_search": false
+											},
+											{
+												"include_title": [
+												"Communication Director",
+												"Brand Director",
+												"Content Director"
+												],
+												"exclude_title": [
+												"junior",
+												"assistant",
+												"intern",
+												"UX",
+												"UI",
+												"Design"
+												],
+												"location": [
+												"WORLD"
+												],
+												"include_headline_search": false
+											},
+											{
+												"include_title": [
+												"Communication Manager",
+												"Brand Manager",
+												"Content Manager"
+												],
+												"exclude_title": [
+												"junior",
+												"assistant",
+												"intern"
+												],
+												"location": [
+												"WORLD"
+												],
+												"include_headline_search": false
+											},
+											{
+												"include_title": [
+												"Communication",
+												"marketing",
+												"growth",
+												"brand"
+												],
+												"exclude_title": [
+												"junior",
+												"assistant",
+												"intern",
+												"product"
+											],
+												"location": [
+												"US",
+												"CA"
 												],
 												"include_headline_search": true
 											},
 											{
 												"include_title": [
-													"Chief Marketing Officer",
-													"CMO",
-													"Marketing Director",
-													"Director of Marketing"
+												"CEO",
+												"founder",
+												"cofounder",
+												"owner",
+												"General Director"
 												],
 												"exclude_title": [
-													"Assistant",
-													"Executive Assistant",
-													"Intern"
+												"junior",
+												"assistant",
+												"intern"
 												],
-												"include_headline_search": true
-											}
-										]
+												"location": [
+												"WORLD"
+												],
+												"include_headline_search": false
+											}										]
 									},
 									"max_results": {
 										"type": "number",
@@ -741,85 +803,373 @@
 									"type": "object",
 									"example": {
 										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"max_results": 1,
-										"results_length": 1,
-										"results": [
-											{
-												"person": {
-													"first_name": "Lionel",
-													"last_name": "Pereira",
-													"full_name": "Lionel Pereira",
-													"nickname": null,
-													"civility_title": null,
-													"headline": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-													"about_me": "As a value-based and compassionate leader, I strive to bring out the best in people, nurturing happy, high-performing teams, and consistently receiving positive employee feedback. Dedicated to Diversity & Inclusion, I am committed to diversity hiring, and raising awareness among employees. My leadership style is characterized by a willingness to roll up my sleeves and get things done, helping my teams thrive and succeed. With a passion for sales and a results-driven approach, I have successfully led diverse teams through periods of hyper-growth at different stages (startup, scale up & big tech), earning five promotions in eight years through dedication and a hands-on approach. I have extensive experience in adtech, media, content creation, marketing and with a deep understanding of the Technology, Financial Services, Automotive, and Luxury verticals.",
-													"location": {
+										"max_results": 6,
+										"results_length": 6,
+										"results": [{
+											"person": {
+												"first_name": "Melissa",
+												"last_name": "Rumor",
+												"full_name": "Melissa Rumor",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
+												"about_me": "At Welcome to the Jungle, we make work actually exciting. We do so by building innovative Employer Branding solutions that make companies attractive to workers, and by creating inspiring experiences and content that empower workers and companies to build new rules for a more sustainable work.",
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
+												"connections_count": 500,
+												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQGMYh2BdU4Jbg/profile-displayphoto-scale_200_200/B4EZd_SY8dHgAk-/0/1750187217673",
+												"experiences": [{
+													"job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": null,
+													"job_start_date": "2025-06-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
 														"city": "Paris",
 														"state_code": null,
-														"country_code": "FR",
-														"continent": "Europe"
-													},
-													"linkedin_url": "https://www.linkedin.com/in/lionelpereira",
-													"connections_count": 500,
-													"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4D03AQEM1RNs6XJc3Q/profile-displayphoto-shrink_200_200/B4DZWGGACCHIAg-/0/1741711475241",
-													"experiences": [
-														{
-															"job_title": "Director Sales Enterprise & Agency",
-															"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-															"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-															"job_description": "Enterprise & Agency Sales Director at Welcome to the Jungle, leading sales team (KAM, Strategic Account, BDR & CSM teams) to drive revenue growth, expand key partnerships, and enhance client retention. Committed to our mission of making work actually exciting by helping companies attract talent through innovative Employer Branding solutions and empowering workers to shape a more sustainable work environment.",
-															"job_start_date": "2025-03-01",
-															"job_end_date": null,
-															"job_is_current": true,
-															"job_location": {
-																"city": "Paris",
-																"state_code": null,
-																"country_code": "FR"
-															}
-														}
-													],
-													"education": [],
-													"skills": [
-														"strategy",
-														"lead generation",
-														"social media",
-														"project management",
-														"consultative selling",
-														"team leadership",
-														"team building",
-														"yammer",
-														"digital media",
-														"web project management",
-														"public speaking",
-														"coaching",
-														"online marketing",
-														"digital strategy",
-														"online advertising",
-														"management",
-														"social media marketing",
-														"cms",
-														"training delivery",
-														"account management",
-														"marketing strategy",
-														"content strategy",
-														"digital marketing"
-													],
-													"certifications": []
-												},
-												"icp": 2,
-												"ranking": 1,
-												"what_matched": [
-													{
-														"value": "Director Sales Enterprise & Agency",
-														"key": "job_title"
-													},
-													{
-														"value": "Director Sales Enterprise & Agency @ Welcome to the Jungle",
-														"key": "linkedin_headline"
+														"country_code": "FR"
 													}
-												]
-											}
-										]
+												}],
+												"education": [{
+													"degree": "DUT techniques de commercialisation",
+													"end_date": "2020-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/upecofficiel",
+													"organization": "Université Paris-Est Créteil (UPEC)",
+													"start_date": "2018-01-01"
+												}, {
+													"degree": "Master",
+													"end_date": "2023-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/esdes-business-school",
+													"organization": "ESDES Lyon Business School",
+													"start_date": "2021-01-01"
+												}, {
+													"degree": "Bachelor's degree",
+													"end_date": "2021-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/ppabusinessschool",
+													"organization": "PPA Business School",
+													"start_date": "2020-01-01"
+												}],
+												"skills": [],
+												"certifications": [{
+													"authority": "LinkedIn",
+													"name": "Développer son ingéniosité",
+													"url": "https://www.linkedin.com/learning/certificates/532df0d72879f0c2919f3f9e4a79ddd3d9c1dd7582409d4eaca4246c67bb3887"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Développer son ingéniosité (2015)",
+													"url": "https://www.linkedin.com/learning/certificates/23b42588c7d2c19511d79d8e79abf748e0d337054b865e331df82dcd01c2c993"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Savoir gérer son stress",
+													"url": "https://www.linkedin.com/learning/certificates/ae18130d4a0487235525e3c49a169ead02f099aac62f6a3e0d5e0a5c70931d28"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Gérer des équipes virtuelles",
+													"url": "https://www.linkedin.com/learning/certificates/62a5a97152a778a4ea469bfe37d1f65e5afa3dcdc1fe2f175473047324c67e3e"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Travailler à distance",
+													"url": "https://www.linkedin.com/learning/certificates/18505ad3624f0006266e5f33450cf5e48460c95161c57edb24facf29a802bb0f"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Améliorer sa concentration",
+													"url": "https://www.linkedin.com/learning/certificates/a55c89a7901af65bfc85eb22354e9b0410f1269e122560edcdcaf916a01514ad"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Être positif au travail",
+													"url": "https://www.linkedin.com/learning/certificates/6afbfaf2c599d6a25c596c01b95194c3415d6cfc57052b7e26148c4f6d10bfc5"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Savoir gérer son temps",
+													"url": "https://www.linkedin.com/learning/certificates/c46d933fd6a7ad07ac7905674b96655de95a0870a9200900bf9afca0baf57c46"
+												}, {
+													"authority": "LinkedIn",
+													"name": "Collaborer en équipe avec la suite Microsoft Office 365",
+													"url": "https://www.linkedin.com/learning/certificates/b01f471190dde5cf0dd5def11a9cb2a9944c94aec459673972059147723a1def"
+												}, {
+													"authority": "LinkedIn",
+													"name": "L'essentiel de Teams",
+													"url": "https://www.linkedin.com/learning/certificates/e4300bb452fa430d663bd28c3206d88f54ff1621a313b9884c9041f6c2f0ac2d"
+												}]
+											},
+											"icp": 2,
+											"ranking": 1,
+											"what_matched": [{
+												"value": "Growth Marketing Manager Welcome to the Jungle (France)",
+												"key": "job_title"
+											}, {
+												"value": "Growth Marketing Manager Welcome to the Jungle (France)",
+												"key": "job_title"
+											}]
+										}, {
+											"person": {
+												"first_name": "Wendy",
+												"last_name": "Carré",
+												"full_name": "Wendy Carré",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
+												"about_me": null,
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
+												"connections_count": 500,
+												"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+												"experiences": [{
+													"job_title": "Senior Content Marketing Manager",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": null,
+													"job_start_date": "2023-05-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": "Ville de Paris",
+														"state_code": null,
+														"country_code": "FR"
+													}
+												}],
+												"education": [{
+													"degree": "Master of Science in International Marketing",
+													"end_date": "2014-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/renneschoolofbusiness",
+													"organization": "Ecole supérieure de Commerce de Rennes",
+													"start_date": "2010-01-01"
+												}, {
+													"degree": "Marketing Communications, Human Resources, International Business",
+													"description": "Activities and Societies: Echange universitaire de six mois",
+													"end_date": "2012-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/university-of-sheffield",
+													"organization": "The University of Sheffield",
+													"start_date": "2012-01-01"
+												}, {
+													"degree": "Hypokhâgne / Khâgne",
+													"end_date": "2010-01-01",
+													"organization": "Classes préparatoires, Lycée Michelet, Vanves (92)",
+													"start_date": "2008-01-01"
+												}],
+												"skills": ["gfk", "photoshop", "pack office", "sap bw"],
+												"certifications": []
+											},
+											"icp": 2,
+											"ranking": 2,
+											"what_matched": [{
+												"value": "Senior Content Marketing Manager",
+												"key": "job_title"
+											}]
+										}, {
+											"person": {
+												"first_name": "Laura",
+												"last_name": "Scognamiglio",
+												"full_name": "Laura Huline Scognamiglio",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Senior Content Manager",
+												"about_me": "Expertise Digitale/Marketing & Communication, forte attraction pour l\\'Hôtellerie Internationale, la Gastronomie et le Tourisme.",
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
+												"connections_count": 500,
+												"profile_picture_url": null,
+												"experiences": [{
+													"job_title": "Senior Content Manager",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": "Elaboration d\\'une stratégie de contenu B2B engageante sur tous les canaux afin d\\'attirer de nouveaux clients et de fidéliser et valoriser la communauté de clients Welcome to the Jungle.Alimentation des campagnes Growth avec du contenu qualitatif et pertinent pour répondre aux enjeux des professionnels des RH et du Recrutement et convertir les prospects en clients ( Ebook, Live, Quizz.)Construction des campagnes de communication email afin d\\'optimiser la transition de Lead en MQL pour soutenir la réussite commerciale.Contrôle, analyse et compte rendu de l\\'impact du contenu sur les revenus.Contribution à la production de contenu pour nourrir les actions SEO et SEA.Collaboration avec les équipes Social Media pour maximiser la visibilité des contenus et nouveautés produit auprès de la communauté Welcome to the Jungle.Collaboration étroite avec l\\'équipe product marketing et les équipes Sales et AM pour valoriser les lancements produits et obtenir des retours du marché.",
+													"job_start_date": "2023-11-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": null,
+														"state_code": null,
+														"country_code": null
+													}
+												}],
+												"education": [{
+													"degree": "Licence",
+													"end_date": "2010-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/universite-paris-nanterre",
+													"organization": "Université Paris X Nanterre",
+													"start_date": "2007-01-01"
+												}, {
+													"degree": "M2",
+													"end_date": "2013-01-01",
+													"organization": "Vatel Paris",
+													"start_date": "2010-01-01"
+												}],
+												"skills": [],
+												"certifications": []
+											},
+											"icp": 4,
+											"ranking": 3,
+											"what_matched": [{
+												"value": "Senior Content Manager",
+												"key": "job_title"
+											}]
+										}, {
+											"person": {
+												"first_name": "Marie",
+												"last_name": "Villemin",
+												"full_name": "Marie Poirier Villemin",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Brand Manager @ Welcome to the Jungle",
+												"about_me": null,
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/marie-villemin",
+												"connections_count": 500,
+												"profile_picture_url": null,
+												"experiences": [{
+													"job_title": "Brand Manager Welcome to the Jungle (France)",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": null,
+													"job_start_date": "2025-01-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": "Paris",
+														"state_code": null,
+														"country_code": "FR"
+													}
+												}],
+												"education": [{
+													"degree": "Master 2 (M2)",
+													"end_date": "2020-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/supdepub",
+													"organization": "Sup de Pub - INSEEC U",
+													"start_date": "2019-01-01"
+												}, {
+													"degree": "Baccalauréat",
+													"end_date": "2015-01-01",
+													"organization": "Lycée Saint Joseph Vendôme",
+													"start_date": "2008-01-01"
+												}],
+												"skills": [],
+												"certifications": []
+											},
+											"icp": 4,
+											"ranking": 4,
+											"what_matched": [{
+												"value": "Brand Manager Welcome to the Jungle (France)",
+												"key": "job_title"
+											}]
+										}, {
+											"person": {
+												"first_name": "Juliette",
+												"last_name": "B.",
+												"full_name": "Juliette B.",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Associate Brand Manager @Welcome to the Jungle",
+												"about_me": null,
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/juliette-boisdon-23b9661b8",
+												"connections_count": 500,
+												"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+												"experiences": [{
+													"job_title": "Associate Brand Manager",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": null,
+													"job_start_date": "2025-09-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": null,
+														"state_code": null,
+														"country_code": null
+													}
+												}],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											},
+											"icp": 4,
+											"ranking": 5,
+											"what_matched": [{
+												"value": "Associate Brand Manager",
+												"key": "job_title"
+											}]
+										}, {
+											"person": {
+												"first_name": "Marie",
+												"last_name": "Villemin",
+												"full_name": "Marie Poirier Villemin",
+												"nickname": null,
+												"civility_title": null,
+												"headline": "Brand Manager @ Welcome to the Jungle",
+												"about_me": null,
+												"location": {
+													"city": "Paris",
+													"state_code": null,
+													"country_code": "FR",
+													"continent": "Europe"
+												},
+												"linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
+												"connections_count": 500,
+												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQEhSvrPJKxuew/profile-displayphoto-shrink_200_200/B4EZWt3LeRHcAo-/0/1742378678694",
+												"experiences": [{
+													"job_title": "Brand Manager Welcome to the Jungle (France)",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+													"job_description": null,
+													"job_start_date": "2025-01-01",
+													"job_end_date": null,
+													"job_is_current": true,
+													"job_location": {
+														"city": "Paris",
+														"state_code": null,
+														"country_code": "FR"
+													}
+												}],
+												"education": [{
+													"degree": "Baccalauréat",
+													"end_date": "2015-01-01",
+													"organization": "Lycée Saint Joseph Vendôme",
+													"start_date": "2008-01-01"
+												}, {
+													"degree": "Master 2 (M2)",
+													"end_date": "2020-01-01",
+													"linkedin_url": "https://www.linkedin.com/school/supdepub",
+													"organization": "Sup de Pub - INSEEC U",
+													"start_date": "2019-01-01"
+												}],
+												"skills": [],
+												"certifications": []
+											},
+											"icp": 4,
+											"ranking": 6,
+											"what_matched": [{
+												"value": "Brand Manager Welcome to the Jungle (France)",
+												"key": "job_title"
+											}]
+										}]
 									}
 								}
 							}
@@ -983,7 +1333,7 @@
 									},
 									"max_results": {
 										"type": "number",
-										"example": 10
+										"example": 3
 									},
 									"page": {
 										"type": "number",
@@ -1006,49 +1356,136 @@
 									"type": "object",
 									"example": {
 										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"max_results": 1,
-										"results_length": 1,
+										"max_results": 3,
+										"results_length": 3,
 										"page": 1,
-										"total_pages": 244,
-										"results": [
-											{
-												"first_name": "Hélène",
-												"last_name": "Pillon",
-												"full_name": "Hélène Pillon",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Journaliste freelance",
-												"about_me": "Depuis Marseille, je travaille pour différents médias français et européens en tant que…",
-												"location": {
+										"total_pages": 82,
+										"results": [{
+											"first_name": "Hélène",
+											"last_name": "Pillon",
+											"full_name": "Hélène Pillon",
+											"nickname": null,
+											"civility_title": null,
+											"headline": "Journaliste freelance",
+											"about_me": "Depuis Marseille, je travaille pour différents médias français et européens en tant que…",
+											"location": {
+												"city": null,
+												"state_code": null,
+												"country_code": "FR",
+												"continent": "Europe"
+											},
+											"linkedin_url": "https://www.linkedin.com/in/h%c3%a9l%c3%a8ne-pillon-2a57155a",
+											"connections_count": 361,
+											"profile_picture_url": "https://media.licdn.com/dms/image/v2/C5103AQGChE55b4tmFA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517400935573",
+											"experiences": [{
+												"job_title": "Journaliste Indépendante",
+												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+												"job_description": "Rédaction de portraits pour le site web",
+												"job_start_date": "2019-12-01",
+												"job_end_date": null,
+												"job_is_current": true,
+												"job_location": {
 													"city": null,
 													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/h%c3%a9l%c3%a8ne-pillon-2a57155a",
-												"connections_count": 361,
-												"profile_picture_url": "https://media.licdn.com/dms/image/v2/C5103AQGChE55b4tmFA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517400935573",
-												"experiences": [
-													{
-														"job_title": "Journaliste Indépendante",
-														"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-														"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-														"job_description": "Rédaction de portraits pour le site web",
-														"job_start_date": "2019-12-01",
-														"job_end_date": null,
-														"job_is_current": true,
-														"job_location": {
-															"city": null,
-															"state_code": null,
-															"country_code": null
-														}
-													}
-												],
-												"education": [],
-												"skills": [],
-												"certifications": []
-											}
-										]
+													"country_code": null
+												}
+											}],
+											"education": [],
+											"skills": [],
+											"certifications": []
+										}, {
+											"first_name": "Nathan",
+											"last_name": "Chalot",
+											"full_name": "Nathan Chalot",
+											"nickname": null,
+											"civility_title": null,
+											"headline": null,
+											"about_me": null,
+											"location": {
+												"city": "Paris",
+												"state_code": null,
+												"country_code": "FR",
+												"continent": "Europe"
+											},
+											"linkedin_url": "https://www.linkedin.com/in/nathan-chalot-5a978210a",
+											"connections_count": 500,
+											"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+											"experiences": [{
+												"job_title": "Welcome to the Jungle France",
+												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+												"job_description": null,
+												"job_start_date": null,
+												"job_end_date": null,
+												"job_is_current": true,
+												"job_location": {
+													"city": null,
+													"state_code": null,
+													"country_code": null
+												}
+											}],
+											"education": [],
+											"skills": ["javascript", "html5", "jquery", "ruby", "css", "github", "git", "ruby on rails"],
+											"certifications": []
+										}, {
+											"first_name": "Colombe",
+											"last_name": "Godeluck",
+											"full_name": "Colombe Godeluck",
+											"nickname": null,
+											"civility_title": null,
+											"headline": "Helps companies strengthen & promote their employer brand",
+											"about_me": null,
+											"location": {
+												"city": null,
+												"state_code": null,
+												"country_code": "FR",
+												"continent": "Europe"
+											},
+											"linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
+											"connections_count": 500,
+											"profile_picture_url": null,
+											"experiences": [{
+												"job_title": "Account Manager Senior",
+												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+												"job_description": null,
+												"job_start_date": "2023-02-01",
+												"job_end_date": null,
+												"job_is_current": true,
+												"job_location": {
+													"city": "Anglet",
+													"state_code": null,
+													"country_code": "FR"
+												}
+											}],
+											"education": [{
+												"degree": "French Baccalaureate",
+												"end_date": "2010-01-01",
+												"organization": "Louis Barthou High School",
+												"start_date": "2007-01-01"
+											}, {
+												"degree": "Master’s Degree",
+												"end_date": "2016-01-01",
+												"linkedin_url": "https://www.linkedin.com/school/maastricht-university-school-of-business-and-economics",
+												"organization": "Maastricht University School of Business and Economics",
+												"start_date": "2016-01-01"
+											}, {
+												"degree": "Master's Degree",
+												"end_date": "2014-01-01",
+												"linkedin_url": "https://www.linkedin.com/school/universite-paris-dauphine-psl",
+												"organization": "Université Paris Dauphine",
+												"start_date": "2010-01-01"
+											}, {
+												"degree": "Master’s Degree",
+												"end_date": "2017-01-01",
+												"linkedin_url": "https://www.linkedin.com/school/em-lyon-business-school",
+												"organization": "EMLYON Business School",
+												"start_date": "2015-01-01"
+											}],
+											"skills": [],
+											"certifications": []
+										}]
 									}
 								}
 							}
