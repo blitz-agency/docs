@@ -49,7 +49,7 @@
 										"remaining_credits":99.5,
 										"next_reset_at":"2026-02-12T17:48:25.199Z",
 										"max_requests_per_seconds":5,
-										"allowed_apis":["/search/waterfall-icp","/enrichment/email_domain","/enrichment/email"],
+										"allowed_apis":["/search/waterfall-icp-keyword","/enrichment/email_domain","/enrichment/email"],
 										"active_plans":[{"name":"Startup Trial","status":"active","started_at":"2026-01-12T17:48:25.200Z"}]
 									}
 								}
@@ -623,7 +623,7 @@
 				}
 			}
 		},
-		"/v2/search/waterfall-icp": {
+		"/v2/search/waterfall-icp-keyword": {
 			"post": {
 				"tags": [
 					"People Search"
