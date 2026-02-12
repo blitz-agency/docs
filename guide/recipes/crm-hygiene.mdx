@@ -1,101 +1,111 @@
 ---
-title: 'CRM Hygiene Playbooks'
-description: 'Dynamic enrichment and automated cleaning workflows.'
+title: "CRM Hygiene Playbooks"
+description: "Dynamic enrichment and automated cleaning workflows."
 ---
-
 
 
 [Image of software architecture diagram]
 
 
-Data decay is inevitable, but manual cleaning is obsolete.
-With BlitzAPI's **Unlimited Model**, RevOps teams can shift from "Annual Cleaning" to **"Continuous Hygiene"**.
+Data decay is inevitable, but manual cleaning is obsolete. With BlitzAPI's **Unlimited Model**, RevOps teams can shift from "Annual Cleaning" to **"Continuous Hygiene"**.
+
 
 Instead of buying static lists, you can build **Dynamic Playbooks** that trigger exactly when you need them.
 
+
 ---
 
-## Playbook 1: The "Dynamic Account" Enrichment
-*(The "Surgical Strike" Approach)*
 
-**The Scenario**: A Sales Rep is working a high-priority Account in Salesforce/HubSpot. The account has potential, but the Rep lacks the *right* contacts (e.g., the VP of Sales is missing).
+## Playbook 1: The "Dynamic Account" Enrichment
+
+
+_(The "Surgical Strike" Approach)_
+
+
+**The Scenario**: A Sales Rep is working a high-priority Account in Salesforce/HubSpot. The account has potential, but the Rep lacks the _right_ contacts (e.g., the VP of Sales is missing).
+
 
 **The Solution**: Instead of asking the Rep to go to LinkedIn and manually copy-paste data, you give them an **"Enrich Now" button** in the CRM.
 
+
 <Steps>
-  <Step title="1. Trigger (The Button)">
-    The Rep clicks a button in the CRM (via a Webhook/Flow).
-  </Step>
-  <Step title="2. The Waterfall Search">
-    The automation sends the Company Domain to BlitzAPI's **Waterfall ICP** endpoint.
-    * *Query*: "Find the VP Sales or CRO in the US for this company."
-  </Step>
-  <Step title="3. Automatic Sync">
-    BlitzAPI returns the **Verified Email** and **Phone**. The automation creates the Contact in the CRM and assigns it to the Rep instantly.
-  </Step>
+ <Step title="1. Trigger (The Button)">
+   The Rep clicks a button in the CRM (via a Webhook/Flow).
+ </Step>
+ <Step title="2. The Waterfall Search">
+   The automation sends the Company Domain to BlitzAPI's **Waterfall ICP** endpoint.
+
+
+   - _Query_: "Find the VP Sales or CRO in the US for this company."
+ </Step>
+ <Step title="3. Automatic Sync">
+   BlitzAPI returns the **Verified Email** and **Phone**. The automation creates the Contact in the CRM and assigns it to the Rep instantly.
+ </Step>
 </Steps>
 
-### Why this changes the game
-You stop enriching *every* company (wasteful). You enrich **only accounts with active intent**, ensuring 100% data freshness for the leads that actually matter.
-
-<Card title="Tech Enabler: Waterfall ICP" icon="stairs" href="/api-reference/search/waterfall-icp-keyword>
-  Use `/search/waterfall-icp-keyword` to find the specific decision-maker on-demand.
-</Card>
 
 ---
 
+
 ## Playbook 2: The "Pre-Send" Safety Net
-*(The Anti-Bounce Shield)*
+
+
+_(The Anti-Bounce Shield)_
+
 
 **The Scenario**: You are about to enroll 5,000 leads into a cold email sequence. Some data is old; some emails might be "Catch-All".
 
-**The Solution**: An automated gatekeeper that validates every email *before* it enters the sequence.
+
+**The Solution**: An automated gatekeeper that validates every email _before_ it enters the sequence.
+
 
 <Steps>
-  <Step title="1. Batch Export">
-    Your automation tool (n8n/Make) pulls the list of emails.
-  </Step>
-  <Step title="2. Strict Validation">
-    Pass every email through `/api/email/validate`.
-    * BlitzAPI checks: Syntax, DNS, and performs a live SMTP handshake.
-  </Step>
-  <Step title="3. Routing">
-    * **Valid**: Enrolled in Sequence A (Aggressive).
-    * **Catch-All**: Enrolled in Sequence B (Manual/LinkedIn).
-    * **Invalid**: Marked as "Do Not Contact" in CRM.
-  </Step>
+ <Step title="1. Batch Export">
+   Your automation tool (n8n/Make) pulls the list of emails.
+ </Step>
+ <Step title="2. Strict Validation">
+   Pass every email through `/api/email/validate`.
+
+
+   - BlitzAPI checks: Syntax, DNS, and performs a live SMTP handshake.
+ </Step>
+ <Step title="3. Routing">
+   - **Valid**: Enrolled in Sequence A (Aggressive).
+   - **Catch-All**: Enrolled in Sequence B (Manual/LinkedIn).
+   - **Invalid**: Marked as "Do Not Contact" in CRM.
+ </Step>
 </Steps>
 
+
 <Card title="Tech Enabler: Validation" icon="shield-check" href="/api-reference/email/validate">
-  Use `/email/validate` to filter out risks before they hurt your domain reputation.
+ Use `/email/validate` to filter out risks before they hurt your domain reputation.
 </Card>
 
+
 ---
+
 
 ## ⚡ Scaling with Low-Code (n8n, Make, Clay)
 
-The true power of BlitzAPI is unleashed when combined with automation platforms.
-Because our plans are **Unlimited**, you can run massive loops without worrying about "burning credits."
 
-### Why integrate?
+The true power of BlitzAPI is unleashed when combined with automation platforms. Because our plans are **Unlimited**, you can run massive loops without worrying about "burning credits."
 
-| Tool | Ideal For | Why BlitzAPI? |
-| :--- | :--- | :--- |
-| **Clay** | **Bulk Enrichment** | Use our [Clay Integration](/guide/integrations/clay) to enrich 10k rows in minutes. Perfect for building initial lists. |
-| **n8n** | **Complex Logic** | Build self-hosted, infinite loops that clean your CRM every night. [View n8n Guide](/guide/integrations/n8n). |
-| **Make** | **CRM Connectivity** | Easily listen to HubSpot/Salesforce webhooks to trigger "Dynamic Playbooks". [View Make Guide](/guide/integrations/make). |
 
 > **RevOps Insight**: With the Unlimited Plan, you can set up a "Weekend Job" in n8n that scans your entire CRM, re-validates every email, and updates job titles, ensuring your team walks in on Monday to a pristine database.
 
+
 ---
+
 
 ## Ready to build?
 
+
 <CardGroup cols={2}>
-  <Card title="Get your API Key" icon="key" href="https://app.blitzapi.io">
-    Start building your dynamic playbooks today.
-  </Card>
-  <Card title="See Integration Guides" icon="puzzle-piece" href="/guide/integrations/n8n-make-clay">
-    Copy-paste recipes for your favorite automation tools.
-  </Card>
+ <Card title="Get your API Key" icon="key" href="https://app.blitzapi.io">
+   Start building your dynamic playbooks today.
+ </Card>
+ <Card title="See Integration Guides" icon="puzzle-piece" href="/guide/integrations/n8n-make-clay">
+   Copy-paste recipes for your favorite automation tools.
+ </Card>
 </CardGroup>
+

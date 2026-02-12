@@ -1630,6 +1630,124 @@
 				}
 			}
 		},
+		"/v2/enrichment/company": {
+			"post": {
+				"tags": [
+					"Company Enrichment"
+				],
+				"security": [
+					{
+						"APIKey": []
+					}
+				],
+				"summary": "Company Enrichment",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nEnrich a company profile from its LinkedIn URL.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/blitz-api"
+									}
+								},
+								"required": [
+									"company_linkedin_url"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"found": true,
+										"company": {
+											"linkedin_url": "https://www.linkedin.com/company/xxx",
+											"linkedin_id": 10509138,
+											"name": "Company Name",
+											"about": "Short company description / about us…",
+											"specialties": [
+												"graphisme",
+												"conseils communication",
+												"web"
+											],
+											"industry": "Advertising Services",
+											"type": "Privately Held",
+											"size": "1-10",
+											"employees_on_linkedin": 2,
+											"followers": 58,
+											"founded_year": 2003,
+											"hq": {
+												"city": "Noida",
+												"state": "Uttar Pradesh",
+												"postcode": "201301",
+												"country_code": "IN",
+												"country_name": "India",
+												"region": "APAC",
+												"continent": "Asia",
+												"street": "B-20 First Floor Sector -64"
+											},
+											"domain": "communication-support.be",
+											"website": "https://www.communication-support.be"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "Invalid API key, please provide a valid API key in the 'x-api-key' header"
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "Not Found"
+									}
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": {
+										"success": false,
+										"message": "Rate limit exceeded, please try again later"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v2/utilities/current-date": {
 			"post": {
 				"tags": [
