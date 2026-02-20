@@ -1,10 +1,10 @@
 ---
 title: "Reference & Standards"
-description: "API behavior, data logic, and performance details."
+description: "How the dataset works, email logic, rate limits, and other technical details."
 ---
 
 
-This section covers technical standards and logic details to help you optimize your API usage.
+This section covers technical standards and logic details to help you build reliable integrations with BlitzAPI.
 
 <Info>
  Looking for accepted values for industries, country codes, job levels, or other filters? See the [Field Normalization Reference](/guide/reference/field-normalization).
@@ -14,46 +14,75 @@ This section covers technical standards and logic details to help you optimize y
 ---
 
 
-## ⚡ Waterfall: Standard vs. Real-Time
+## 🔗 The LinkedIn Matching Key
 
 
-We offer two versions of the Waterfall ICP endpoint. Choosing the right one is key to managing your credits and latency.
+BlitzAPI operates its own proprietary dataset, centered on LinkedIn. All contact and company data is tied to LinkedIn profiles. The **Company LinkedIn URL** is the primary matching key across most APIs.
+
+This is a deliberate choice: LinkedIn URLs provide reliable, unique identification that ensures data quality. Other identifiers like website domains are less reliable (multiple domains per company, domain changes, redirects, etc.).
+
+<Warning>
+ **Domains are not accepted as direct input** to People Search, Waterfall ICP, Employee Finder, or Company Enrichment. If your source data only contains domains, run the **Domain to LinkedIn URL** API first to convert them.
+</Warning>
 
 
-| Feature         | Standard `/waterfall-icp-keyword`                    | Real-Time `/waterfall-icp-real-time`                                 |
-| :-------------- | :------------------------------------------- | :------------------------------------------------------------------- |
-| **Data Source** | Freshly Cached Data                          | Live Network Query                                                   |
-| **Latency**     | **\< 1 second**                              | **3-5 seconds**                                                      |
-| **Cost**        | 1 Credit / result                            | 3 Credits / result                                                   |
-| **Use Case**    | High volume, large audiences, broad mapping. | Specific targets, niche roles, or when "Standard" yields no results. |
+**Recommended workflow when starting from domains:**
 
-
-<Note>
- **Strategy**: We recommend attempting the **Standard** endpoint first. Only switch to **Real-Time** if the standard search returns `results_length: 0`.
-</Note>
+```
+Domain → Domain to LinkedIn URL → Company LinkedIn URL → People Search / Waterfall ICP / Enrichment
+```
 
 
 ---
 
 
-## 📧 Email Logic: Matching vs. Guessing
+## 📧 Email Logic: Real Emails, Not Guesswork
 
 
-A common misconception is that enrichment APIs "guess" emails (permutations like `first.last@domain.com`). **BlitzAPI does not do this.**
+Most email providers ask for first name, last name, and domain, then construct the email using patterns (e.g., `firstname.lastname@domain.com`). **BlitzAPI does not use this technology.**
+
+Our emails come from real web sources (partner data: website signups, newsletters, etc.) and are matched to the correct LinkedIn profile. The input is a **Person LinkedIn URL**, not a name + domain combination.
 
 
-### How we work
+### Verification
+
+Every email in the dataset is verified **at least once per month** using catch-all email validation technology. If an email bounces during our internal checks, it is immediately removed from circulation.
 
 
-1. **Identity Matching**: We match the LinkedIn profile against a massive dataset of known, verified identities.
-2. **No Permutations**: We only return an email if we have a concrete record of it linked to that specific individual.
-3. **Freshness Guarantee**:
-  - We do not serve stale data.
-  - Every email in our database is re-validated **at least once every 30 days**.
-  - If an email bounces during our internal checks, it is immediately removed from the circulation.
+### Coverage
+
+The dataset contains approximately **60 million verified emails worldwide**. Coverage may be lower for certain segments — especially juniors, interns, or people with a small web footprint. If the email was never captured from a web source, it won't be in the dataset.
 
 
-This approach ensures a significantly lower bounce rate compared to "pattern-matching" tools.
+### Best Practice: Use BlitzAPI First in Your Waterfall
+
+Since there is no additional cost per enrichment, always use BlitzAPI as the **first step** in a waterfall enrichment:
+
+<Steps>
+ <Step title="Step 1: BlitzAPI">
+   Enrich via BlitzAPI — real emails, top quality, no extra cost.
+ </Step>
+ <Step title="Step 2: Fallback Provider">
+   For contacts not found, use another provider with the pattern-based technology (first name + last name + domain).
+ </Step>
+</Steps>
+
+This combination maximizes both coverage and quality.
+
+
+---
+
+
+## 📱 Phone Numbers: US Only
+
+
+Phone number enrichment follows the same logic as email enrichment. Input is a **Person LinkedIn URL**.
+
+Phone numbers are validated, and approximately 90–95% of results are mobile numbers.
+
+<Warning>
+ **Geographic limitation**: Phone numbers are only available for the **United States**. There is no coverage outside the US. Contacts and emails remain available worldwide.
+</Warning>
 
 
 ---
@@ -65,6 +94,34 @@ This approach ensures a significantly lower bounce rate compared to "pattern-mat
 To ensure stability for all users:
 
 
-- **Concurrency**: All plans include **5 concurrent requests per second**.
-- **Burst**: Short bursts above this limit may be queued, but sustained overage will return `429 Too Many Requests`.
-- **Timeouts**: Set your client timeout to at least **15 seconds** if you are using Real-Time endpoints or Email Validation, as live verification involves network handshakes with external mail servers.
+| Parameter        | Value                                   |
+| :--------------- | :-------------------------------------- |
+| **Concurrency**  | 5 requests per second (standard)        |
+| **Burst**        | Short bursts may be queued; sustained overage returns `429 Too Many Requests` |
+| **Timeout**      | Set your client timeout to at least **15 seconds** for Email Validation endpoints (live verification involves network handshakes with external mail servers) |
+
+
+---
+
+
+## 💰 Pricing Model
+
+
+BlitzAPI uses a **flat monthly fee** with no credit system. Once subscribed, all data is unlimited: contacts, emails, phone numbers, with no additional cost per request.
+
+This means you can:
+
+- **Iterate fast** without worrying about wasting credits
+- **Make mistakes** (delete data, rerun requests) with zero additional cost
+- **Test freely** — new targeting strategies, new ICP configurations, new workflows
+- **Scale campaigns** as much as needed with no incremental data cost
+
+
+<CardGroup cols={2}>
+ <Card title="See Plans & Pricing" icon="credit-card" href="https://blitz-api.ai/pricing">
+   Compare plans and find the right fit for your team.
+ </Card>
+ <Card title="Field Normalization" icon="book" href="/guide/reference/field-normalization">
+   Full list of accepted values for industries, regions, job levels, and more.
+ </Card>
+</CardGroup>
