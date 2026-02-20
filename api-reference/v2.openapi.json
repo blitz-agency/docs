@@ -2,8 +2,8 @@
 	"openapi": "3.1.0",
 	"info": {
 		"title": "Blitz OpenAPI Reference",
-		"version": "2.0.0",
-		"description": "Welcome to the Blitz API Reference.\n\nUse this interactive documentation to test endpoints directly in your browser. Authentication is required via the `x-api-key` header."
+		"version": "2.1.0",
+		"description": "Welcome to the Blitz API Reference.\n\nUse this interactive documentation to test endpoints directly in your browser. Authentication is required via the `x-api-key` header.\n\n## Search APIs\n\nOur Search endpoints let you build targeted lists of companies and people using powerful filters. Both Company Search and People Search share common filter patterns (location, industry, keywords) documented in our [Field Normalization Guide](/guide/reference/field-normalization)."
 	},
 	"servers": [
 		{
@@ -20,7 +20,243 @@
 				"description": "Your Blitz API Key."
 			}
 		},
-		"schemas": {},
+		"schemas": {
+			"KeywordFilter": {
+				"type": "object",
+				"description": "Keyword filter with include/exclude logic. Used across Company Search (name, keywords) and People Search (title, headline).",
+				"properties": {
+					"include": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": [],
+						"description": "Keywords to match. Results must contain at least one of these terms."
+					},
+					"exclude": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": [],
+						"description": "Keywords to exclude. Results containing any of these terms are filtered out."
+					}
+				}
+			},
+			"RangeFilter": {
+				"type": "object",
+				"description": "Numeric range filter. Used for employee_count, founded_year, and similar numeric fields.",
+				"properties": {
+					"min": {
+						"type": "number",
+						"minimum": 0,
+						"default": 0,
+						"description": "Minimum value (inclusive)."
+					},
+					"max": {
+						"type": "number",
+						"minimum": 0,
+						"default": 0,
+						"description": "Maximum value (inclusive). Set to `0` to leave unbounded."
+					}
+				}
+			},
+			"EnumFilter": {
+				"type": "object",
+				"description": "Enum filter with include/exclude logic. Used for industry, company type, and similar categorical fields.",
+				"properties": {
+					"include": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": [],
+						"description": "Values to match. Results must match at least one."
+					},
+					"exclude": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": [],
+						"description": "Values to exclude."
+					}
+				}
+			},
+			"LocationFilter": {
+				"type": "object",
+				"description": "Location filter for headquarters (Company Search) or person location (People Search). All sub-fields are optional and combined with AND logic.",
+				"properties": {
+					"continent": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": ["Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"]
+						},
+						"default": [],
+						"description": "Filter by continent. See [Field Normalization](/guide/reference/field-normalization#continents) for accepted values."
+					},
+					"country_code": {
+						"type": "array",
+						"items": { "type": "string" },
+						"default": [],
+						"description": "ISO 3166-1 alpha-2 country codes (e.g., `US`, `FR`, `DE`). See [Field Normalization](/guide/reference/field-normalization#country-codes)."
+					},
+					"sales_region": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": ["NORAM", "LATAM", "EMEA", "APAC"]
+						},
+						"default": [],
+						"description": "Filter by sales region. See [Field Normalization](/guide/reference/field-normalization#sales-regions)."
+					},
+					"city": {
+						"$ref": "#/components/schemas/KeywordFilter",
+						"description": "Keyword search on the city name."
+					}
+				}
+			},
+			"CompanySearchCriteria": {
+				"type": "object",
+				"description": "Company-level filters for Company Search.",
+				"properties": {
+					"name": {
+						"$ref": "#/components/schemas/KeywordFilter",
+						"description": "Search in the company name."
+					},
+					"keywords": {
+						"$ref": "#/components/schemas/KeywordFilter",
+						"description": "Search in the company description / about section."
+					},
+					"industry": {
+						"$ref": "#/components/schemas/EnumFilter",
+						"description": "Filter by LinkedIn industry. See [Field Normalization](/guide/reference/field-normalization#industries) for the full list of ~700 accepted values."
+					},
+					"hq": {
+						"$ref": "#/components/schemas/LocationFilter",
+						"description": "Filter by headquarters location."
+					},
+					"employee_count": {
+						"$ref": "#/components/schemas/RangeFilter",
+						"description": "Filter by exact LinkedIn employee count (numeric range)."
+					},
+					"employee_range": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": ["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5001-10000", "10001+"]
+						},
+						"default": [],
+						"description": "Filter by LinkedIn employee range bucket. Mutually combinable (OR logic)."
+					},
+					"founded_year": {
+						"$ref": "#/components/schemas/RangeFilter",
+						"description": "Filter by founding year (numeric range)."
+					},
+					"type": {
+						"$ref": "#/components/schemas/EnumFilter",
+						"description": "Filter by company type. Accepted values: `Educational`, `Educational Institution`, `Government Agency`, `Nonprofit`, `Partnership`, `Privately Held`, `Public Company`, `Self-Employed`, `Self-Owned`, `Sole Proprietorship`."
+					},
+					"min_linkedin_followers": {
+						"type": "number",
+						"minimum": 0,
+						"maximum": 10000000,
+						"default": 1,
+						"description": "Minimum number of LinkedIn followers."
+					}
+				}
+			},
+			"ErrorUnauthorized": {
+				"type": "object",
+				"properties": {
+					"message": { "type": "string" }
+				},
+				"example": {
+					"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
+				}
+			},
+			"ErrorPaymentRequired": {
+				"type": "object",
+				"properties": {
+					"message": { "type": "string" }
+				},
+				"example": {
+					"message": "Insufficient credits balance"
+				}
+			},
+			"ErrorInternalServer": {
+				"type": "object",
+				"properties": {
+					"success": { "type": "boolean" },
+					"message": { "type": "string" }
+				},
+				"example": {
+					"success": false,
+					"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+				}
+			},
+			"ErrorInvalidInput": {
+				"type": "object",
+				"properties": {
+					"success": { "type": "boolean" },
+					"error": {
+						"type": "object",
+						"properties": {
+							"code": { "type": "string" },
+							"message": { "type": "string" }
+						}
+					}
+				},
+				"example": {
+					"success": false,
+					"error": {
+						"code": "INVALID_INPUT",
+						"message": "Missing required fields"
+					}
+				}
+			}
+		},
+		"responses": {
+			"Unauthorized": {
+				"description": "Unauthorized – Missing or invalid API key.",
+				"content": {
+					"application/json": {
+						"schema": { "$ref": "#/components/schemas/ErrorUnauthorized" }
+					}
+				}
+			},
+			"PaymentRequired": {
+				"description": "Payment Required – Insufficient credits.",
+				"content": {
+					"application/json": {
+						"schema": { "$ref": "#/components/schemas/ErrorPaymentRequired" }
+					}
+				}
+			},
+			"InternalServerError": {
+				"description": "Internal Server Error",
+				"content": {
+					"application/json": {
+						"schema": { "$ref": "#/components/schemas/ErrorInternalServer" }
+					}
+				}
+			},
+			"InvalidInput": {
+				"description": "Unprocessable Entity – Invalid input.",
+				"content": {
+					"application/json": {
+						"schema": { "$ref": "#/components/schemas/ErrorInvalidInput" }
+					}
+				}
+			},
+			"TooManyRequests": {
+				"description": "Too Many Requests – Rate limit exceeded.",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object",
+							"example": {
+								"success": false,
+								"message": "Rate limit exceeded, please try again later"
+							}
+						}
+					}
+				}
+			}
+		},
 		"parameters": {}
 	},
 	"paths": {
@@ -28,14 +264,8 @@
 			"get": {
 				"summary": "Get API Key Details",
 				"description": "### 💰 Cost: 0 Credits\n\nCheck the API key information, current credit balance and plan status",
-				"tags": [
-					"Account"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["Account"],
+				"security": [{ "APIKey": [] }],
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -44,58 +274,241 @@
 								"schema": {
 									"type": "object",
 									"example": {
-										"valid":true,
-										"id":"XXX",
-										"remaining_credits":99.5,
-										"next_reset_at":"2026-02-12T17:48:25.199Z",
-										"max_requests_per_seconds":5,
-										"allowed_apis":["/search/waterfall-icp-keyword","/enrichment/email_domain","/enrichment/email"],
-										"active_plans":[{"name":"Startup Trial","status":"active","started_at":"2026-01-12T17:48:25.200Z"}]
+										"valid": true,
+										"id": "XXX",
+										"remaining_credits": 99.5,
+										"next_reset_at": "2026-02-12T17:48:25.199Z",
+										"max_requests_per_seconds": 5,
+										"allowed_apis": ["/search/waterfall-icp-keyword", "/search/company", "/enrichment/email_domain", "/enrichment/email"],
+										"active_plans": [{ "name": "Startup Trial", "status": "active", "started_at": "2026-01-12T17:48:25.200Z" }]
 									}
 								}
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
+					"401": { "$ref": "#/components/responses/Unauthorized" },
 					"404": {
 						"description": "Not found",
 						"content": {
 							"application/json": {
 								"schema": {
 									"type": "object",
-									"example": {
-										"message": "API Key not found"
-									}
+									"example": { "message": "API Key not found" }
 								}
 							}
 						}
 					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/v2/search/company": {
+			"post": {
+				"tags": ["Company Search"],
+				"security": [{ "APIKey": [] }],
+				"summary": "Find Companies",
+				"description": "### 💰 Cost: 1 Credit per result (max = `max_results`)\n\nSearch for companies matching specific criteria: industry, location, size, keywords, and more.\n\nAll filters are optional and combined with **AND** logic. Within each filter, multiple values use **OR** logic.\n\n> **Field Normalization**: Industry names, country codes, and other enum fields must match exact normalized values. See the [Field Normalization Reference](/guide/reference/field-normalization).",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company": {
+										"$ref": "#/components/schemas/CompanySearchCriteria",
+										"description": "Company search criteria. All sub-filters are optional."
+									},
+									"cursor": {
+										"type": "string",
+										"nullable": true,
+										"minLength": 3,
+										"default": null,
+										"description": "Pagination cursor returned by a previous request. Pass it to retrieve the next page of results."
+									},
+									"max_results": {
+										"type": "number",
+										"minimum": 1,
+										"maximum": 50,
+										"default": 10,
+										"description": "Maximum number of results to return per page (1–50)."
+									}
+								}
+							},
+							"examples": {
+								"saas-europe": {
+									"summary": "SaaS companies in Europe (51-500 employees)",
+									"value": {
+										"company": {
+											"keywords": { "include": ["SaaS", "cloud platform"] },
+											"industry": { "include": ["Software Development", "Technology; Information and Internet"] },
+											"hq": { "continent": ["Europe"] },
+											"employee_range": ["51-200", "201-500"]
+										},
+										"max_results": 25
+									}
+								},
+								"fintech-us-startup": {
+									"summary": "FinTech startups in the US founded after 2020",
+									"value": {
+										"company": {
+											"keywords": { "include": ["fintech", "payments", "neobank"] },
+											"hq": { "country_code": ["US"] },
+											"founded_year": { "min": 2020 },
+											"employee_range": ["1-10", "11-50"],
+											"type": { "include": ["Privately Held"] }
+										},
+										"max_results": 10
+									}
+								},
+								"enterprise-apac": {
+									"summary": "Large enterprises in APAC",
+									"value": {
+										"company": {
+											"hq": { "sales_region": ["APAC"] },
+											"employee_range": ["5001-10000", "10001+"],
+											"type": { "include": ["Public Company"] },
+											"min_linkedin_followers": 10000
+										},
+										"max_results": 50
+									}
+								},
+								"pagination": {
+									"summary": "Paginate to next page",
+									"value": {
+										"company": {
+											"industry": { "include": ["Software Development"] },
+											"hq": { "country_code": ["FR"] }
+										},
+										"cursor": "eyJwYWdlIjoyLCJzZWFyY2hfaWQiOiJhYmMxMjMifQ==",
+										"max_results": 25
 									}
 								}
 							}
 						}
 					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"results_count": {
+											"type": "number",
+											"description": "Number of companies returned in this page."
+										},
+										"total_results": {
+											"type": "number",
+											"description": "Total number of companies matching the query."
+										},
+										"cursor": {
+											"type": "string",
+											"nullable": true,
+											"description": "Pagination cursor for the next page. `null` if no more results."
+										},
+										"results": {
+											"type": "array",
+											"description": "Array of matching company profiles.",
+											"items": {
+												"type": "object",
+												"properties": {
+													"linkedin_url": { "type": "string" },
+													"linkedin_id": { "type": "number" },
+													"name": { "type": "string" },
+													"about": { "type": "string", "nullable": true },
+													"industry": { "type": "string", "nullable": true },
+													"type": { "type": "string", "nullable": true },
+													"size": { "type": "string", "nullable": true },
+													"employees_on_linkedin": { "type": "number", "nullable": true },
+													"followers": { "type": "number", "nullable": true },
+													"founded_year": { "type": "number", "nullable": true },
+													"specialties": { "type": "string", "nullable": true },
+													"hq": {
+														"type": "object",
+														"nullable": true,
+														"properties": {
+															"city": { "type": "string", "nullable": true },
+															"state": { "type": "string", "nullable": true },
+															"postcode": { "type": "string", "nullable": true },
+															"country_code": { "type": "string", "nullable": true },
+															"country_name": { "type": "string", "nullable": true },
+															"continent": { "type": "string", "nullable": true },
+															"street": { "type": "string", "nullable": true }
+														}
+													},
+													"domain": { "type": "string", "nullable": true },
+													"website": { "type": "string", "nullable": true }
+												}
+											}
+										}
+									},
+									"example": {
+										"results_count": 2,
+										"total_results": 148,
+										"cursor": "eyJwYWdlIjoyLCJzZWFyY2hfaWQiOiJhYmMxMjMifQ==",
+										"results": [
+											{
+												"linkedin_url": "https://www.linkedin.com/company/blitz-api",
+												"linkedin_id": 108037802,
+												"name": "Blitzapi",
+												"about": "BlitzAPI provides enriched B2B data access through a suite of flexible and high-performance APIs.",
+												"industry": "Technology; Information and Internet",
+												"type": "Privately Held",
+												"size": "1-10",
+												"employees_on_linkedin": 3,
+												"followers": 6,
+												"founded_year": null,
+												"specialties": null,
+												"hq": {
+													"city": "Paris",
+													"state": null,
+													"postcode": null,
+													"country_code": "FR",
+													"country_name": "France",
+													"continent": "Europe",
+													"street": null
+												},
+												"domain": "blitz-api.ai",
+												"website": "https://blitz-api.ai"
+											},
+											{
+												"linkedin_url": "https://www.linkedin.com/company/example-saas",
+												"linkedin_id": 987654321,
+												"name": "ExampleSaaS",
+												"about": "Cloud-based project management platform for modern teams.",
+												"industry": "Software Development",
+												"type": "Privately Held",
+												"size": "51-200",
+												"employees_on_linkedin": 124,
+												"followers": 3420,
+												"founded_year": 2021,
+												"specialties": "SaaS, Project Management, Collaboration",
+												"hq": {
+													"city": "Berlin",
+													"state": "Berlin",
+													"postcode": "10115",
+													"country_code": "DE",
+													"country_name": "Germany",
+													"continent": "Europe",
+													"street": "Friedrichstraße 123"
+												},
+												"domain": "example-saas.com",
+												"website": "https://www.example-saas.com"
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"422": { "$ref": "#/components/responses/InvalidInput" },
+					"429": { "$ref": "#/components/responses/TooManyRequests" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
@@ -103,28 +516,17 @@
 			"post": {
 				"summary": "Reverse Phone Lookup",
 				"description": "### 💰 Cost: 5 Credits (on success)\n\nIdentify a professional and retrieve their full profile starting from a verified phone number.",
-				"tags": [
-					"People Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["People Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"phone": {
-										"type": "string",
-										"example": "+1234567890"
-									}
+									"phone": { "type": "string", "example": "+1234567890" }
 								},
-								"required": [
-									"phone"
-								]
+								"required": ["phone"]
 							}
 						}
 					}
@@ -143,38 +545,9 @@
 												"first_name": "Antoine",
 												"last_name": "Blitz",
 												"full_name": "Antoine Blitz",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Founder @BlitzAPI — B2B Data APIs for Prospecting, Enrichment & Personalization at Scale | GTME",
-												"about_me": "I build developer-first tools for scalable, intelligent B2B prospecting. I\\'m the…",
-												"location": {
-													"city": null,
-													"state_code": "NY",
-													"country_code": "US",
-													"continent": "North America"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-												"connections_count": 500,
-												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFbZDn8ju8JZg/profile-displayphoto-scale_200_200/B4EZfgsajLGcAY-/0/1751821433134",
-												"experiences": [
-													{
-														"job_title": "Founder Blitzapi",
-														"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-														"company_linkedin_id": "be578414-239f-522e-b2e1-9246e22a52d1",
-														"job_description": "We help GTM teams win faster by making high-quality B2B data and intent signals instantly available — directly in your existing stack. What we doBlitzAPI is an API-only platform for Growth, RevOps, and SalesOps teams to: Search: find the right people & companies (Waterfall ICP, LinkedIn/company/domain lookups, engagement search) Enrich: add verified emails, direct phone numbers & LinkedIn details in real time Validate: advanced catch-all email verification to maximize deliverability Scrape LinkedIn signals: posts, reactions, comments & activity for hyper-relevant outreach Why BlitzAPI- Real-time & precise — no stale databases- API-first & composable — works with N8N, Make, Clay, HubSpot, Salesforce, Smartlead…- Transparent pricing — credits instead of per-seat fees- Speed-to-market — prototype and scale playbooks in days, not months Use cases our customers loveHigh-deliverability outbound campaignsABM with Waterfall ICP targetingSocial selling with LinkedIn engagement triggersReal-time lead routing & enrichment",
-														"job_start_date": "2025-05-01",
-														"job_end_date": null,
-														"job_is_current": true,
-														"job_location": {
-															"city": null,
-															"state_code": null,
-															"country_code": null
-														}
-													}
-												],
-												"education": [],
-												"skills": [],
-												"certifications": []
+												"headline": "Founder @BlitzAPI",
+												"location": { "city": null, "state_code": "NY", "country_code": "US", "continent": "North America" },
+												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
 											}
 										}
 									}
@@ -182,46 +555,9 @@
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
@@ -229,28 +565,17 @@
 			"post": {
 				"summary": "Reverse Email Lookup",
 				"description": "### 💰 Cost: 1 Credit (on success)\n\nIdentify a professional and retrieve their full profile starting from a verified work email address.",
-				"tags": [
-					"People Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["People Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"email": {
-										"type": "string",
-										"example": "antoine@blitz-agency.com"
-									}
+									"email": { "type": "string", "example": "antoine@blitz-agency.com" }
 								},
-								"required": [
-									"email"
-								]
+								"required": ["email"]
 							}
 						}
 					}
@@ -269,38 +594,9 @@
 												"first_name": "Antoine",
 												"last_name": "Blitz",
 												"full_name": "Antoine Blitz",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Founder @BlitzAPI — B2B Data APIs for Prospecting, Enrichment & Personalization at Scale | GTME",
-												"about_me": "I build developer-first tools for scalable, intelligent B2B prospecting. I\\'m the…",
-												"location": {
-													"city": null,
-													"state_code": "NY",
-													"country_code": "US",
-													"continent": "North America"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-												"connections_count": 500,
-												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQFbZDn8ju8JZg/profile-displayphoto-scale_200_200/B4EZfgsajLGcAY-/0/1751821433134",
-												"experiences": [
-													{
-														"job_title": "Founder Blitzapi",
-														"company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-														"company_linkedin_id": "be578414-239f-522e-b2e1-9246e22a52d1",
-														"job_description": "We help GTM teams win faster by making high-quality B2B data and intent signals instantly available — directly in your existing stack. What we doBlitzAPI is an API-only platform for Growth, RevOps, and SalesOps teams to: Search: find the right people & companies (Waterfall ICP, LinkedIn/company/domain lookups, engagement search) Enrich: add verified emails, direct phone numbers & LinkedIn details in real time Validate: advanced catch-all email verification to maximize deliverability Scrape LinkedIn signals: posts, reactions, comments & activity for hyper-relevant outreach Why BlitzAPI- Real-time & precise — no stale databases- API-first & composable — works with N8N, Make, Clay, HubSpot, Salesforce, Smartlead…- Transparent pricing — credits instead of per-seat fees- Speed-to-market — prototype and scale playbooks in days, not months Use cases our customers loveHigh-deliverability outbound campaignsABM with Waterfall ICP targetingSocial selling with LinkedIn engagement triggersReal-time lead routing & enrichment",
-														"job_start_date": "2025-05-01",
-														"job_end_date": null,
-														"job_is_current": true,
-														"job_location": {
-															"city": null,
-															"state_code": null,
-															"country_code": null
-														}
-													}
-												],
-												"education": [],
-												"skills": [],
-												"certifications": []
+												"headline": "Founder @BlitzAPI",
+												"location": { "city": null, "state_code": "NY", "country_code": "US", "continent": "North America" },
+												"linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
 											}
 										}
 									}
@@ -308,46 +604,9 @@
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
@@ -355,28 +614,17 @@
 			"post": {
 				"summary": "Linkedin URL to Domain",
 				"description": "### 💰 Cost: 0.5 Credits (on success)\n\nExtract the primary verified email domain pattern associated with a Company LinkedIn URL.",
-				"tags": [
-					"Company Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["Company Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"company_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/company/blitz-api"
-									}
+									"company_linkedin_url": { "type": "string", "example": "https://www.linkedin.com/company/blitz-api" }
 								},
-								"required": [
-									"company_linkedin_url"
-								]
+								"required": ["company_linkedin_url"]
 							}
 						}
 					}
@@ -388,54 +636,14 @@
 							"application/json": {
 								"schema": {
 									"type": "object",
-									"example": {
-										"found": true,
-										"email_domain": "blitz-agency.com"
-									}
+									"example": { "found": true, "email_domain": "blitz-agency.com" }
 								}
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
@@ -443,28 +651,17 @@
 			"post": {
 				"summary": "Find Mobile & Direct Phone",
 				"description": "### 💰 Cost: 5 Credits (on success)\n\nLocate a verified mobile or direct business line for a specific person using their LinkedIn profile URL.",
-				"tags": [
-					"People Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["People Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"person_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-									}
+									"person_linkedin_url": { "type": "string", "example": "https://www.linkedin.com/in/antoine-blitz-5581b7373" }
 								},
-								"required": [
-									"person_linkedin_url"
-								]
+								"required": ["person_linkedin_url"]
 							}
 						}
 					}
@@ -476,54 +673,14 @@
 							"application/json": {
 								"schema": {
 									"type": "object",
-									"example": {
-										"found": true,
-										"phone": "+1234567890"
-									}
+									"example": { "found": true, "phone": "+1234567890" }
 								}
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
@@ -531,28 +688,17 @@
 			"post": {
 				"summary": "Find Work Email",
 				"description": "### 💰 Cost: 1 Credit (on success)\n\nFind verified work email addresses (including catch-all status) for a specific person using their LinkedIn profile URL.",
-				"tags": [
-					"People Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["People Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"person_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
-									}
+									"person_linkedin_url": { "type": "string", "example": "https://www.linkedin.com/in/antoine-blitz-5581b7373" }
 								},
-								"required": [
-									"person_linkedin_url"
-								]
+								"required": ["person_linkedin_url"]
 							}
 						}
 					}
@@ -580,61 +726,18 @@
 							}
 						}
 					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Missing API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
 		"/v2/search/waterfall-icp-keyword": {
 			"post": {
-				"tags": [
-					"People Search"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["People Search"],
+				"security": [{ "APIKey": [] }],
 				"summary": "Waterfall ICP Search",
-				"description": "### 💰 Cost: 1 Credit per result\n\nFind decision-makers using a hierarchical search logic (e.g., search for C-Level; if not found, cascade to VP level).",
+				"description": "### 💰 Cost: 1 Credit per result\n\nFind decision-makers using a hierarchical search logic (e.g., search for C-Level; if not found, cascade to VP level).\n\nSee the [Waterfall Logic Guide](/guide/concepts/waterfall-logic) for strategy details.",
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -652,21 +755,15 @@
 											"properties": {
 												"include_title": {
 													"type": "array",
-													"items": {
-														"type": "string"
-													}
+													"items": { "type": "string" }
 												},
 												"exclude_title": {
 													"type": "array",
-													"items": {
-														"type": "string"
-													}
+													"items": { "type": "string" }
 												},
 												"location": {
 													"type": "array",
-													"items": {
-														"type": "string"
-													}
+													"items": { "type": "string" }
 												},
 												"include_headline_search": {
 													"type": "boolean"
@@ -675,674 +772,31 @@
 										},
 										"example": [
 											{
-												"include_title": [
-													"Marketing Director",
-													"Head Marketing",
-													"Chief Marketing Officer"																			  
-												],
-												"exclude_title": [
-													"assistant",
-													"intern",
-													"product",
-													"junior"
-												],
-												"location": [
-													"WORLD"
-												],
+												"include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
+												"exclude_title": ["assistant", "intern", "product", "junior"],
+												"location": ["WORLD"],
 												"include_headline_search": false
 											},
 											{
-												"include_title": [
-													"Marketing Manager",
-													"Head Growth",
-													"Growth manager"
-												],
-												"exclude_title": [
-													"junior",
-													"assistant",
-													"intern",
-													"hacker"
-												],
-												"location": [
-													"WORLD"
-												],
+												"include_title": ["Marketing Manager", "Head Growth", "Growth manager"],
+												"exclude_title": ["junior", "assistant", "intern"],
+												"location": ["WORLD"],
 												"include_headline_search": false
 											},
 											{
-												"include_title": [
-												"Communication Director",
-												"Brand Director",
-												"Content Director"
-												],
-												"exclude_title": [
-												"junior",
-												"assistant",
-												"intern",
-												"UX",
-												"UI",
-												"Design"
-												],
-												"location": [
-												"WORLD"
-												],
+												"include_title": ["CEO", "founder", "cofounder", "owner"],
+												"exclude_title": ["junior", "assistant", "intern"],
+												"location": ["WORLD"],
 												"include_headline_search": false
-											},
-											{
-												"include_title": [
-												"Communication Manager",
-												"Brand Manager",
-												"Content Manager"
-												],
-												"exclude_title": [
-												"junior",
-												"assistant",
-												"intern"
-												],
-												"location": [
-												"WORLD"
-												],
-												"include_headline_search": false
-											},
-											{
-												"include_title": [
-												"Communication",
-												"marketing",
-												"growth",
-												"brand"
-												],
-												"exclude_title": [
-												"junior",
-												"assistant",
-												"intern",
-												"product"
-											],
-												"location": [
-												"US",
-												"CA"
-												],
-												"include_headline_search": true
-											},
-											{
-												"include_title": [
-												"CEO",
-												"founder",
-												"cofounder",
-												"owner",
-												"General Director"
-												],
-												"exclude_title": [
-												"junior",
-												"assistant",
-												"intern"
-												],
-												"location": [
-												"WORLD"
-												],
-												"include_headline_search": false
-											}										]
+											}
+										]
 									},
 									"max_results": {
 										"type": "number",
 										"example": 10
 									}
 								},
-								"required": [
-									"company_linkedin_url",
-									"cascade"
-								]
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"max_results": 6,
-										"results_length": 6,
-										"results": [{
-											"person": {
-												"first_name": "Melissa",
-												"last_name": "Rumor",
-												"full_name": "Melissa Rumor",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Growth & Marketing Manager B2B : Brand Strategy, Lead Gen, SEO & Content | 👀 Actively seeking new challenges",
-												"about_me": "At Welcome to the Jungle, we make work actually exciting. We do so by building innovative Employer Branding solutions that make companies attractive to workers, and by creating inspiring experiences and content that empower workers and companies to build new rules for a more sustainable work.",
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/melissa-rumor",
-												"connections_count": 500,
-												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQGMYh2BdU4Jbg/profile-displayphoto-scale_200_200/B4EZd_SY8dHgAk-/0/1750187217673",
-												"experiences": [{
-													"job_title": "Growth Marketing Manager Welcome to the Jungle (France)",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": null,
-													"job_start_date": "2025-06-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": "Paris",
-														"state_code": null,
-														"country_code": "FR"
-													}
-												}],
-												"education": [{
-													"degree": "DUT techniques de commercialisation",
-													"end_date": "2020-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/upecofficiel",
-													"organization": "Université Paris-Est Créteil (UPEC)",
-													"start_date": "2018-01-01"
-												}, {
-													"degree": "Master",
-													"end_date": "2023-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/esdes-business-school",
-													"organization": "ESDES Lyon Business School",
-													"start_date": "2021-01-01"
-												}, {
-													"degree": "Bachelor's degree",
-													"end_date": "2021-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/ppabusinessschool",
-													"organization": "PPA Business School",
-													"start_date": "2020-01-01"
-												}],
-												"skills": [],
-												"certifications": [{
-													"authority": "LinkedIn",
-													"name": "Développer son ingéniosité",
-													"url": "https://www.linkedin.com/learning/certificates/532df0d72879f0c2919f3f9e4a79ddd3d9c1dd7582409d4eaca4246c67bb3887"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Développer son ingéniosité (2015)",
-													"url": "https://www.linkedin.com/learning/certificates/23b42588c7d2c19511d79d8e79abf748e0d337054b865e331df82dcd01c2c993"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Savoir gérer son stress",
-													"url": "https://www.linkedin.com/learning/certificates/ae18130d4a0487235525e3c49a169ead02f099aac62f6a3e0d5e0a5c70931d28"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Gérer des équipes virtuelles",
-													"url": "https://www.linkedin.com/learning/certificates/62a5a97152a778a4ea469bfe37d1f65e5afa3dcdc1fe2f175473047324c67e3e"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Travailler à distance",
-													"url": "https://www.linkedin.com/learning/certificates/18505ad3624f0006266e5f33450cf5e48460c95161c57edb24facf29a802bb0f"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Améliorer sa concentration",
-													"url": "https://www.linkedin.com/learning/certificates/a55c89a7901af65bfc85eb22354e9b0410f1269e122560edcdcaf916a01514ad"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Être positif au travail",
-													"url": "https://www.linkedin.com/learning/certificates/6afbfaf2c599d6a25c596c01b95194c3415d6cfc57052b7e26148c4f6d10bfc5"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Savoir gérer son temps",
-													"url": "https://www.linkedin.com/learning/certificates/c46d933fd6a7ad07ac7905674b96655de95a0870a9200900bf9afca0baf57c46"
-												}, {
-													"authority": "LinkedIn",
-													"name": "Collaborer en équipe avec la suite Microsoft Office 365",
-													"url": "https://www.linkedin.com/learning/certificates/b01f471190dde5cf0dd5def11a9cb2a9944c94aec459673972059147723a1def"
-												}, {
-													"authority": "LinkedIn",
-													"name": "L'essentiel de Teams",
-													"url": "https://www.linkedin.com/learning/certificates/e4300bb452fa430d663bd28c3206d88f54ff1621a313b9884c9041f6c2f0ac2d"
-												}]
-											},
-											"icp": 2,
-											"ranking": 1,
-											"what_matched": [{
-												"value": "Growth Marketing Manager Welcome to the Jungle (France)",
-												"key": "job_title"
-											}, {
-												"value": "Growth Marketing Manager Welcome to the Jungle (France)",
-												"key": "job_title"
-											}]
-										}, {
-											"person": {
-												"first_name": "Wendy",
-												"last_name": "Carré",
-												"full_name": "Wendy Carré",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Senior Content Marketing Manager @ Welcome to the Jungle (France)",
-												"about_me": null,
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/wendy-carr%c3%a9-6663848a",
-												"connections_count": 500,
-												"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
-												"experiences": [{
-													"job_title": "Senior Content Marketing Manager",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": null,
-													"job_start_date": "2023-05-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": "Ville de Paris",
-														"state_code": null,
-														"country_code": "FR"
-													}
-												}],
-												"education": [{
-													"degree": "Master of Science in International Marketing",
-													"end_date": "2014-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/renneschoolofbusiness",
-													"organization": "Ecole supérieure de Commerce de Rennes",
-													"start_date": "2010-01-01"
-												}, {
-													"degree": "Marketing Communications, Human Resources, International Business",
-													"description": "Activities and Societies: Echange universitaire de six mois",
-													"end_date": "2012-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/university-of-sheffield",
-													"organization": "The University of Sheffield",
-													"start_date": "2012-01-01"
-												}, {
-													"degree": "Hypokhâgne / Khâgne",
-													"end_date": "2010-01-01",
-													"organization": "Classes préparatoires, Lycée Michelet, Vanves (92)",
-													"start_date": "2008-01-01"
-												}],
-												"skills": ["gfk", "photoshop", "pack office", "sap bw"],
-												"certifications": []
-											},
-											"icp": 2,
-											"ranking": 2,
-											"what_matched": [{
-												"value": "Senior Content Marketing Manager",
-												"key": "job_title"
-											}]
-										}, {
-											"person": {
-												"first_name": "Laura",
-												"last_name": "Scognamiglio",
-												"full_name": "Laura Huline Scognamiglio",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Senior Content Manager",
-												"about_me": "Expertise Digitale/Marketing & Communication, forte attraction pour l\\'Hôtellerie Internationale, la Gastronomie et le Tourisme.",
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/laura-huline-scognamiglio-74a16564",
-												"connections_count": 500,
-												"profile_picture_url": null,
-												"experiences": [{
-													"job_title": "Senior Content Manager",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": "Elaboration d\\'une stratégie de contenu B2B engageante sur tous les canaux afin d\\'attirer de nouveaux clients et de fidéliser et valoriser la communauté de clients Welcome to the Jungle.Alimentation des campagnes Growth avec du contenu qualitatif et pertinent pour répondre aux enjeux des professionnels des RH et du Recrutement et convertir les prospects en clients ( Ebook, Live, Quizz.)Construction des campagnes de communication email afin d\\'optimiser la transition de Lead en MQL pour soutenir la réussite commerciale.Contrôle, analyse et compte rendu de l\\'impact du contenu sur les revenus.Contribution à la production de contenu pour nourrir les actions SEO et SEA.Collaboration avec les équipes Social Media pour maximiser la visibilité des contenus et nouveautés produit auprès de la communauté Welcome to the Jungle.Collaboration étroite avec l\\'équipe product marketing et les équipes Sales et AM pour valoriser les lancements produits et obtenir des retours du marché.",
-													"job_start_date": "2023-11-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": null,
-														"state_code": null,
-														"country_code": null
-													}
-												}],
-												"education": [{
-													"degree": "Licence",
-													"end_date": "2010-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/universite-paris-nanterre",
-													"organization": "Université Paris X Nanterre",
-													"start_date": "2007-01-01"
-												}, {
-													"degree": "M2",
-													"end_date": "2013-01-01",
-													"organization": "Vatel Paris",
-													"start_date": "2010-01-01"
-												}],
-												"skills": [],
-												"certifications": []
-											},
-											"icp": 4,
-											"ranking": 3,
-											"what_matched": [{
-												"value": "Senior Content Manager",
-												"key": "job_title"
-											}]
-										}, {
-											"person": {
-												"first_name": "Marie",
-												"last_name": "Villemin",
-												"full_name": "Marie Poirier Villemin",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Brand Manager @ Welcome to the Jungle",
-												"about_me": null,
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/marie-villemin",
-												"connections_count": 500,
-												"profile_picture_url": null,
-												"experiences": [{
-													"job_title": "Brand Manager Welcome to the Jungle (France)",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": null,
-													"job_start_date": "2025-01-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": "Paris",
-														"state_code": null,
-														"country_code": "FR"
-													}
-												}],
-												"education": [{
-													"degree": "Master 2 (M2)",
-													"end_date": "2020-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/supdepub",
-													"organization": "Sup de Pub - INSEEC U",
-													"start_date": "2019-01-01"
-												}, {
-													"degree": "Baccalauréat",
-													"end_date": "2015-01-01",
-													"organization": "Lycée Saint Joseph Vendôme",
-													"start_date": "2008-01-01"
-												}],
-												"skills": [],
-												"certifications": []
-											},
-											"icp": 4,
-											"ranking": 4,
-											"what_matched": [{
-												"value": "Brand Manager Welcome to the Jungle (France)",
-												"key": "job_title"
-											}]
-										}, {
-											"person": {
-												"first_name": "Juliette",
-												"last_name": "B.",
-												"full_name": "Juliette B.",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Associate Brand Manager @Welcome to the Jungle",
-												"about_me": null,
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/juliette-boisdon-23b9661b8",
-												"connections_count": 500,
-												"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
-												"experiences": [{
-													"job_title": "Associate Brand Manager",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": null,
-													"job_start_date": "2025-09-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": null,
-														"state_code": null,
-														"country_code": null
-													}
-												}],
-												"education": [],
-												"skills": [],
-												"certifications": []
-											},
-											"icp": 4,
-											"ranking": 5,
-											"what_matched": [{
-												"value": "Associate Brand Manager",
-												"key": "job_title"
-											}]
-										}, {
-											"person": {
-												"first_name": "Marie",
-												"last_name": "Villemin",
-												"full_name": "Marie Poirier Villemin",
-												"nickname": null,
-												"civility_title": null,
-												"headline": "Brand Manager @ Welcome to the Jungle",
-												"about_me": null,
-												"location": {
-													"city": "Paris",
-													"state_code": null,
-													"country_code": "FR",
-													"continent": "Europe"
-												},
-												"linkedin_url": "https://www.linkedin.com/in/marie-poiriervillemin",
-												"connections_count": 500,
-												"profile_picture_url": "https://media.licdn.com/dms/image/v2/D4E03AQEhSvrPJKxuew/profile-displayphoto-shrink_200_200/B4EZWt3LeRHcAo-/0/1742378678694",
-												"experiences": [{
-													"job_title": "Brand Manager Welcome to the Jungle (France)",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-													"job_description": null,
-													"job_start_date": "2025-01-01",
-													"job_end_date": null,
-													"job_is_current": true,
-													"job_location": {
-														"city": "Paris",
-														"state_code": null,
-														"country_code": "FR"
-													}
-												}],
-												"education": [{
-													"degree": "Baccalauréat",
-													"end_date": "2015-01-01",
-													"organization": "Lycée Saint Joseph Vendôme",
-													"start_date": "2008-01-01"
-												}, {
-													"degree": "Master 2 (M2)",
-													"end_date": "2020-01-01",
-													"linkedin_url": "https://www.linkedin.com/school/supdepub",
-													"organization": "Sup de Pub - INSEEC U",
-													"start_date": "2019-01-01"
-												}],
-												"skills": [],
-												"certifications": []
-											},
-											"icp": 4,
-											"ranking": 6,
-											"what_matched": [{
-												"value": "Brand Manager Welcome to the Jungle (France)",
-												"key": "job_title"
-											}]
-										}]
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"422": {
-						"description": "Unprocessable Entity",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"error": {
-											"code": "INVALID_INPUT",
-											"message": "Missing required fields"
-										}
-									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/v2/search/employee-finder": {
-			"post": {
-				"tags": [
-					"People Search"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
-				"summary": "Employee Finder",
-				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for specific employees within a company by filtering on job title, department, level, and location.",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"company_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/company/wttj-fr"
-									},
-									"country_code": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"example": [
-											"US",
-											"FR"
-										]
-									},
-									"continent": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"example": [
-											"Africa",
-											"Antarctica",
-											"Asia",
-											"Europe",
-											"North America",
-											"Oceania",
-											"South America"
-										]
-									},
-									"sales_region": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"example": [
-											"NORAM",
-											"LATAM",
-											"EMEA",
-											"APAC"
-										]
-									},
-									"job_level": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"example": [
-											"C-Team",
-											"Director",
-											"Manager",
-											"Other",
-											"Staff",
-											"VP"
-										]
-									},
-									"job_function": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"example": [
-											"Advertising & Marketing",
-											"Art, Culture and Creative Professionals",
-											"Construction",
-											"Customer/Client Service",
-											"Education",
-											"Engineering",
-											"Finance & Accounting",
-											"General Business & Management",
-											"Healthcare & Human Services",
-											"Human Resources",
-											"Information Technology",
-											"Legal",
-											"Manufacturing & Production",
-											"Operations",
-											"Other",
-											"Public Administration & Safety",
-											"Purchasing",
-											"Research & Development",
-											"Sales & Business Development",
-											"Science",
-											"Supply Chain & Logistics",
-											"Writing/Editing"
-										]
-									},
-									"min_connections_count": {
-										"type": "number",
-										"example": 200,
-										"minimum": 0,
-										"maximum": 500
-									},
-									"max_results": {
-										"type": "number",
-										"example": 3
-									},
-									"page": {
-										"type": "number",
-										"example": 1
-									}
-								},
-								"required": [
-									"company_linkedin_url"
-								]
+								"required": ["company_linkedin_url", "cascade"]
 							}
 						}
 					}
@@ -1357,197 +811,246 @@
 									"example": {
 										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
 										"max_results": 3,
-										"results_length": 3,
-										"page": 1,
-										"total_pages": 82,
-										"results": [{
-											"first_name": "Hélène",
-											"last_name": "Pillon",
-											"full_name": "Hélène Pillon",
-											"nickname": null,
-											"civility_title": null,
-											"headline": "Journaliste freelance",
-											"about_me": "Depuis Marseille, je travaille pour différents médias français et européens en tant que…",
-											"location": {
-												"city": null,
-												"state_code": null,
-												"country_code": "FR",
-												"continent": "Europe"
-											},
-											"linkedin_url": "https://www.linkedin.com/in/h%c3%a9l%c3%a8ne-pillon-2a57155a",
-											"connections_count": 361,
-											"profile_picture_url": "https://media.licdn.com/dms/image/v2/C5103AQGChE55b4tmFA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517400935573",
-											"experiences": [{
-												"job_title": "Journaliste Indépendante",
-												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-												"job_description": "Rédaction de portraits pour le site web",
-												"job_start_date": "2019-12-01",
-												"job_end_date": null,
-												"job_is_current": true,
-												"job_location": {
-													"city": null,
-													"state_code": null,
-													"country_code": null
+										"results_length": 1,
+										"results": [
+											{
+												"person": {
+													"first_name": "Melissa",
+													"last_name": "Rumor",
+													"full_name": "Melissa Rumor",
+													"headline": "Growth & Marketing Manager B2B",
+													"location": { "city": "Paris", "state_code": null, "country_code": "FR", "continent": "Europe" },
+													"linkedin_url": "https://www.linkedin.com/in/melissa-rumor"
 												}
-											}],
-											"education": [],
-											"skills": [],
-											"certifications": []
-										}, {
-											"first_name": "Nathan",
-											"last_name": "Chalot",
-											"full_name": "Nathan Chalot",
-											"nickname": null,
-											"civility_title": null,
-											"headline": null,
-											"about_me": null,
-											"location": {
-												"city": "Paris",
-												"state_code": null,
-												"country_code": "FR",
-												"continent": "Europe"
-											},
-											"linkedin_url": "https://www.linkedin.com/in/nathan-chalot-5a978210a",
-											"connections_count": 500,
-											"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
-											"experiences": [{
-												"job_title": "Welcome to the Jungle France",
-												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-												"job_description": null,
-												"job_start_date": null,
-												"job_end_date": null,
-												"job_is_current": true,
-												"job_location": {
-													"city": null,
-													"state_code": null,
-													"country_code": null
-												}
-											}],
-											"education": [],
-											"skills": ["javascript", "html5", "jquery", "ruby", "css", "github", "git", "ruby on rails"],
-											"certifications": []
-										}, {
-											"first_name": "Colombe",
-											"last_name": "Godeluck",
-											"full_name": "Colombe Godeluck",
-											"nickname": null,
-											"civility_title": null,
-											"headline": "Helps companies strengthen & promote their employer brand",
-											"about_me": null,
-											"location": {
-												"city": null,
-												"state_code": null,
-												"country_code": "FR",
-												"continent": "Europe"
-											},
-											"linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
-											"connections_count": 500,
-											"profile_picture_url": null,
-											"experiences": [{
-												"job_title": "Account Manager Senior",
-												"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-												"company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-												"job_description": null,
-												"job_start_date": "2023-02-01",
-												"job_end_date": null,
-												"job_is_current": true,
-												"job_location": {
-													"city": "Anglet",
-													"state_code": null,
-													"country_code": "FR"
-												}
-											}],
-											"education": [{
-												"degree": "French Baccalaureate",
-												"end_date": "2010-01-01",
-												"organization": "Louis Barthou High School",
-												"start_date": "2007-01-01"
-											}, {
-												"degree": "Master’s Degree",
-												"end_date": "2016-01-01",
-												"linkedin_url": "https://www.linkedin.com/school/maastricht-university-school-of-business-and-economics",
-												"organization": "Maastricht University School of Business and Economics",
-												"start_date": "2016-01-01"
-											}, {
-												"degree": "Master's Degree",
-												"end_date": "2014-01-01",
-												"linkedin_url": "https://www.linkedin.com/school/universite-paris-dauphine-psl",
-												"organization": "Université Paris Dauphine",
-												"start_date": "2010-01-01"
-											}, {
-												"degree": "Master’s Degree",
-												"end_date": "2017-01-01",
-												"linkedin_url": "https://www.linkedin.com/school/em-lyon-business-school",
-												"organization": "EMLYON Business School",
-												"start_date": "2015-01-01"
-											}],
-											"skills": [],
-											"certifications": []
-										}]
+											}
+										]
 									}
 								}
 							}
 						}
 					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
+					"401": { "$ref": "#/components/responses/Unauthorized" },
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"429": { "$ref": "#/components/responses/TooManyRequests" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/v2/search/employee-finder": {
+			"post": {
+				"tags": ["People Search"],
+				"security": [{ "APIKey": [] }],
+				"summary": "Employee Finder",
+				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for specific employees within a company by filtering on job title, department, level, and location.\n\nSee [Field Normalization](/guide/reference/field-normalization) for accepted `job_level`, `job_function`, and location values.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/wttj-fr"
+									},
+									"country_code": {
+										"type": "array",
+										"items": { "type": "string" },
+										"description": "ISO 3166-1 alpha-2 country codes. See [Field Normalization](/guide/reference/field-normalization#country-codes).",
+										"example": ["US", "FR"]
+									},
+									"continent": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"]
+										},
+										"description": "Filter by continent. See [Field Normalization](/guide/reference/field-normalization#continents).",
+										"example": ["Europe"]
+									},
+									"sales_region": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["NORAM", "LATAM", "EMEA", "APAC"]
+										},
+										"description": "Filter by sales region. See [Field Normalization](/guide/reference/field-normalization#sales-regions).",
+										"example": ["EMEA"]
+									},
+									"job_level": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["C-Team", "Director", "Manager", "Other", "Staff", "VP"]
+										},
+										"description": "Filter by seniority level. See [Field Normalization](/guide/reference/field-normalization#job-levels).",
+										"example": ["C-Team", "VP", "Director"]
+									},
+									"job_function": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": [
+												"Advertising & Marketing",
+												"Art, Culture and Creative Professionals",
+												"Construction",
+												"Customer/Client Service",
+												"Education",
+												"Engineering",
+												"Finance & Accounting",
+												"General Business & Management",
+												"Healthcare & Human Services",
+												"Human Resources",
+												"Information Technology",
+												"Legal",
+												"Manufacturing & Production",
+												"Operations",
+												"Other",
+												"Public Administration & Safety",
+												"Purchasing",
+												"Research & Development",
+												"Sales & Business Development",
+												"Science",
+												"Supply Chain & Logistics",
+												"Writing/Editing"
+											]
+										},
+										"description": "Filter by job department/function. See [Field Normalization](/guide/reference/field-normalization#job-functions).",
+										"example": ["Sales & Business Development", "Advertising & Marketing"]
+									},
+									"min_connections_count": {
+										"type": "number",
+										"minimum": 0,
+										"maximum": 500,
+										"description": "Minimum LinkedIn connections count.",
+										"example": 200
+									},
+									"max_results": {
+										"type": "number",
+										"description": "Maximum number of results per page.",
+										"example": 3
+									},
+									"page": {
+										"type": "number",
+										"description": "Page number for pagination (starts at 1).",
+										"example": 1
 									}
-								}
-							}
-						}
-					},
-					"422": {
-						"description": "Unprocessable Entity",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"error": {
-											"code": "INVALID_INPUT",
-											"message": "Missing required fields"
-										}
+								},
+								"required": ["company_linkedin_url"]
+							},
+							"examples": {
+								"sales-leaders": {
+									"summary": "Find Sales leaders at a company in EMEA",
+									"value": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"sales_region": ["EMEA"],
+										"job_level": ["C-Team", "VP", "Director"],
+										"job_function": ["Sales & Business Development"],
+										"max_results": 5,
+										"page": 1
 									}
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
+								},
+								"engineering-team": {
+									"summary": "Map the Engineering team in France",
+									"value": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"country_code": ["FR"],
+										"job_function": ["Engineering", "Information Technology"],
+										"min_connections_count": 100,
+										"max_results": 10,
+										"page": 1
 									}
 								}
 							}
 						}
 					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"company_linkedin_url": { "type": "string" },
+										"max_results": { "type": "number" },
+										"results_length": { "type": "number" },
+										"page": { "type": "number" },
+										"total_pages": { "type": "number" },
+										"results": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"first_name": { "type": "string" },
+													"last_name": { "type": "string" },
+													"full_name": { "type": "string" },
+													"headline": { "type": "string", "nullable": true },
+													"about_me": { "type": "string", "nullable": true },
+													"location": {
+														"type": "object",
+														"properties": {
+															"city": { "type": "string", "nullable": true },
+															"state_code": { "type": "string", "nullable": true },
+															"country_code": { "type": "string", "nullable": true },
+															"continent": { "type": "string", "nullable": true }
+														}
+													},
+													"linkedin_url": { "type": "string" },
+													"connections_count": { "type": "number" },
+													"profile_picture_url": { "type": "string", "nullable": true },
+													"experiences": { "type": "array" },
+													"education": { "type": "array" },
+													"skills": { "type": "array" },
+													"certifications": { "type": "array" }
+												}
+											}
+										}
+									},
+									"example": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"max_results": 3,
+										"results_length": 3,
+										"page": 1,
+										"total_pages": 82,
+										"results": [
+											{
+												"first_name": "Colombe",
+												"last_name": "Godeluck",
+												"full_name": "Colombe Godeluck",
+												"headline": "Helps companies strengthen & promote their employer brand",
+												"about_me": null,
+												"location": { "city": null, "state_code": null, "country_code": "FR", "continent": "Europe" },
+												"linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
+												"connections_count": 500,
+												"profile_picture_url": null,
+												"experiences": [{
+													"job_title": "Account Manager Senior",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"job_start_date": "2023-02-01",
+													"job_end_date": null,
+													"job_is_current": true
+												}],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"422": { "$ref": "#/components/responses/InvalidInput" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		},
 		"/v2/enrichment/domain-to-linkedin": {
 			"post": {
-				"tags": [
-					"Company Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["Company Enrichment"],
+				"security": [{ "APIKey": [] }],
 				"summary": "Domain to Linkedin URL",
 				"description": "### 💰 Cost: 1 Credit (on success)\n\nRetrieve the official LinkedIn Company Page URL associated with a corporate website domain.",
 				"requestBody": {
@@ -1556,14 +1059,46 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"domain": {
-										"type": "string",
-										"example": "https://www.blitz-agency.com"
-									}
+									"domain": { "type": "string", "example": "https://www.blitz-agency.com" }
 								},
-								"required": [
-									"domain"
-								]
+								"required": ["domain"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"example": { "found": true, "company_linkedin_url": "https://www.linkedin.com/company/blitz-api" }
+								}
+							}
+						}
+					},
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"422": { "$ref": "#/components/responses/InvalidInput" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/v2/enrichment/company": {
+			"post": {
+				"tags": ["Company Enrichment"],
+				"security": [{ "APIKey": [] }],
+				"summary": "Company Enrichment",
+				"description": "### 💰 Cost: 1 Credit (on success)\n\nEnrich a company profile from its LinkedIn URL.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": { "type": "string", "example": "https://www.linkedin.com/company/blitz-api" }
+								},
+								"required": ["company_linkedin_url"]
 							}
 						}
 					}
@@ -1577,156 +1112,46 @@
 									"type": "object",
 									"example": {
 										"found": true,
-										"company_linkedin_url": "https://www.linkedin.com/company/blitz-api"
-									}
-								}
-							}
-						}
-					},
-					"402": {
-						"description": "Payment Required",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"message": "Insufficient credits balance"
-									}
-								}
-							}
-						}
-					},
-					"422": {
-						"description": "Unprocessable Entity",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"error": {
-											"code": "INVALID_INPUT",
-											"message": "Missing required fields"
+										"company": {
+											"linkedin_url": "https://www.linkedin.com/company/blitz-api",
+											"linkedin_id": 108037802,
+											"name": "Blitzapi",
+											"about": "BlitzAPI provides enriched B2B data access through a suite of flexible and high-performance APIs.",
+											"industry": "Technology; Information and Internet",
+											"type": "Privately Held",
+											"size": "1-10",
+											"employees_on_linkedin": 3,
+											"followers": 6,
+											"founded_year": null,
+											"hq": { "city": "Paris", "state": null, "postcode": null, "country_code": "FR", "country_name": "France", "region": null, "continent": null, "street": null },
+											"domain": "blitz-api.ai",
+											"website": "https://blitz-api.ai"
 										}
 									}
 								}
 							}
 						}
 					},
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/v2/enrichment/company": {
-			"post": {
-				"tags": [
-					"Company Enrichment"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
-				"summary": "Company Enrichment",
-				"description": "### 💰 Cost: 1 Credit (on success)\n\nEnrich a company profile from its LinkedIn URL.",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"company_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/company/blitz-api"
-									}
-								},
-								"required": [
-									"company_linkedin_url"
-								]
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {"found":true,"company":{"linkedin_url":"https://www.linkedin.com/company/blitz-api","linkedin_id":108037802,"name":"Blitzapi","about":"BlitzAPI provides enriched B2B data access through a suite of flexible and high-performance APIs. 10+ public endpoints, covering- People & Company Search - Email & Phone Validation - Contact & Company Enrichment - LinkedIn Matching - Smart Waterfall ICP API-first + LLM-friendly + Low-code compatible Used by Growth & Revenue Teams","specialties":null,"industry":"Technology; Information and Internet","type":"Privately Held","size":"1-10","employees_on_linkedin":3,"followers":6,"founded_year":null,"hq":{"city":"Paris","state":null,"postcode":null,"country_code":"FR","country_name":"France","region":null,"continent":null,"street":null},"domain":"blitz-api.ai","website":"https://blitz-api.ai"}}
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "Invalid API key, please provide a valid API key in the 'x-api-key' header"
-									}
-								}
-							}
-						}
-					},
+					"401": { "$ref": "#/components/responses/Unauthorized" },
 					"404": {
 						"description": "Not Found",
 						"content": {
 							"application/json": {
 								"schema": {
 									"type": "object",
-									"example": {
-										"success": false,
-										"message": "Not Found"
-									}
+									"example": { "success": false, "message": "Not Found" }
 								}
 							}
 						}
 					},
-					"429": {
-						"description": "Too Many Requests",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "Rate limit exceeded, please try again later"
-									}
-								}
-							}
-						}
-					}
+					"429": { "$ref": "#/components/responses/TooManyRequests" }
 				}
 			}
 		},
 		"/v2/utilities/current-date": {
 			"post": {
-				"tags": [
-					"Utilities"
-				],
-				"security": [
-					{
-						"APIKey": []
-					}
-				],
+				"tags": ["Utilities"],
+				"security": [{ "APIKey": [] }],
 				"summary": "Get Current Date and Time",
 				"description": "### 💰 Cost: 0 Credits\n\nRetrieve the current server date and time for a specific timezone to synchronize your requests.",
 				"requestBody": {
@@ -1735,14 +1160,9 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"region": {
-										"type": "string",
-										"example": "America/New_York"
-									}
+									"region": { "type": "string", "example": "America/New_York" }
 								},
-								"required": [
-									"region"
-								]
+								"required": ["region"]
 							}
 						}
 					}
@@ -1764,38 +1184,8 @@
 							}
 						}
 					},
-					"422": {
-						"description": "Unprocessable Entity",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"error": {
-											"code": "INVALID_INPUT",
-											"message": "Missing required fields"
-										}
-									}
-								}
-							}
-						}
-					},
-                  
-					"500": {
-						"description": "Internal Server Error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"success": false,
-										"message": "this is a controlled error. created at 2025-07-11T10:20:00.000Z"
-									}
-								}
-							}
-						}
-					}
+					"422": { "$ref": "#/components/responses/InvalidInput" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
 				}
 			}
 		}

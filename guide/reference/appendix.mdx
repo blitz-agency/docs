@@ -1,39 +1,14 @@
 ---
 title: "Reference & Standards"
-description: "Country codes, data logic, and performance details."
+description: "API behavior, data logic, and performance details."
 ---
 
 
 This section covers technical standards and logic details to help you optimize your API usage.
 
-
-## 🌍 Country Codes (LinkedIn)
-
-
-The Waterfall Search API uses **LinkedIn country codes**, not ISO codes. Using the wrong code (e.g., `USA` instead of `US`) will return 0 results.
-
-
-<Tip>
- Use `"WORLD"` to search globally without geographic restriction.
-</Tip>
-
-
-<Accordion title="Common Country Codes List">
- | Country            | Code |
- | :----------------- | :--- |
- | **United States**  | `US` |
- | **United Kingdom** | `GB` |
- | **France**         | `FR` |
- | **Canada**         | `CA` |
- | **Germany**        | `DE` |
- | **Australia**      | `AU` |
- | **India**          | `IN` |
- | **Brazil**         | `BR` |
- | **Singapore**      | `SG` |
-
-
- [_For a full list of supported codes, refer to the Microsoft LinkedIn Documentation._](https://learn.microsoft.com/en-us/linkedin/shared/references/reference-tables/country-codes)
-</Accordion>
+<Info>
+ Looking for accepted values for industries, country codes, job levels, or other filters? See the [Field Normalization Reference](/guide/reference/field-normalization).
+</Info>
 
 
 ---
@@ -93,4 +68,3 @@ To ensure stability for all users:
 - **Concurrency**: All plans include **5 concurrent requests per second**.
 - **Burst**: Short bursts above this limit may be queued, but sustained overage will return `429 Too Many Requests`.
 - **Timeouts**: Set your client timeout to at least **15 seconds** if you are using Real-Time endpoints or Email Validation, as live verification involves network handshakes with external mail servers.
-

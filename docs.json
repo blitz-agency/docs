@@ -9,8 +9,8 @@
     "dark": "#0F172A"
   },
   "favicon": "/favicon.svg",
-  "api":{
-    "examples":{
+  "api": {
+    "examples": {
       "defaults": "required",
       "prefill": true
     }
@@ -41,6 +41,7 @@
             "group": "Core Concepts",
             "pages": [
               "guide/concepts/waterfall-logic",
+              "guide/concepts/company-search",
               "guide/concepts/quality"
             ]
           },
@@ -62,7 +63,8 @@
           {
             "group": "Appendix",
             "pages": [
-              "guide/reference/appendix"
+              "guide/reference/appendix",
+              "guide/reference/field-normalization"
             ]
           }
         ]
