@@ -3,25 +3,20 @@ title: "Company Search"
 description: "Build targeted company lists using powerful filters: industry, location, size, keywords, and more."
 ---
 
-
-The **Company Search** endpoint (`POST /v2/search/company`) lets you find companies matching precise criteria. Use it to build ABM lists, identify ICP-matching accounts, or power dynamic prospecting workflows.
-
+The **Company Search** endpoint (`POST /v2/search/companies`) lets you find companies matching precise criteria. Use it to build ABM lists, identify ICP-matching accounts, or power dynamic prospecting workflows.
 
 <Info>
- **Cost**: 1 Credit per result returned. If `max_results` is set to 25 and the query matches 25+ companies, the request costs 25 credits.
+  **Cost**: 1 Credit per result returned. If `max_results` is set to 25 and the query matches 25+ companies, the request costs 25 credits.
 </Info>
 
-
 ## How It Works
-
 
 You send a `POST` request with a `company` object containing your filters. All filters are optional and combined with **AND** logic. Within each filter, multiple values use **OR** logic.
 
 The API returns a paginated list of company profiles matching your criteria.
 
-
 ```json
-POST /v2/search/company
+POST /v2/search/companies
 
 {
   "company": {
@@ -34,13 +29,11 @@ POST /v2/search/company
 }
 ```
 
-
 <CodeGroup>
-
 
 ```bash cURL
 curl --request POST \
-  --url https://api.blitz-api.ai/v2/search/company \
+  --url https://api.blitz-api.ai/v2/search/companies \
   --header 'Content-Type: application/json' \
   --header 'x-api-key: YOUR_API_KEY' \
   --data '{
@@ -74,7 +67,7 @@ payload = {
 }
 
 response = requests.post(
-    "https://api.blitz-api.ai/v2/search/company",
+    "https://api.blitz-api.ai/v2/search/companies",
     json=payload,
     headers=headers
 )
@@ -107,15 +100,11 @@ const { data } = await client.post('/v2/search/company', {
 console.log(data);
 ```
 
-
 </CodeGroup>
-
 
 ---
 
-
 ## Filter Reference
-
 
 ### `name` — Company Name
 
@@ -128,7 +117,6 @@ Search for keywords in the company name.
 }
 ```
 
-
 ### `keywords` — Description Search
 
 Search for keywords in the company's LinkedIn description/about section.
@@ -139,7 +127,6 @@ Search for keywords in the company's LinkedIn description/about section.
   "exclude": ["consulting"]
 }
 ```
-
 
 ### `industry` — Industry Filter
 
@@ -153,9 +140,8 @@ Filter by LinkedIn-normalized industry labels. These are **exact match** values.
 ```
 
 <Warning>
- Industry values must match the exact LinkedIn taxonomy. A typo or variation (e.g., `"SaaS"` instead of `"Software Development"`) will return 0 results. See the [full list of accepted industries](/guide/reference/field-normalization#industries).
+  Industry values must match the exact LinkedIn taxonomy. A typo or variation (e.g., `"SaaS"` instead of `"Software Development"`) will return 0 results. See the [full list of accepted industries](/guide/reference/field-normalization#industries).
 </Warning>
-
 
 ### `hq` — Headquarters Location
 
@@ -171,9 +157,8 @@ Filter by the company's headquarters. Combine sub-fields for precision.
 ```
 
 <Tip>
- Use `sales_region` for broad GTM targeting (NORAM, LATAM, EMEA, APAC). Use `country_code` or `city` for surgical precision. See [Field Normalization](/guide/reference/field-normalization) for all accepted values.
+  Use `sales_region` for broad GTM targeting (NORAM, LATAM, EMEA, APAC). Use `country_code` or `city` for surgical precision. See [Field Normalization](/guide/reference/field-normalization) for all accepted values.
 </Tip>
-
 
 ### `employee_count` — Exact Range
 
@@ -182,7 +167,6 @@ Set a numeric range on the actual LinkedIn employee count.
 ```json
 "employee_count": { "min": 100, "max": 500 }
 ```
-
 
 ### `employee_range` — LinkedIn Buckets
 
@@ -194,7 +178,6 @@ Use LinkedIn's predefined size buckets. Pass multiple values for OR logic.
 
 Accepted values: `1-10`, `11-50`, `51-200`, `201-500`, `501-1000`, `1001-5000`, `5001-10000`, `10001+`.
 
-
 ### `founded_year` — Founding Year Range
 
 Target startups or established companies by founding year.
@@ -202,7 +185,6 @@ Target startups or established companies by founding year.
 ```json
 "founded_year": { "min": 2018, "max": 2024 }
 ```
-
 
 ### `type` — Company Type
 
@@ -217,7 +199,6 @@ Filter by LinkedIn company type.
 
 Accepted values: `Educational`, `Educational Institution`, `Government Agency`, `Nonprofit`, `Partnership`, `Privately Held`, `Public Company`, `Self-Employed`, `Self-Owned`, `Sole Proprietorship`.
 
-
 ### `min_linkedin_followers`
 
 Set a minimum follower threshold to filter out shell or inactive pages.
@@ -226,12 +207,9 @@ Set a minimum follower threshold to filter out shell or inactive pages.
 "min_linkedin_followers": 500
 ```
 
-
 ---
 
-
 ## Pagination
-
 
 The API supports cursor-based pagination. Each response includes a `cursor` field. Pass it in the next request to get the following page.
 
@@ -247,12 +225,9 @@ The API supports cursor-based pagination. Each response includes a `cursor` fiel
 
 When `cursor` is `null` in the response, you've reached the last page.
 
-
 ---
 
-
 ## Response Structure
-
 
 ```json
 {
@@ -288,12 +263,9 @@ When `cursor` is `null` in the response, you've reached the last page.
 }
 ```
 
-
 ---
 
-
 ## Recipes
-
 
 ### The "ICP Builder" — SaaS Scale-ups in Europe
 
@@ -316,7 +288,6 @@ Find mid-size SaaS companies across Europe for an ABM campaign.
 }
 ```
 
-
 ### The "Startup Hunter" — Early-stage FinTech in the US
 
 Identify recently-founded FinTech companies for partnership opportunities.
@@ -334,7 +305,6 @@ Identify recently-founded FinTech companies for partnership opportunities.
 }
 ```
 
-
 ### The "Enterprise Mapper" — Large companies in APAC
 
 Map large public companies across the Asia-Pacific region.
@@ -351,26 +321,21 @@ Map large public companies across the Asia-Pacific region.
 }
 ```
 
-
 ---
-
 
 ## Combine with Waterfall Search
 
-
 Company Search becomes extremely powerful when chained with the **Waterfall ICP Search**. Use Company Search to build your target account list, then pipe each `linkedin_url` into the Waterfall to find decision-makers.
-
 
 ```
 Company Search → Get linkedin_url → Waterfall ICP → Get decision-makers → Email Enrichment
 ```
 
-
 <CardGroup cols={2}>
- <Card title="Waterfall Logic" icon="filter" href="/guide/concepts/waterfall-logic">
-   Learn how to find the best contacts within each company.
- </Card>
- <Card title="Field Normalization" icon="book" href="/guide/reference/field-normalization">
-   Full list of accepted values for industries, regions, and country codes.
- </Card>
+  <Card icon="filter" href="/guide/concepts/waterfall-logic" title="Waterfall Logic">
+    Learn how to find the best contacts within each company.
+  </Card>
+  <Card icon="book" href="/guide/reference/field-normalization" title="Field Normalization">
+    Full list of accepted values for industries, regions, and country codes.
+  </Card>
 </CardGroup>

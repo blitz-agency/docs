@@ -302,7 +302,7 @@
 				}
 			}
 		},
-		"/v2/search/company": {
+		"/v2/search/companies": {
 			"post": {
 				"tags": ["Company Search"],
 				"security": [{ "APIKey": [] }],
