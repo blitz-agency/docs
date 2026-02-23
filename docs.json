@@ -55,6 +55,7 @@
           {
             "group": "Integrations",
             "pages": [
+              "guide/integrations/MCP",
               "guide/integrations/clay",
               "guide/integrations/n8n",
               "guide/integrations/make"
@@ -160,7 +161,10 @@
       "copy",
       "view",
       "chatgpt",
-      "claude"
+      "claude",
+      "mcp",
+      "cursor",
+      "vscode"
     ]
   },
   "errors": {
