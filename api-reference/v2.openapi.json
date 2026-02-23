@@ -733,320 +733,222 @@
 			}
 		},
 		"/v2/search/waterfall-icp-keyword": {
-			"post": {
-				"tags": ["People Search"],
-				"security": [{ "APIKey": [] }],
-				"summary": "Waterfall ICP Search",
-				"description": "### 💰 Cost: 1 Credit per result\n\nFind decision-makers using a hierarchical search logic (e.g., search for C-Level; if not found, cascade to VP level).\n\nSee the [Waterfall Logic Guide](/guide/concepts/waterfall-logic) for strategy details.",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"company_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/company/wttj-fr"
-									},
-									"cascade": {
-										"type": "array",
-										"items": {
-											"type": "object",
-											"properties": {
-												"include_title": {
-													"type": "array",
-													"items": { "type": "string" }
-												},
-												"exclude_title": {
-													"type": "array",
-													"items": { "type": "string" }
-												},
-												"location": {
-													"type": "array",
-													"items": { "type": "string" }
-												},
-												"include_headline_search": {
-													"type": "boolean"
-												}
-											}
-										},
-										"example": [
-											{
-												"include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
-												"exclude_title": ["assistant", "intern", "product", "junior"],
-												"location": ["WORLD"],
-												"include_headline_search": false
-											},
-											{
-												"include_title": ["Marketing Manager", "Head Growth", "Growth manager"],
-												"exclude_title": ["junior", "assistant", "intern"],
-												"location": ["WORLD"],
-												"include_headline_search": false
-											},
-											{
-												"include_title": ["CEO", "founder", "cofounder", "owner"],
-												"exclude_title": ["junior", "assistant", "intern"],
-												"location": ["WORLD"],
-												"include_headline_search": false
-											}
-										]
-									},
-									"max_results": {
-										"type": "number",
-										"example": 10
-									}
-								},
-								"required": ["company_linkedin_url", "cascade"]
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"example": {
-										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"max_results": 3,
-										"results_length": 1,
-										"results": [
-											{
-												"person": {
-													"first_name": "Melissa",
-													"last_name": "Rumor",
-													"full_name": "Melissa Rumor",
-													"headline": "Growth & Marketing Manager B2B",
-													"location": { "city": "Paris", "state_code": null, "country_code": "FR", "continent": "Europe" },
-													"linkedin_url": "https://www.linkedin.com/in/melissa-rumor"
-												}
-											}
-										]
-									}
-								}
-							}
-						}
-					},
-					"401": { "$ref": "#/components/responses/Unauthorized" },
-					"402": { "$ref": "#/components/responses/PaymentRequired" },
-					"429": { "$ref": "#/components/responses/TooManyRequests" },
-					"500": { "$ref": "#/components/responses/InternalServerError" }
-				}
-			}
-		},
-		"/v2/search/employee-finder": {
-			"post": {
-				"tags": ["People Search"],
-				"security": [{ "APIKey": [] }],
-				"summary": "Employee Finder",
-				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for specific employees within a company by filtering on job title, department, level, and location.\n\nSee [Field Normalization](/guide/reference/field-normalization) for accepted `job_level`, `job_function`, and location values.",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"company_linkedin_url": {
-										"type": "string",
-										"example": "https://www.linkedin.com/company/wttj-fr"
-									},
-									"country_code": {
-										"type": "array",
-										"items": { "type": "string" },
-										"description": "ISO 3166-1 alpha-2 country codes. See [Field Normalization](/guide/reference/field-normalization#country-codes).",
-										"example": ["US", "FR"]
-									},
-									"continent": {
-										"type": "array",
-										"items": {
-											"type": "string",
-											"enum": ["Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"]
-										},
-										"description": "Filter by continent. See [Field Normalization](/guide/reference/field-normalization#continents).",
-										"example": ["Europe"]
-									},
-									"sales_region": {
-										"type": "array",
-										"items": {
-											"type": "string",
-											"enum": ["NORAM", "LATAM", "EMEA", "APAC"]
-										},
-										"description": "Filter by sales region. See [Field Normalization](/guide/reference/field-normalization#sales-regions).",
-										"example": ["EMEA"]
-									},
-									"job_level": {
-										"type": "array",
-										"items": {
-											"type": "string",
-											"enum": ["C-Team", "Director", "Manager", "Other", "Staff", "VP"]
-										},
-										"description": "Filter by seniority level. See [Field Normalization](/guide/reference/field-normalization#job-levels).",
-										"example": ["C-Team", "VP", "Director"]
-									},
-									"job_function": {
-										"type": "array",
-										"items": {
-											"type": "string",
-											"enum": [
-												"Advertising & Marketing",
-												"Art, Culture and Creative Professionals",
-												"Construction",
-												"Customer/Client Service",
-												"Education",
-												"Engineering",
-												"Finance & Accounting",
-												"General Business & Management",
-												"Healthcare & Human Services",
-												"Human Resources",
-												"Information Technology",
-												"Legal",
-												"Manufacturing & Production",
-												"Operations",
-												"Other",
-												"Public Administration & Safety",
-												"Purchasing",
-												"Research & Development",
-												"Sales & Business Development",
-												"Science",
-												"Supply Chain & Logistics",
-												"Writing/Editing"
-											]
-										},
-										"description": "Filter by job department/function. See [Field Normalization](/guide/reference/field-normalization#job-functions).",
-										"example": ["Sales & Business Development", "Advertising & Marketing"]
-									},
-									"min_connections_count": {
-										"type": "number",
-										"minimum": 0,
-										"maximum": 500,
-										"description": "Minimum LinkedIn connections count.",
-										"example": 200
-									},
-									"max_results": {
-										"type": "number",
-										"description": "Maximum number of results per page.",
-										"example": 3
-									},
-									"page": {
-										"type": "number",
-										"description": "Page number for pagination (starts at 1).",
-										"example": 1
-									}
-								},
-								"required": ["company_linkedin_url"]
-							},
-							"examples": {
-								"sales-leaders": {
-									"summary": "Find Sales leaders at a company in EMEA",
-									"value": {
-										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"sales_region": ["EMEA"],
-										"job_level": ["C-Team", "VP", "Director"],
-										"job_function": ["Sales & Business Development"],
-										"max_results": 5,
-										"page": 1
-									}
-								},
-								"engineering-team": {
-									"summary": "Map the Engineering team in France",
-									"value": {
-										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"country_code": ["FR"],
-										"job_function": ["Engineering", "Information Technology"],
-										"min_connections_count": 100,
-										"max_results": 10,
-										"page": 1
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"company_linkedin_url": { "type": "string" },
-										"max_results": { "type": "number" },
-										"results_length": { "type": "number" },
-										"page": { "type": "number" },
-										"total_pages": { "type": "number" },
-										"results": {
-											"type": "array",
-											"items": {
-												"type": "object",
-												"properties": {
-													"first_name": { "type": "string" },
-													"last_name": { "type": "string" },
-													"full_name": { "type": "string" },
-													"headline": { "type": "string", "nullable": true },
-													"about_me": { "type": "string", "nullable": true },
-													"location": {
-														"type": "object",
-														"properties": {
-															"city": { "type": "string", "nullable": true },
-															"state_code": { "type": "string", "nullable": true },
-															"country_code": { "type": "string", "nullable": true },
-															"continent": { "type": "string", "nullable": true }
-														}
-													},
-													"linkedin_url": { "type": "string" },
-													"connections_count": { "type": "number" },
-													"profile_picture_url": { "type": "string", "nullable": true },
-													"experiences": { "type": "array" },
-													"education": { "type": "array" },
-													"skills": { "type": "array" },
-													"certifications": { "type": "array" }
-												}
-											}
-										}
-									},
-									"example": {
-										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-										"max_results": 3,
-										"results_length": 3,
-										"page": 1,
-										"total_pages": 82,
-										"results": [
-											{
-												"first_name": "Colombe",
-												"last_name": "Godeluck",
-												"full_name": "Colombe Godeluck",
-												"headline": "Helps companies strengthen & promote their employer brand",
-												"about_me": null,
-												"location": { "city": null, "state_code": null, "country_code": "FR", "continent": "Europe" },
-												"linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
-												"connections_count": 500,
-												"profile_picture_url": null,
-												"experiences": [{
-													"job_title": "Account Manager Senior",
-													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-													"job_start_date": "2023-02-01",
-													"job_end_date": null,
-													"job_is_current": true
-												}],
-												"education": [],
-												"skills": [],
-												"certifications": []
-											}
-										]
-									}
-								}
-							}
-						}
-					},
-					"402": { "$ref": "#/components/responses/PaymentRequired" },
-					"422": { "$ref": "#/components/responses/InvalidInput" },
-					"500": { "$ref": "#/components/responses/InternalServerError" }
-				}
-			}
-		},
+    "post": {
+      "tags": ["People Search"],
+      "security": [{ "APIKey": [] }],
+      "summary": "Waterfall ICP Search",
+      "description": "### 💰 Cost: 1 Credit per result\n\nFind decision-makers using a hierarchical search logic (e.g., search for C-Level; if not found, cascade to VP level).\n\nSee the [Waterfall Logic Guide](/guide/concepts/waterfall-logic) for strategy details.",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": ["company_linkedin_url", "cascade"],
+              "properties": {
+                "company_linkedin_url": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://www.linkedin.com/company/openai"
+                },
+                "cascade": {
+                  "type": "array",
+                  "description": "Ordered list of search tiers. Each tier is attempted in sequence; the next is used only if the previous yields no results.",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["include_title", "location", "include_headline_search"],
+                    "properties": {
+                      "include_title": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Job title keywords that contacts must match.",
+                        "example": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"]
+                      },
+                      "exclude_title": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Job title keywords that disqualify a contact.",
+                        "example": ["assistant", "intern", "junior"]
+                      },
+                      "location": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Geographic filter. Use 'WORLD' for no restriction.",
+                        "example": ["WORLD"]
+                      },
+                      "include_headline_search": {
+                        "type": "boolean",
+                        "description": "When true, also searches LinkedIn headline text in addition to job title.",
+                        "example": false
+                      }
+                    }
+                  }
+                },
+                "max_results": {
+                  "type": "number",
+                  "description": "Maximum number of results to return.",
+                  "example": 10
+                }
+              }
+            },
+            "example": {
+              "company_linkedin_url": "https://www.linkedin.com/company/openai",
+              "cascade": [
+                {
+                  "include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
+                  "exclude_title": ["assistant", "intern", "product", "junior"],
+                  "location": ["WORLD"],
+                  "include_headline_search": false
+                },
+                {
+                  "include_title": ["Marketing Manager", "Head Growth", "Growth manager"],
+                  "exclude_title": ["junior", "assistant", "intern", "hacker"],
+                  "location": ["WORLD"],
+                  "include_headline_search": false
+                },
+                {
+                  "include_title": ["Communication Director", "Brand Director", "Content Director"],
+                  "exclude_title": ["junior", "assistant", "intern", "UX", "UI", "Design"],
+                  "location": ["WORLD"],
+                  "include_headline_search": false
+                },
+                {
+                  "include_title": ["Communication Manager", "Brand Manager", "Content Manager"],
+                  "exclude_title": ["junior", "assistant", "intern"],
+                  "location": ["WORLD"],
+                  "include_headline_search": false
+                },
+                {
+                  "include_title": ["Communication", "marketing", "growth", "brand"],
+                  "exclude_title": ["junior", "assistant", "intern", "product"],
+                  "location": ["WORLD"],
+                  "include_headline_search": true
+                },
+                {
+                  "include_title": ["CEO", "founder", "cofounder", "owner", "General Director"],
+                  "exclude_title": ["junior", "assistant", "intern"],
+                  "location": ["WORLD"],
+                  "include_headline_search": false
+                }
+              ],
+              "max_results": 10
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "company_linkedin_url": { "type": "string" },
+                  "max_results": { "type": "number" },
+                  "results_length": { "type": "number" },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "icp": {
+                          "type": "number",
+                          "description": "Index (1-based) of the cascade tier that matched this result."
+                        },
+                        "ranking": {
+                          "type": "number",
+                          "description": "Overall rank of this result across all tiers."
+                        },
+                        "person": {
+                          "type": "object",
+                          "properties": {
+                            "first_name": { "type": "string" },
+                            "last_name": { "type": "string" },
+                            "full_name": { "type": "string" },
+                            "nickname": { "type": "string", "nullable": true },
+                            "civility_title": { "type": "string", "nullable": true },
+                            "headline": { "type": "string", "nullable": true },
+                            "about_me": { "type": "string", "nullable": true },
+                            "location": {
+                              "type": "object",
+                              "properties": {
+                                "city": { "type": "string", "nullable": true },
+                                "state_code": { "type": "string", "nullable": true },
+                                "country_code": { "type": "string", "nullable": true },
+                                "continent": { "type": "string", "nullable": true }
+                              }
+                            },
+                            "linkedin_url": { "type": "string" },
+                            "connections_count": { "type": "number" },
+                            "profile_picture_url": { "type": "string", "nullable": true },
+                            "experiences": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "job_title": { "type": "string" },
+                                  "company_linkedin_url": { "type": "string" },
+                                  "company_linkedin_id": { "type": "string" },
+                                  "job_description": { "type": "string", "nullable": true },
+                                  "job_start_date": { "type": "string", "format": "date", "nullable": true },
+                                  "job_end_date": { "type": "string", "format": "date", "nullable": true },
+                                  "job_is_current": { "type": "boolean" },
+                                  "job_location": {
+                                    "type": "object",
+                                    "properties": {
+                                      "city": { "type": "string", "nullable": true },
+                                      "state_code": { "type": "string", "nullable": true },
+                                      "country_code": { "type": "string", "nullable": true }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "education": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "degree": { "type": "string" },
+                                  "start_date": { "type": "string", "format": "date", "nullable": true },
+                                  "end_date": { "type": "string", "format": "date", "nullable": true }
+                                }
+                              }
+                            },
+                            "skills": {
+                              "type": "array",
+                              "items": { "type": "string" }
+                            },
+                            "certifications": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "authority": { "type": "string" },
+                                  "name": { "type": "string" },
+                                  "url": { "type": "string", "nullable": true }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": { "$ref": "#/components/responses/Unauthorized" },
+        "402": { "$ref": "#/components/responses/PaymentRequired" },
+        "429": { "$ref": "#/components/responses/TooManyRequests" },
+        "500": { "$ref": "#/components/responses/InternalServerError" }
+      }
+    }
+  },
 		"/v2/enrichment/domain-to-linkedin": {
 			"post": {
 				"tags": ["Company Enrichment"],
