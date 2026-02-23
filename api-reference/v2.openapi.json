@@ -938,7 +938,64 @@
                     }
                   }
                 }
-              }
+              },
+							"example": {
+								"company_linkedin_url": "https://www.linkedin.com/company/openai",
+								"max_results": 10,
+								"results_length": 10,
+								"results": [{
+									"icp": 2,
+									"ranking": 1,
+									"person": {
+										"first_name": "Gio",
+										"last_name": "Santiago",
+										"full_name": "Gio Santiago",
+										"nickname": null,
+										"civility_title": null,
+										"headline": "Events @ OpenAI | Experiential Marketing | Ex-Condé Nast | Digital Content Strategist | Fulbright Alumni",
+										"about_me": "Passionate, hands on, and innovation-centered events and digital media creative with 8+…",
+										"location": {
+											"city": "New York",
+											"state_code": "NY",
+											"country_code": "US",
+											"continent": "North America"
+										},
+										"linkedin_url": "https://www.linkedin.com/in/gio-santiago",
+										"connections_count": 500,
+										"profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+										"experiences": [{
+											"job_title": "Comms Events, Associate Events Manager, Gtm B2b Marketing",
+											"company_linkedin_url": "https://www.linkedin.com/company/openai",
+											"company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
+											"job_description": "I am currently working as an associate event manager at OpenAI on the comms events team, producing marketing and GTM tentpoles across the US, EMEA, and APAC.",
+											"job_start_date": "2025-05-01",
+											"job_end_date": null,
+											"job_is_current": true,
+											"job_location": {
+												"city": "New York",
+												"state_code": "NY",
+												"country_code": "US"
+											}
+										}],
+										"education": [],
+										"skills": [
+											"research", "ecology", "editing", "environmental science",
+											"environmental education", "environmental awareness", "public speaking",
+											"organizational leadership", "nonprofits", "community outreach",
+											"management", "volunteer management"
+										],
+										"certifications": [{
+												"authority": "Acumen, LLC",
+												"name": "Adaptive Leadership Certification"
+											},
+											{
+												"authority": "PADI",
+												"name": "PADI Advanced Open Water Scuba Diver"
+											}
+										]
+									}
+								}]
+							}
             }
           }
         },
@@ -949,6 +1006,217 @@
       }
     }
   },
+			"/v2/search/employee-finder": {
+			"post": {
+				"tags": ["People Search"],
+				"security": [{ "APIKey": [] }],
+				"summary": "Employee Finder",
+				"description": "### 💰 Cost: 1 Credit per result\n\nSearch for specific employees within a company by filtering on job title, department, level, and location.\n\nSee [Field Normalization](/guide/reference/field-normalization) for accepted `job_level`, `job_function`, and location values.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"company_linkedin_url": {
+										"type": "string",
+										"example": "https://www.linkedin.com/company/wttj-fr"
+									},
+									"country_code": {
+										"type": "array",
+										"items": { "type": "string" },
+										"description": "ISO 3166-1 alpha-2 country codes. See [Field Normalization](/guide/reference/field-normalization#country-codes).",
+										"example": ["US", "FR"]
+									},
+									"continent": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["Africa", "Antarctica", "Asia", "Europe", "North America", "Oceania", "South America"]
+										},
+										"description": "Filter by continent. See [Field Normalization](/guide/reference/field-normalization#continents).",
+										"example": ["Europe"]
+									},
+									"sales_region": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["NORAM", "LATAM", "EMEA", "APAC"]
+										},
+										"description": "Filter by sales region. See [Field Normalization](/guide/reference/field-normalization#sales-regions).",
+										"example": ["EMEA"]
+									},
+									"job_level": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": ["C-Team", "Director", "Manager", "Other", "Staff", "VP"]
+										},
+										"description": "Filter by seniority level. See [Field Normalization](/guide/reference/field-normalization#job-levels).",
+										"example": ["C-Team", "VP", "Director"]
+									},
+									"job_function": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"enum": [
+												"Advertising & Marketing",
+												"Art, Culture and Creative Professionals",
+												"Construction",
+												"Customer/Client Service",
+												"Education",
+												"Engineering",
+												"Finance & Accounting",
+												"General Business & Management",
+												"Healthcare & Human Services",
+												"Human Resources",
+												"Information Technology",
+												"Legal",
+												"Manufacturing & Production",
+												"Operations",
+												"Other",
+												"Public Administration & Safety",
+												"Purchasing",
+												"Research & Development",
+												"Sales & Business Development",
+												"Science",
+												"Supply Chain & Logistics",
+												"Writing/Editing"
+											]
+										},
+										"description": "Filter by job department/function. See [Field Normalization](/guide/reference/field-normalization#job-functions).",
+										"example": ["Sales & Business Development", "Advertising & Marketing"]
+									},
+									"min_connections_count": {
+										"type": "number",
+										"minimum": 0,
+										"maximum": 500,
+										"description": "Minimum LinkedIn connections count.",
+										"example": 200
+									},
+									"max_results": {
+										"type": "number",
+										"description": "Maximum number of results per page.",
+										"example": 3
+									},
+									"page": {
+										"type": "number",
+										"description": "Page number for pagination (starts at 1).",
+										"example": 1
+									}
+								},
+								"required": ["company_linkedin_url"]
+							},
+							"examples": {
+								"sales-leaders": {
+									"summary": "Find Sales leaders at a company in EMEA",
+									"value": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"sales_region": ["EMEA"],
+										"job_level": ["C-Team", "VP", "Director"],
+										"job_function": ["Sales & Business Development"],
+										"max_results": 5,
+										"page": 1
+									}
+								},
+								"engineering-team": {
+									"summary": "Map the Engineering team in France",
+									"value": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"country_code": ["FR"],
+										"job_function": ["Engineering", "Information Technology"],
+										"min_connections_count": 100,
+										"max_results": 10,
+										"page": 1
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"company_linkedin_url": { "type": "string" },
+										"max_results": { "type": "number" },
+										"results_length": { "type": "number" },
+										"page": { "type": "number" },
+										"total_pages": { "type": "number" },
+										"results": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"first_name": { "type": "string" },
+													"last_name": { "type": "string" },
+													"full_name": { "type": "string" },
+													"headline": { "type": "string", "nullable": true },
+													"about_me": { "type": "string", "nullable": true },
+													"location": {
+														"type": "object",
+														"properties": {
+															"city": { "type": "string", "nullable": true },
+															"state_code": { "type": "string", "nullable": true },
+															"country_code": { "type": "string", "nullable": true },
+															"continent": { "type": "string", "nullable": true }
+														}
+													},
+													"linkedin_url": { "type": "string" },
+													"connections_count": { "type": "number" },
+													"profile_picture_url": { "type": "string", "nullable": true },
+													"experiences": { "type": "array" },
+													"education": { "type": "array" },
+													"skills": { "type": "array" },
+													"certifications": { "type": "array" }
+												}
+											}
+										}
+									},
+									"example": {
+										"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+										"max_results": 3,
+										"results_length": 3,
+										"page": 1,
+										"total_pages": 82,
+										"results": [
+											{
+												"first_name": "Colombe",
+												"last_name": "Godeluck",
+												"full_name": "Colombe Godeluck",
+												"headline": "Helps companies strengthen & promote their employer brand",
+												"about_me": null,
+												"location": { "city": null, "state_code": null, "country_code": "FR", "continent": "Europe" },
+												"linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
+												"connections_count": 500,
+												"profile_picture_url": null,
+												"experiences": [{
+													"job_title": "Account Manager Senior",
+													"company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+													"job_start_date": "2023-02-01",
+													"job_end_date": null,
+													"job_is_current": true
+												}],
+												"education": [],
+												"skills": [],
+												"certifications": []
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"402": { "$ref": "#/components/responses/PaymentRequired" },
+					"422": { "$ref": "#/components/responses/InvalidInput" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
 		"/v2/enrichment/domain-to-linkedin": {
 			"post": {
 				"tags": ["Company Enrichment"],
