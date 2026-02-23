@@ -34,7 +34,8 @@
             "group": "Getting Started",
             "pages": [
               "guide/getting-started/authentication",
-              "guide/getting-started/quickstart"
+              "guide/getting-started/quickstart",
+              "guide/getting-started/code-examples"
             ]
           },
           {
