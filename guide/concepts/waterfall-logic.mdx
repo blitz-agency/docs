@@ -7,7 +7,7 @@ description: "Smart Lead Routing: Prioritize quality over quantity."
 In modern B2B growth, **more leads is not the goal. Better leads are.**
 
 
-The **Waterfall ICP** engine (`/api/search/waterfall-icp-keyword`) is designed to solve one specific problem: **Finding the single best decision-maker** at a target company without manual sorting.
+The **Waterfall ICP** engine (`POST /v2/search/waterfall-icp-keyword`) is designed to solve one specific problem: **Finding the single best decision-maker** at a target company without manual sorting.
 
 
 <img
@@ -110,7 +110,7 @@ Let's look at a complex query. Here, we want to target **Welcome to the Jungle**
 ### Why this query is powerful
 
 
-- **Precision**: By using `exclude_title`, we ensure we don't pay for interns or assistants.
+- **Precision**: By using `exclude_title`, we focus the results on senior profiles and avoid matching interns or assistants who aren't decision-makers.
 - **Flexibility**: In step 4, we switch `include_headline_search` to `true`. This allows us to catch people who write "Helping companies grow" in their bio, even if their job title isn't exactly "Growth Manager".
 - **Safety Net**: The final step ensures that if the Marketing team is invisible, we still capture the CEO to start a top-down conversation.
 
@@ -118,45 +118,140 @@ Let's look at a complex query. Here, we want to target **Welcome to the Jungle**
 ---
 
 
-## Choosing Your Engine: Standard vs. Real-Time
+## Endpoint
 
+**`POST /v2/search/waterfall-icp-keyword`**
 
-We offer two processing modes for this logic. Choose based on your need for speed vs. niche accuracy.
+Queries BlitzAPI's proprietary dataset to deliver results instantly.
 
-
-<Tabs>
- <Tab title="Standard (Recommended)">
-   **Endpoint**: `/search/waterfall-icp-keyword`
-
-
-   Best for **high-volume ABM** on well-known companies. It uses a mix of live signals and cached data to deliver results instantly.
-
-
-   - **Cost**: 1 Credit / result
-   - **Latency**: \< 600ms
-   - **Ideal for**: Building lists of 10k+ leads quickly.
- </Tab>
-</Tabs>
+- **Paid plans**: Unlimited (included in Unlimited Leads+)
+- **Free trial**: 1 credit / result
+- **Latency**: < 600ms
 
 
 ---
 
 
-## Parameter Reference
+## Request Parameters
 
+### Top-Level Parameters
 
-Optimize your search filters with these parameters.
+| Parameter              | Type      | Required | Description                                                                                       |
+| :--------------------- | :-------- | :------- | :------------------------------------------------------------------------------------------------ |
+| `company_linkedin_url` | `string`  | Yes      | The full LinkedIn URL of the target company (e.g., `"https://www.linkedin.com/company/openai"`). |
+| `cascade`              | `array`   | Yes      | Ordered array of search tiers (**up to 8 levels**). The engine tries each tier until `max_results` is reached. |
+| `max_results`          | `integer` | No       | Maximum number of people to return across all tiers. Default: `1`. Max: `25`.                    |
 
+### Cascade Object Parameters (per tier)
 
-| Parameter                 | Type      | Description                                                                                   |
-| :------------------------ | :-------- | :-------------------------------------------------------------------------------------------- |
-| `include_title`           | `array`   | **Required**. Job titles to match (e.g., `["CEO", "CTO"]`).                                   |
-| `exclude_title`           | `array`   | Titles to strictly ignore. Useful to filter out `["Assistant", "Intern", "Junior"]`.          |
-| `location`                | `array`   | LinkedIn Country Codes (e.g., `["US", "FR"]`). Use `["WORLD"]` for global search.             |
-| `include_headline_search` | `boolean` | If `true`, keywords are searched in the user's bio/headline, not just their formal Job Title. |
-
+| Parameter                 | Type      | Required | Description                                                                                             |
+| :------------------------ | :-------- | :------- | :------------------------------------------------------------------------------------------------------ |
+| `include_title`           | `array`   | Yes      | Job titles to match (e.g., `["CEO", "CTO"]`). Partial matching — `"VP Sales"` matches `"VP of Sales"`. |
+| `exclude_title`           | `array`   | No       | Titles to exclude. Use to filter out `["Assistant", "Intern", "Junior"]`.                               |
+| `location`                | `array`   | No       | LinkedIn Country Codes (e.g., `["US", "FR"]`). Use `["WORLD"]` for global. Default: `["WORLD"]`.       |
+| `include_headline_search` | `boolean` | No       | If `true`, keywords match against the user's LinkedIn bio/headline, not just their formal job title.    |
 
 <Info>
- **Need the Country Codes?** Check our [Reference Appendix](/guide/reference/appendix#common-country-codes-list) for the correct 2-letter ISO codes expected by LinkedIn.
+ **Country Codes**: Use 2-letter ISO codes as used by LinkedIn (e.g., `US`, `GB`, `FR`). See the [Country Codes reference](/guide/reference/appendix#country-codes-linkedin) for the full list.
 </Info>
+
+---
+
+## Response Schema
+
+A successful request returns a JSON object with the following structure:
+
+```json
+{
+  "results_length": 3,
+  "results": [
+    {
+      "icp": 1,
+      "ranking": 1,
+      "what_matched": [{ "key": "include_title", "value": "VP Sales" }],
+      "person": {
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "full_name": "Jane Doe",
+        "headline": "VP of Sales at Acme Corp",
+        "about_me": "Scaling B2B revenue teams...",
+        "location": {
+          "city": "New York",
+          "state_code": "NY",
+          "country_code": "US",
+          "continent": "North America"
+        },
+        "linkedin_url": "https://www.linkedin.com/in/janedoe",
+        "connections_count": 2500,
+        "profile_picture_url": "https://media.licdn.com/...",
+        "experiences": [
+          {
+            "job_title": "VP of Sales",
+            "company_linkedin_url": "https://www.linkedin.com/company/acme",
+            "job_start_date": "2023-03-01",
+            "job_end_date": null,
+            "job_is_current": true
+          }
+        ],
+        "education": [],
+        "skills": ["B2B Sales", "SaaS", "Revenue Operations"],
+        "certifications": []
+      }
+    },
+    {
+      "icp": 2,
+      "ranking": 2,
+      "what_matched": [{ "key": "include_title", "value": "Sales Director" }],
+      "person": {
+        "first_name": "Alice",
+        "last_name": "Martin",
+        "full_name": "Alice Martin",
+        "headline": "Sales Director at Acme Corp",
+        "linkedin_url": "https://www.linkedin.com/in/alicemartin",
+        "location": { "city": "London", "country_code": "GB", "continent": "Europe" }
+      }
+    }
+  ]
+}
+```
+
+### Top-Level Fields
+
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `results_length` | `integer` | Total number of results returned. `0` if no match found. |
+| `results` | `array` | Array of matched people, ordered by cascade priority then relevance. |
+
+### Result Fields (`results[]`)
+
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `icp` | `integer` | Cascade **tier** that matched this person. `1` = highest priority (Tier 1), `2` = Tier 2, etc. |
+| `ranking` | `integer` | **Overall relevance rank** within the company (1 = most relevant). Use to adapt outreach strategy. |
+| `what_matched` | `array` | Which filter criteria matched. Each entry has `key` (e.g., `"include_title"`) and `value`. |
+| `person` | `object` | Full person profile. Pass `person.linkedin_url` to enrichment endpoints for email/phone. |
+
+### Person Object (`results[].person`)
+
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `first_name` | `string \| null` | First name. |
+| `last_name` | `string \| null` | Last name. |
+| `full_name` | `string \| null` | Full display name. |
+| `headline` | `string \| null` | LinkedIn headline. |
+| `about_me` | `string \| null` | LinkedIn "About" section. |
+| `location` | `object` | Location with `city`, `state_code`, `country_code`, `continent`. |
+| `linkedin_url` | `string` | Person LinkedIn URL — **use this** as input for `/v2/enrichment/email` and `/v2/enrichment/phone`. |
+| `connections_count` | `number \| null` | LinkedIn connections count. |
+| `profile_picture_url` | `string \| null` | URL to profile picture. |
+| `experiences` | `array` | Work history. Each entry: `job_title`, `company_linkedin_url`, `job_start_date`, `job_end_date`, `job_is_current`, `job_location`. |
+| `education` | `array` | Education history. Each entry: `degree`, `organization`, `start_date`, `end_date`. |
+| `skills` | `array` | List of skills (strings). |
+| `certifications` | `array` | List of certifications. Each entry: `name`, `authority`, `url`. |
+
+<Note>
+  **`icp` vs `ranking` — how to use both:**
+  - `icp` tells you *which tier* matched: route ICP 1–2 to your AE team, ICP 3–5 to SDR.
+  - `ranking` tells you *position within the company*: apply multichannel (email+LinkedIn+call) to ranking 1–3, calling-only to 4–10, and nurturing sequences to 11+.
+</Note>
 

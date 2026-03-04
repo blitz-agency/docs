@@ -1,125 +1,150 @@
 ---
-title: "Pricing & Billing Models"
-description: "Understand the difference between Pay-as-you-go and Unlimited Infrastructure."
+title: "Plans & Pricing"
+description: "Flat-rate unlimited access. No credits, no surprises. Choose the plan that unlocks the APIs you need."
 ---
 
+BlitzAPI is a **flat-rate subscription**. Once subscribed, all data is unlimited — no credits, no per-request fees, no overage surprises.
 
-BlitzAPI offers two distinct billing architectures to match your stage of growth. Whether you are running a small experimental script or a massive production pipeline, we have a model that fits.
-
-
-<img
- src="/images/cost-profiles.png"
- alt="Unlimited Data - BlitzAPI"
- style={{ width:"48%" }}
-/>
-
+<Note>
+  **Free Trial**: Every new account gets **1,000 free credits** to test the API before subscribing. Credits are used only on demo accounts. All paid plans are fully unlimited.
+</Note>
 
 ---
 
-
-## 1. The Pay-as-you-go Model (Classic)
-
-
-Ideal for prototyping, low-volume needs, or occasional usage. You purchase credits, and you spend them only on successful requests.
-
-
-| Action               | Cost              |
-| :------------------- | :---------------- |
-| **Enrich Email**     | 1 credit          |
-| **Enrich Phone**     | 5 credits         |
-| **Waterfall Search** | 1 credit / result |
-| **Validation**       | 0.5 credits       |
-
-
-<Check>
- **Zero Waste**: If we don't find the data (e.g., email not found), you are not charged.
-</Check>
-
-
----
-
-
-## 2. The Unlimited Model (Infrastructure)
-
-
-This is our vision for the future of B2B data. We believe that **data should be a fixed infrastructure cost**, just like your servers or database hosting. You shouldn't be punished for scaling your operations.
-
-
-Our Unlimited Plans transform variable costs into a predictable flat fee, enabling you to run **millions of operations** without looking at your balance.
-
-
-### Core Benefits
-
+## Subscription Plans
 
 <CardGroup cols={3}>
- <Card title="Predictable Opex" icon="chart-line">
-   No surprise overage fees. Budget \$499/mo and run your pipelines 24/7.
- </Card>
- <Card title="High Throughput" icon="server">
-   All plans include **5 concurrent requests per second** (RPS) by default.
- </Card>
- <Card title="Team Wide" icon="users">
-   No "Seat Licenses". Share one API Key across your entire engineering team.
- </Card>
+  <Card title="Unlimited Leads" icon="users">
+    **$399 / month**
+
+    For teams that need fresh company + people data, on repeat.
+
+    **What's included:**
+    - Unlimited Waterfall ICP Search
+    - Unlimited Company Search
+    - Unlimited Company Enrichment
+    - Unlimited Employee Finder
+    - Unlimited Domain → LinkedIn URL
+    - 380M+ contacts
+    - 60M+ companies
+    - 5 requests per second
+  </Card>
+  <Card title="Unlimited Email" icon="envelope">
+    **$499 / month** ⭐ Most Popular
+
+    For teams running cold email at scale — where deliverability matters.
+
+    **Everything in Unlimited Leads, plus:**
+    - Unlimited Email Enrichment
+    - 62M+ verified emails
+    - 97% email accuracy
+    - 5 requests per second
+  </Card>
+  <Card title="Unlimited Phone Numbers" icon="phone">
+    **$599 / month**
+
+    For high-output teams running true multi-channel outreach.
+
+    **Everything in Unlimited Email, plus:**
+    - Unlimited Phone Enrichment
+    - +40M mobile phone numbers
+    - US coverage only
+    - 5 requests per second
+  </Card>
 </CardGroup>
 
+---
+
+## What's Included in Each Plan
+
+| API / Endpoint | Unlimited Leads ($399) | Unlimited Email ($499) | Unlimited Phone ($599) |
+| :------------- | :--------------------: | :--------------------: | :--------------------: |
+| **Waterfall ICP Search** | ✅ | ✅ | ✅ |
+| **Company Search** | ✅ | ✅ | ✅ |
+| **Company Enrichment** | ✅ | ✅ | ✅ |
+| **Employee Finder** | ✅ | ✅ | ✅ |
+| **People Search** | ✅ | ✅ | ✅ |
+| **Domain → LinkedIn URL** | ✅ | ✅ | ✅ |
+| **Reverse Lookups** (email, phone) | ✅ | ✅ | ✅ |
+| **Email Enrichment** (`/enrichment/email`) | ❌ | ✅ | ✅ |
+| **Phone Enrichment** (`/enrichment/phone`) | ❌ | ❌ | ✅ |
 
 ---
 
+## Why Flat-Rate Unlimited
 
-## Subscription Tiers
-
-
-Choose the tier that unlocks the specific _endpoints_ you need for your stack.
-
-
-| Feature / Endpoint                           | PRO (\$399/mo)  | ULTRA (\$499/mo) | MEGA (\$599/mo) |
-| :------------------------------------------- | :-------------: | :--------------: | :-------------: |
-| **Waterfall Search** (`/search/*`)           | ✅ **Unlimited** | ✅ **Unlimited**  | ✅ **Unlimited** |
-| **Domain Enrichment** (`/enrichment/domain`) | ✅ **Unlimited** | ✅ **Unlimited**  | ✅ **Unlimited** |
-| **Verified Emails** (`/enrichment/email`)    | ❌               | ✅ **Unlimited**  | ✅ **Unlimited** |
-| **Verified Phones** (`/enrichment/phone`)    | ❌               | ❌                | ✅ **Unlimited** |
-
+<CardGroup cols={3}>
+  <Card title="No Surprises" icon="chart-line">
+    No overage fees. Budget a fixed monthly amount and run your pipelines 24/7.
+  </Card>
+  <Card title="Iterate Freely" icon="rotate">
+    Delete data, rerun requests, test new ICP configurations — zero additional cost.
+  </Card>
+  <Card title="Scale Without Math" icon="server">
+    Enrich 100 leads or 100,000. The cost is identical. No marginal cost per lead.
+  </Card>
+</CardGroup>
 
 ---
 
-
-## Functional Selection Guide
-
-
-Which infrastructure is right for your use case?
-
+## Choose Your Plan
 
 <CardGroup cols={1}>
- <Card title="PRO Plan — The Targeting Engine" icon="crosshairs">
-   **Ideal for: Account-Based Marketing (ABM) & List Building.**
+  <Card title="Unlimited Leads — The Targeting Engine" icon="crosshairs">
+    **Ideal for: ABM, list building, and account-level workflows.**
 
+    You need to find the right decision-makers at scale and have an existing email enrichment provider (Clay, another waterfall). Use BlitzAPI for precision targeting and company/contact discovery.
 
-   You already have an enrichment provider (like Clay or a waterfall provider), but you need a way to **find decision-makers** at scale.
+    _Example: Map 50,000 companies to find every VP of Sales._
+  </Card>
+  <Card title="Unlimited Email — The Cold Email Machine" icon="envelope">
+    **Ideal for: Outbound agencies and cold email teams. (Most Popular)**
 
+    You need to feed your sending tools (Smartlead, Instantly, Lemlist) with thousands of fresh, verified leads daily.
 
-   - _Use case:_ Mapping 50,000 companies to find every "VP of Sales".
- </Card>
- <Card title="ULTRA Plan — The Cold Email Machine" icon="envelope">
-   **Ideal for: High-Volume Outbound Agencies.**
+    _Example: Company Search → Waterfall ICP → Email Enrichment → Send._
+  </Card>
+  <Card title="Unlimited Phone Numbers — The Full Contact Suite" icon="phone">
+    **Ideal for: Multi-channel teams and call centers.**
 
+    Your SDRs cold-call and need direct mobile numbers to bypass gatekeepers. US-based contacts only for phone numbers.
 
-   You need to feed your sending tools (Smartlead, Instantly) with thousands of fresh, verified leads daily. **(Most Popular)**
-
-
-   - _Use case:_ Automated workflow: Search Companies -\> Find Decision Maker -\> Get Verified Email.
- </Card>
- <Card title="MEGA Plan — The Full Contact Suite" icon="phone">
-   **Ideal for: Call Centers & Multi-Channel Ops.**
-
-
-   Your SDRs perform cold calling and need direct mobile numbers to bypass gatekeepers.
-
-
-   - _Use case:_ Syncing high-value leads with HubSpot, populated with both Email and Phone.
- </Card>
+    _Example: Waterfall ICP → Email + Phone → Multichannel sequence in HubSpot._
+  </Card>
 </CardGroup>
-
 
 ---
 
+## Rate Limits
+
+All plans include the same technical rate limit:
+
+| Metric | Value |
+| :----- | :---- |
+| **Requests per second** | 5 RPS (standard) |
+| **Concurrency** | 5 simultaneous requests |
+| **Timeout recommendation** | 10s (search & enrichment), 20s (email validation) |
+
+<Tip>
+  Your exact rate limit is returned by the `GET /v2/account/key-info` endpoint in the `max_requests_per_seconds` field. Use this value to configure your client-side rate limiter.
+</Tip>
+
+---
+
+## Free Trial
+
+Every new account gets **1,000 free credits** to test the API. Credit costs for demo accounts:
+
+| Action | Credit Cost |
+| :----- | :---------- |
+| Waterfall ICP Search | 1 credit / result |
+| Email Enrichment | 1 credit (0 if not found) |
+| Phone Enrichment | 5 credits (0 if not found) |
+| Email Validation | 0.5 credits |
+| People Search | 1 credit / result |
+| Domain → LinkedIn URL | 1 credit |
+| Company/Person Enrichment | 1 credit |
+
+<Info>
+  On paid plans, all of the above is unlimited and included in your flat monthly fee. No credits are deducted.
+</Info>

@@ -1,233 +1,50 @@
 ---
 title: "Code Examples & Best Practices"
-description: "Production-ready code examples in Python, Node.js, and TypeScript for every Blitz API endpoint. Copy, paste, and ship."
+description: "Production-ready code for every Blitz API v2 endpoint. Copy, paste, and ship."
 ---
 
-<Warning>
-  **Rate limiting is mandatory.** Every code example on this page includes a built-in rate limiter. **You must use it.** Skipping rate limiting will result in `429 Too Many Requests` errors and degraded performance. See the [Rate Limiting](#rate-limiting) section for details.
-</Warning>
+## Endpoint Quick Reference
 
-## Rate Limiting
+All v2 endpoints at a glance. Base URL: `https://api.blitz-api.ai`. All endpoints use `POST` except `key-info`.
 
-The Blitz API enforces a **per-second request limit** on every API key. The exact limit depends on your plan. Exceeding it will result in `429` errors that slow down your entire pipeline.
+<Note>
+  **Paid plans**: All endpoints are **unlimited** — no credits deducted. Credit costs below apply only to **free trial accounts** (1,000 credits).
+</Note>
 
-| Setting                    | Value              |
-| :------------------------- | :----------------- |
-| **Default rate limit**     | **5 requests/second** (varies by plan) |
-| **Enforcement**            | Per Workspace        |
-| **Error on exceed**        | `429 Too Many Requests` |
-| **Recommended approach**   | Sliding-window rate limiter (see below) |
-
-### Check your rate limit
-
-Your exact rate limit is returned by the [`/v2/account/key-info`](#check-api-key--get-v2accountkey-info) endpoint in the `max_requests_per_seconds` field. **Always read this value** instead of hardcoding it.
-
-```bash
-curl -H "x-api-key: YOUR_API_KEY" https://api.blitz-api.ai/v2/account/key-info
-```
-
-```json
-{
-  "valid": true,
-  "remaining_credits": 99.5,
-  "max_requests_per_seconds": 5,
-  ...
-}
-```
-
-Use the `max_requests_per_seconds` value to initialize your rate limiter. The examples on this page default to `5`, but your plan may allow more.
-
-<Tip>
-  **Need a higher rate limit?** You can upgrade your plan for increased throughput. [Book a call](https://cal.com/antoine-blitz-acepmu/blitz-api) or reach out to the team to discuss your needs.
-</Tip>
-
-A simple `time.sleep()` between calls is **not reliable** in production. Network latency, retries, and concurrent threads can cause bursts that exceed the limit. Use a **sliding-window rate limiter** that tracks actual request timestamps.
-
-<Warning>
-  **Strict requirement**: Failing to implement proper rate limiting will result in `429 Too Many Requests` errors during bulk operations. The rate limiter below is **thread-safe** and handles concurrent requests correctly. Copy it into every project that calls the Blitz API.
-</Warning>
-
-### Python Rate Limiter
-
-A factory function that returns a thread-safe `wait()` function. Call `wait()` before every request — it blocks until a slot is available in the sliding window.
-
-```python
-import time
-import threading
-from collections import deque
-
-
-def create_rate_limiter(max_rps):
-    timestamps = deque()
-    lock = threading.Lock()
-
-    def wait():
-        with lock:
-            while True:
-                now = time.monotonic()
-                while timestamps and timestamps[0] <= now - 1.0:
-                    timestamps.popleft()
-                if len(timestamps) < max_rps:
-                    timestamps.append(time.monotonic())
-                    return
-                wait_time = timestamps[0] + 1.0 - now + 0.001
-                lock.release()
-                try:
-                    time.sleep(wait_time)
-                finally:
-                    lock.acquire()
-
-    return wait
-```
-
-Usage:
-
-```python
-rate_limit = create_rate_limiter(5)
-
-rate_limit()  # blocks until a slot is available
-requests.post(...)
-```
-
-### Node.js / TypeScript Rate Limiter
-
-A factory function that returns an async `wait()` function. Requests are serialized through a promise chain so concurrent callers never burst past the limit.
-
-```javascript
-function createRateLimiter(maxRps) {
-  const timestamps = [];
-  let pending = Promise.resolve();
-
-  return () => {
-    pending = pending.then(
-      () =>
-        new Promise((resolve) => {
-          const poll = () => {
-            const now = Date.now();
-            while (timestamps.length && timestamps[0] <= now - 1000)
-              timestamps.shift();
-            if (timestamps.length < maxRps) {
-              timestamps.push(Date.now());
-              resolve();
-            } else {
-              setTimeout(poll, timestamps[0] + 1000 - now + 1);
-            }
-          };
-          poll();
-        })
-    );
-    return pending;
-  };
-}
-```
-
-Usage:
-
-```javascript
-const rateLimit = createRateLimiter(5);
-
-await rateLimit(); // resolves when a slot is available
-fetch(...);
-```
+| Endpoint | Method | Description | Plan required | Trial cost |
+| :------- | :----- | :---------- | :------------ | :--------- |
+| `/v2/account/key-info` | `GET` | Check API key & credits | Any | 0 credits |
+| `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers by cascade hierarchy | Unlimited Leads+ | 1 credit / result |
+| `/v2/search/employee-finder` | `POST` | Search employees by role & seniority | Unlimited Leads+ | 1 credit / result |
+| `/v2/search/companies` | `POST` | Find companies by filters | Unlimited Leads+ | 1 credit / result |
+| `/v2/search/people` | `POST` | Find people across companies by combined filters | Unlimited Leads+ | 1 credit / result |
+| `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Unlimited Email+ | 1 credit |
+| `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone (US only) | Unlimited Phone | 5 credits |
+| `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Unlimited Leads+ | 1 credit |
+| `/v2/enrichment/phone-to-person` | `POST` | Phone number → full person profile | Unlimited Leads+ | 5 credits |
+| `/v2/enrichment/company` | `POST` | Company LinkedIn URL → company profile | Unlimited Leads+ | 1 credit |
+| `/v2/enrichment/domain-to-linkedin` | `POST` | Website domain → Company LinkedIn URL | Unlimited Leads+ | 1 credit |
+| `/v2/enrichment/linkedin-to-domain` | `POST` | Company LinkedIn URL → email domain | Unlimited Leads+ | 0.5 credits |
+| `/v2/utilities/email/validate` | `POST` | Validate email deliverability (SMTP) | Unlimited Leads+ | 0.5 credits |
+| `/v2/utilities/current-date` | `POST` | Get current server date/time | Any | 0 credits |
 
 ---
 
 ## Base Setup
 
-Every request to the Blitz API requires the `x-api-key` header and **must** go through the rate limiter. The client below wires everything together: rate limiting, retries on `429`, and error handling.
+Every request requires the `x-api-key` header. The client below handles rate limiting, retries on `429`, and error handling.
 
-**Base URL**: `https://api.blitz-api.ai`
-
-<Note>
-  The examples below default to `max_rps=5`. Replace `5` with the `max_requests_per_seconds` value from your [`/v2/account/key-info`](#check-api-key--get-v2accountkey-info) response to match your plan.
-</Note>
+<Warning>
+  **Never expose your API key in client-side code** (browsers, mobile apps). Always call the Blitz API from your backend.
+</Warning>
 
 <CodeGroup>
 
-```python Python
-import time
-import threading
-from collections import deque
-import requests
-
-BLITZ_API_KEY = "YOUR_API_KEY"
-BLITZ_BASE_URL = "https://api.blitz-api.ai"
-HEADERS = {
-    "x-api-key": BLITZ_API_KEY,
-    "Content-Type": "application/json",
-}
-
-
-def create_rate_limiter(max_rps):
-    timestamps = deque()
-    lock = threading.Lock()
-
-    def wait():
-        with lock:
-            while True:
-                now = time.monotonic()
-                while timestamps and timestamps[0] <= now - 1.0:
-                    timestamps.popleft()
-                if len(timestamps) < max_rps:
-                    timestamps.append(time.monotonic())
-                    return
-                wait_time = timestamps[0] + 1.0 - now + 0.001
-                lock.release()
-                try:
-                    time.sleep(wait_time)
-                finally:
-                    lock.acquire()
-
-    return wait
-
-
-# Default 5 req/s — replace with your plan's max_requests_per_seconds from /v2/account/key-info
-rate_limit = create_rate_limiter(5)
-
-
-def blitz_request(method, path, payload=None):
-    url = f"{BLITZ_BASE_URL}{path}"
-
-    for attempt in range(3):
-        try:
-            rate_limit()
-
-            if method == "GET":
-                response = requests.get(url, headers=HEADERS, timeout=60)
-            else:
-                response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
-
-            if response.status_code == 429:
-                print("Rate limited by server, waiting 60s...")
-                time.sleep(60)
-                continue
-
-            if response.status_code == 402:
-                print("Insufficient credits")
-                return None
-
-            if response.status_code == 401:
-                print("Invalid API key")
-                return None
-
-            if response.status_code == 200:
-                return response.json()
-
-            time.sleep(2 ** attempt)
-
-        except Exception as e:
-            if attempt == 2:
-                print(f"API error: {e}")
-                return None
-            time.sleep(2)
-
-    return None
-```
-
-```javascript Node.js
+```javascript Node.js / TypeScript
 const BLITZ_API_KEY = "YOUR_API_KEY";
 const BLITZ_BASE_URL = "https://api.blitz-api.ai";
 
+// Replace 5 with the max_requests_per_seconds value from /v2/account/key-info
 function createRateLimiter(maxRps) {
   const timestamps = [];
   let pending = Promise.resolve();
@@ -254,7 +71,6 @@ function createRateLimiter(maxRps) {
   };
 }
 
-// Default 5 req/s — replace with your plan's max_requests_per_seconds from /v2/account/key-info
 const rateLimit = createRateLimiter(5);
 
 async function blitzRequest(method, path, payload) {
@@ -289,9 +105,7 @@ async function blitzRequest(method, path, payload) {
         return null;
       }
 
-      if (res.ok) {
-        return await res.json();
-      }
+      if (res.ok) return await res.json();
 
       await new Promise((r) => setTimeout(r, 2 ** attempt * 1000));
     } catch (error) {
@@ -302,64 +116,126 @@ async function blitzRequest(method, path, payload) {
       await new Promise((r) => setTimeout(r, 2000));
     }
   }
-
   return null;
 }
 ```
 
+```python Python
+import time
+import threading
+from collections import deque
+import requests
+
+BLITZ_API_KEY = "YOUR_API_KEY"
+BLITZ_BASE_URL = "https://api.blitz-api.ai"
+HEADERS = {
+    "x-api-key": BLITZ_API_KEY,
+    "Content-Type": "application/json",
+}
+
+# Replace 5 with max_requests_per_seconds from /v2/account/key-info
+def create_rate_limiter(max_rps):
+    timestamps = deque()
+    lock = threading.Lock()
+
+    def wait():
+        with lock:
+            while True:
+                now = time.monotonic()
+                while timestamps and timestamps[0] <= now - 1.0:
+                    timestamps.popleft()
+                if len(timestamps) < max_rps:
+                    timestamps.append(time.monotonic())
+                    return
+                wait_time = timestamps[0] + 1.0 - now + 0.001
+                lock.release()
+                try:
+                    time.sleep(wait_time)
+                finally:
+                    lock.acquire()
+
+    return wait
+
+rate_limit = create_rate_limiter(5)
+
+def blitz_request(method, path, payload=None):
+    url = f"{BLITZ_BASE_URL}{path}"
+
+    for attempt in range(3):
+        try:
+            rate_limit()
+
+            if method == "GET":
+                response = requests.get(url, headers=HEADERS, timeout=20)
+            else:
+                response = requests.post(url, headers=HEADERS, json=payload, timeout=20)
+
+            if response.status_code == 429:
+                print("Rate limited by server, waiting 60s...")
+                time.sleep(60)
+                continue
+
+            if response.status_code == 402:
+                print("Insufficient credits")
+                return None
+
+            if response.status_code == 401:
+                print("Invalid API key")
+                return None
+
+            if response.status_code == 200:
+                return response.json()
+
+            time.sleep(2 ** attempt)
+
+        except Exception as e:
+            if attempt == 2:
+                print(f"API error: {e}")
+                return None
+            time.sleep(2)
+
+    return None
+```
+
 </CodeGroup>
-
-<Warning>
-  **Never expose your API key in client-side code** (browser, mobile app). Always call the Blitz API from your backend.
-</Warning>
-
-<Note>
-  The `rate_limit` / `rateLimit` function is created **once** and shared across all calls. Do not create a new one per request. Every `blitz_request` / `blitzRequest` call in the examples below goes through this rate limiter automatically.
-</Note>
 
 ---
 
-## People Search
+## Check API Key — GET `/v2/account/key-info`
 
-### Waterfall ICP Search — `POST /v2/search/waterfall-icp-keyword`
-
-Find the best decision-maker at a company using a prioritized cascade. The engine tries each tier in order and fills results from the highest-priority match first.
-
-**Cost**: 1 credit per result returned.
+Verify your key and check remaining credits. Use as a health check before batch jobs.
 
 <CodeGroup>
 
-```python Python
-result = blitz_request("POST", "/v2/search/waterfall-icp-keyword", {
-    "company_linkedin_url": "https://www.linkedin.com/company/openai",
-    "cascade": [
-        {
-            "include_title": ["CTO", "VP Engineering", "Head of Engineering"],
-            "exclude_title": ["assistant", "intern", "junior"],
-            "location": ["WORLD"],
-            "include_headline_search": False,
-        },
-        {
-            "include_title": ["Engineering Director", "Engineering Manager"],
-            "exclude_title": ["junior", "intern"],
-            "location": ["WORLD"],
-            "include_headline_search": False,
-        },
-        {
-            "include_title": ["CEO", "Founder", "CTO"],
-            "exclude_title": ["intern"],
-            "location": ["WORLD"],
-            "include_headline_search": False,
-        },
-    ],
-    "max_results": 5,
-})
+```javascript Node.js
+const info = await blitzRequest("GET", "/v2/account/key-info");
 
-for person in result["results"]:
-    p = person["person"]
-    print(f"[Tier {person['icp']}] {p['full_name']} — {p['headline']}")
-    print(f"  LinkedIn: {p['linkedin_url']}")
+console.log(`Valid: ${info.valid}`);
+console.log(`Credits remaining: ${info.remaining_credits}`);
+console.log(`Rate limit: ${info.max_requests_per_seconds} req/s`);
+console.log(`Allowed endpoints: ${info.allowed_apis.join(", ")}`);
 ```
+
+```python Python
+info = blitz_request("GET", "/v2/account/key-info")
+
+print(f"Valid: {info['valid']}")
+print(f"Credits remaining: {info['remaining_credits']}")
+print(f"Rate limit: {info['max_requests_per_seconds']} req/s")
+print(f"Allowed endpoints: {', '.join(info['allowed_apis'])}")
+```
+
+</CodeGroup>
+
+---
+
+## Waterfall ICP Search — POST `/v2/search/waterfall-icp-keyword`
+
+Find the best decision-maker at a company using a prioritized cascade. The engine tries each tier in order and fills results from the highest-priority match first.
+
+**Paid plans**: Unlimited. **Free trial**: 1 credit per result. `icp` = cascade tier matched (1 = top priority). `ranking` = overall position in the company (1 = most relevant).
+
+<CodeGroup>
 
 ```javascript Node.js
 const result = await blitzRequest("POST", "/v2/search/waterfall-icp-keyword", {
@@ -389,487 +265,31 @@ const result = await blitzRequest("POST", "/v2/search/waterfall-icp-keyword", {
 
 for (const person of result.results) {
   const p = person.person;
-  console.log(`[Tier ${person.icp}] ${p.full_name} — ${p.headline}`);
+  console.log(`[Tier ${person.icp} | Rank #${person.ranking}] ${p.full_name} — ${p.headline}`);
   console.log(`  LinkedIn: ${p.linkedin_url}`);
+  // icp: which cascade tier matched (1 = top priority)
+  // ranking: overall position in company (1 = most relevant)
 }
 ```
-
-</CodeGroup>
-
-<Tip>
-  The `icp` field in each result tells you which cascade tier matched (1 = highest priority). Use it to score or tag your leads.
-</Tip>
-
-### Employee Finder — `POST /v2/search/employee-finder`
-
-Search employees at a company by job level, department, and location. Supports pagination.
-
-**Cost**: 1 credit per result returned.
-
-<CodeGroup>
 
 ```python Python
-result = blitz_request("POST", "/v2/search/employee-finder", {
-    "company_linkedin_url": "https://www.linkedin.com/company/openai",
-    "job_level": ["C-Team", "VP", "Director"],
-    "job_function": ["Sales & Business Development"],
-    "sales_region": ["EMEA"],
-    "max_results": 10,
-    "page": 1,
-})
-
-print(f"Found {result['results_length']} of {result['total_pages']} pages")
-for person in result["results"]:
-    print(f"{person['full_name']} — {person['headline']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/search/employee-finder", {
-  company_linkedin_url: "https://www.linkedin.com/company/openai",
-  job_level: ["C-Team", "VP", "Director"],
-  job_function: ["Sales & Business Development"],
-  sales_region: ["EMEA"],
-  max_results: 10,
-  page: 1,
-});
-
-console.log(`Found ${result.results_length} of ${result.total_pages} pages`);
-for (const person of result.results) {
-  console.log(`${person.full_name} — ${person.headline}`);
-}
-```
-
-</CodeGroup>
-
-**Pagination**: increment the `page` parameter to fetch the next page. The response includes `total_pages` so you know when to stop.
-
-### Company Search — `POST /v2/search/companies`
-
-Find companies by industry, location, headcount, keywords, and more. All filters are optional and combined with AND logic.
-
-**Cost**: 1 credit per result returned.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/search/companies", {
-    "company": {
-        "keywords": {"include": ["SaaS", "cloud platform"]},
-        "industry": {"include": ["Software Development"]},
-        "hq": {"continent": ["Europe"]},
-        "employee_range": ["51-200", "201-500"],
-    },
-    "max_results": 25,
-})
-
-print(f"{result['results_count']} results (total: {result['total_results']})")
-for company in result["results"]:
-    print(f"{company['name']} — {company['industry']} — {company['domain']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/search/companies", {
-  company: {
-    keywords: { include: ["SaaS", "cloud platform"] },
-    industry: { include: ["Software Development"] },
-    hq: { continent: ["Europe"] },
-    employee_range: ["51-200", "201-500"],
-  },
-  max_results: 25,
-});
-
-console.log(`${result.results_count} results (total: ${result.total_results})`);
-for (const company of result.results) {
-  console.log(`${company.name} — ${company.industry} — ${company.domain}`);
-}
-```
-
-</CodeGroup>
-
-**Cursor pagination**: pass the `cursor` from the response into your next request to fetch the next page. When `cursor` is `null`, you've reached the end.
-
-```python
-cursor = None
-all_companies = []
-
-while True:
-    payload = {
-        "company": {
-            "industry": {"include": ["Software Development"]},
-            "hq": {"country_code": ["FR"]},
-        },
-        "max_results": 50,
-    }
-    if cursor:
-        payload["cursor"] = cursor
-
-    result = blitz_request("POST", "/v2/search/companies", payload)
-    all_companies.extend(result["results"])
-    cursor = result.get("cursor")
-
-    if not cursor:
-        break
-
-print(f"Fetched {len(all_companies)} companies total")
-```
-
----
-
-## People Enrichment
-
-### Find Work Email — `POST /v2/enrichment/email`
-
-Get a verified work email from a LinkedIn profile URL.
-
-**Cost**: 1 credit on success. 0 credits if not found.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/email", {
-    "person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-})
-
-if result["found"]:
-    print(f"Email: {result['email']}")
-    for entry in result["all_emails"]:
-        print(f"  {entry['email']} (domain: {entry['email_domain']})")
-else:
-    print("Email not found — 0 credits charged")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/email", {
-  person_linkedin_url: "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-});
-
-if (result.found) {
-  console.log(`Email: ${result.email}`);
-  for (const entry of result.all_emails) {
-    console.log(`  ${entry.email} (domain: ${entry.email_domain})`);
-  }
-} else {
-  console.log("Email not found — 0 credits charged");
-}
-```
-
-</CodeGroup>
-
-### Find Phone Number — `POST /v2/enrichment/phone`
-
-Get a verified mobile or direct phone number from a LinkedIn profile URL.
-
-**Cost**: 5 credits on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/phone", {
-    "person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-})
-
-if result["found"]:
-    print(f"Phone: {result['phone']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/phone", {
-  person_linkedin_url: "https://www.linkedin.com/in/antoine-blitz-5581b7373",
-});
-
-if (result.found) {
-  console.log(`Phone: ${result.phone}`);
-}
-```
-
-</CodeGroup>
-
-### Reverse Email Lookup — `POST /v2/enrichment/email-to-person`
-
-Identify a person from their work email address.
-
-**Cost**: 1 credit on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/email-to-person", {
-    "email": "antoine@blitz-agency.com",
-})
-
-if result["found"]:
-    person = result["person"]["person"]
-    print(f"{person['full_name']} — {person['headline']}")
-    print(f"LinkedIn: {person['linkedin_url']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/email-to-person", {
-  email: "antoine@blitz-agency.com",
-});
-
-if (result.found) {
-  const person = result.person.person;
-  console.log(`${person.full_name} — ${person.headline}`);
-  console.log(`LinkedIn: ${person.linkedin_url}`);
-}
-```
-
-</CodeGroup>
-
-### Reverse Phone Lookup — `POST /v2/enrichment/phone-to-person`
-
-Identify a person from their phone number.
-
-**Cost**: 5 credits on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/phone-to-person", {
-    "phone": "+1234567890",
-})
-
-if result["found"]:
-    person = result["person"]["person"]
-    print(f"{person['full_name']} — {person['headline']}")
-    print(f"LinkedIn: {person['linkedin_url']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/phone-to-person", {
-  phone: "+1234567890",
-});
-
-if (result.found) {
-  const person = result.person.person;
-  console.log(`${person.full_name} — ${person.headline}`);
-  console.log(`LinkedIn: ${person.linkedin_url}`);
-}
-```
-
-</CodeGroup>
-
----
-
-## Company Enrichment
-
-### Company Profile — `POST /v2/enrichment/company`
-
-Get full company data from a LinkedIn URL.
-
-**Cost**: 1 credit on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/company", {
-    "company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-})
-
-if result["found"]:
-    c = result["company"]
-    print(f"{c['name']} — {c['industry']}")
-    print(f"Size: {c['size']} | Domain: {c['domain']}")
-    print(f"HQ: {c['hq']['city']}, {c['hq']['country_code']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/company", {
-  company_linkedin_url: "https://www.linkedin.com/company/blitz-api",
-});
-
-if (result.found) {
-  const c = result.company;
-  console.log(`${c.name} — ${c.industry}`);
-  console.log(`Size: ${c.size} | Domain: ${c.domain}`);
-  console.log(`HQ: ${c.hq.city}, ${c.hq.country_code}`);
-}
-```
-
-</CodeGroup>
-
-### Domain to LinkedIn — `POST /v2/enrichment/domain-to-linkedin`
-
-Resolve a website domain to its LinkedIn company page.
-
-**Cost**: 1 credit on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/domain-to-linkedin", {
-    "domain": "https://www.blitz-agency.com",
-})
-
-if result["found"]:
-    print(f"LinkedIn: {result['company_linkedin_url']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/domain-to-linkedin", {
-  domain: "https://www.blitz-agency.com",
-});
-
-if (result.found) {
-  console.log(`LinkedIn: ${result.company_linkedin_url}`);
-}
-```
-
-</CodeGroup>
-
-### LinkedIn to Domain — `POST /v2/enrichment/linkedin-to-domain`
-
-Get the email domain associated with a company LinkedIn URL.
-
-**Cost**: 0.5 credits on success.
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/linkedin-to-domain", {
-    "company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-})
-
-if result["found"]:
-    print(f"Email domain: {result['email_domain']}")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/linkedin-to-domain", {
-  company_linkedin_url: "https://www.linkedin.com/company/blitz-api",
-});
-
-if (result.found) {
-  console.log(`Email domain: ${result.email_domain}`);
-}
-```
-
-</CodeGroup>
-
----
-
-## Account Info
-
-### Check API Key — `GET /v2/account/key-info`
-
-Verify your API key and check remaining credits. Use this as a health check before running batch jobs.
-
-**Cost**: 0 credits.
-
-<CodeGroup>
-
-```python Python
-info = blitz_request("GET", "/v2/account/key-info")
-
-print(f"Valid: {info['valid']}")
-print(f"Credits remaining: {info['remaining_credits']}")
-print(f"Rate limit: {info['max_requests_per_seconds']} req/s")
-print(f"Allowed endpoints: {', '.join(info['allowed_apis'])}")
-```
-
-```javascript Node.js
-const info = await blitzRequest("GET", "/v2/account/key-info");
-
-console.log(`Valid: ${info.valid}`);
-console.log(`Credits remaining: ${info.remaining_credits}`);
-console.log(`Rate limit: ${info.max_requests_per_seconds} req/s`);
-console.log(`Allowed endpoints: ${info.allowed_apis.join(", ")}`);
-```
-
-</CodeGroup>
-
----
-
-## Full Workflow: Search → Enrich → Export
-
-This end-to-end example finds decision-makers at a company, enriches their emails, and outputs a clean list. It includes the full rate limiter — copy this as a starting point for any Blitz API script.
-
-```python
-import time
-import threading
-from collections import deque
-import requests
-import json
-
-BLITZ_API_KEY = "YOUR_API_KEY"
-BLITZ_BASE_URL = "https://api.blitz-api.ai"
-HEADERS = {
-    "x-api-key": BLITZ_API_KEY,
-    "Content-Type": "application/json",
-}
-
-
-def create_rate_limiter(max_rps):
-    timestamps = deque()
-    lock = threading.Lock()
-
-    def wait():
-        with lock:
-            while True:
-                now = time.monotonic()
-                while timestamps and timestamps[0] <= now - 1.0:
-                    timestamps.popleft()
-                if len(timestamps) < max_rps:
-                    timestamps.append(time.monotonic())
-                    return
-                wait_time = timestamps[0] + 1.0 - now + 0.001
-                lock.release()
-                try:
-                    time.sleep(wait_time)
-                finally:
-                    lock.acquire()
-
-    return wait
-
-
-# Replace 5 with your plan's max_requests_per_seconds from /v2/account/key-info
-rate_limit = create_rate_limiter(5)
-
-
-def blitz_request(method, path, payload=None):
-    for attempt in range(3):
-        try:
-            rate_limit()
-            if method == "GET":
-                r = requests.get(f"{BLITZ_BASE_URL}{path}", headers=HEADERS, timeout=60)
-            else:
-                r = requests.post(f"{BLITZ_BASE_URL}{path}", headers=HEADERS, json=payload, timeout=60)
-
-            if r.status_code == 429:
-                time.sleep(60)
-                continue
-            if r.status_code in (401, 402):
-                return None
-            if r.status_code == 200:
-                return r.json()
-            time.sleep(2 ** attempt)
-        except Exception as e:
-            if attempt == 2:
-                print(f"API error: {e}")
-                return None
-            time.sleep(2)
-    return None
-
-
-# Step 1: Find decision-makers using waterfall search
-search_result = blitz_request("POST", "/v2/search/waterfall-icp-keyword", {
+result = blitz_request("POST", "/v2/search/waterfall-icp-keyword", {
     "company_linkedin_url": "https://www.linkedin.com/company/openai",
     "cascade": [
         {
-            "include_title": ["VP Sales", "Head of Sales", "CRO"],
-            "exclude_title": ["assistant", "intern"],
+            "include_title": ["CTO", "VP Engineering", "Head of Engineering"],
+            "exclude_title": ["assistant", "intern", "junior"],
             "location": ["WORLD"],
             "include_headline_search": False,
         },
         {
-            "include_title": ["Sales Director", "Director of Revenue"],
+            "include_title": ["Engineering Director", "Engineering Manager"],
             "exclude_title": ["junior", "intern"],
             "location": ["WORLD"],
             "include_headline_search": False,
         },
         {
-            "include_title": ["CEO", "Founder"],
+            "include_title": ["CEO", "Founder", "CTO"],
             "exclude_title": ["intern"],
             "location": ["WORLD"],
             "include_headline_search": False,
@@ -878,90 +298,412 @@ search_result = blitz_request("POST", "/v2/search/waterfall-icp-keyword", {
     "max_results": 5,
 })
 
-# Step 2: Enrich each person with their work email (rate limiter handles pacing)
-leads = []
-for person in search_result["results"]:
+for person in result["results"]:
     p = person["person"]
-
-    email_result = blitz_request("POST", "/v2/enrichment/email", {
-        "person_linkedin_url": p["linkedin_url"],
-    })
-
-    leads.append({
-        "name": p["full_name"],
-        "title": p["headline"],
-        "linkedin_url": p["linkedin_url"],
-        "tier": person["icp"],
-        "email": email_result.get("email") if email_result and email_result.get("found") else None,
-    })
-
-# Step 3: Output the enriched leads
-print(json.dumps(leads, indent=2))
-```
-
----
-
-## Error Handling Reference
-
-All Blitz API errors follow a consistent pattern. The `blitz_request` client above handles `429`, `401`, and `402` automatically — but you should still check for `None` returns in your code.
-
-| Status | Meaning                | Handled by client?  | Your action                                                    |
-| :----- | :--------------------- | :------------------ | :------------------------------------------------------------- |
-| `200`  | Success                | Returns JSON        | Process the result.                                            |
-| `401`  | Unauthorized           | Returns `None`      | Check your `x-api-key` header — the key is missing or invalid.|
-| `402`  | Insufficient credits   | Returns `None`      | Top up credits or wait for the next billing cycle reset.       |
-| `422`  | Invalid input          | Retries, then `None`| Check required fields and types against the API reference.     |
-| `429`  | Rate limit exceeded    | Waits 60s + retries | Should not happen if using the rate limiter. If it does, the client handles it. |
-| `500`  | Internal server error  | Retries with backoff| If persistent after 3 retries, contact support.               |
-
-<CodeGroup>
-
-```python Python
-result = blitz_request("POST", "/v2/enrichment/email", {
-    "person_linkedin_url": "https://www.linkedin.com/in/someone",
-})
-
-if result is None:
-    print("Request failed — check logs for 401/402/error details")
-elif result["found"]:
-    print(f"Email: {result['email']}")
-else:
-    print("Person found but no email available")
-```
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/enrichment/email", {
-  person_linkedin_url: "https://www.linkedin.com/in/someone",
-});
-
-if (result === null) {
-  console.error("Request failed — check logs for 401/402/error details");
-} else if (result.found) {
-  console.log(`Email: ${result.email}`);
-} else {
-  console.log("Person found but no email available");
-}
+    # icp: which cascade tier matched (1 = top priority)
+    # ranking: overall position in company (1 = most relevant)
+    print(f"[Tier {person['icp']} | Rank #{person['ranking']}] {p['full_name']} — {p['headline']}")
+    print(f"  LinkedIn: {p['linkedin_url']}")
 ```
 
 </CodeGroup>
 
 ---
 
-## Endpoint Quick Reference
+## Email Enrichment — POST `/v2/enrichment/email`
 
-Every Blitz API v2 endpoint at a glance. All endpoints use `POST` except key-info which uses `GET`.
+Retrieve a verified work email from a LinkedIn profile URL. Requires **Unlimited Email** plan or above. **Free trial**: 1 credit on success, 0 if not found.
 
-| Endpoint                                 | Method | Description                        | Cost                |
-| :--------------------------------------- | :----- | :--------------------------------- | :------------------ |
-| `/v2/account/key-info`                   | GET    | Check API key & credits            | 0 credits           |
-| `/v2/search/waterfall-icp-keyword`       | POST   | Find decision-makers by hierarchy  | 1 credit / result   |
-| `/v2/search/employee-finder`             | POST   | Search employees by role & level   | 1 credit / result   |
-| `/v2/search/companies`                   | POST   | Find companies by filters          | 1 credit / result   |
-| `/v2/enrichment/email`                   | POST   | LinkedIn profile → work email      | 1 credit            |
-| `/v2/enrichment/phone`                   | POST   | LinkedIn profile → phone number    | 5 credits           |
-| `/v2/enrichment/email-to-person`         | POST   | Work email → person profile        | 1 credit            |
-| `/v2/enrichment/phone-to-person`         | POST   | Phone number → person profile      | 5 credits           |
-| `/v2/enrichment/company`                 | POST   | LinkedIn URL → company profile     | 1 credit            |
-| `/v2/enrichment/domain-to-linkedin`      | POST   | Website domain → LinkedIn URL      | 1 credit            |
-| `/v2/enrichment/linkedin-to-domain`      | POST   | LinkedIn URL → email domain        | 0.5 credits         |
-| `/v2/utilities/current-date`             | POST   | Get server date/time               | 0 credits           |
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/email", {
+  person_linkedin_url: "https://www.linkedin.com/in/example-person",
+});
+
+if (result.found) {
+  console.log(`Email: ${result.email}`);
+} else {
+  console.log("No verified email found.");
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/email", {
+    "person_linkedin_url": "https://www.linkedin.com/in/example-person"
+})
+
+if result["found"]:
+    print(f"Email: {result['email']}")
+else:
+    print("No verified email found.")
+```
+
+</CodeGroup>
+
+---
+
+## Phone Enrichment — POST `/v2/enrichment/phone`
+
+Retrieve a direct phone number from a LinkedIn profile URL. **US contacts only.** Requires **Unlimited Phone Numbers** plan. **Free trial**: 5 credits on success, 0 if not found.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/phone", {
+  person_linkedin_url: "https://www.linkedin.com/in/example-person",
+});
+
+if (result.found) {
+  console.log(`Phone: ${result.phone}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/phone", {
+    "person_linkedin_url": "https://www.linkedin.com/in/example-person"
+})
+
+if result["found"]:
+    print(f"Phone: {result['phone']}")
+```
+
+</CodeGroup>
+
+---
+
+## Company Enrichment — POST `/v2/enrichment/company`
+
+Retrieve a full company profile from a LinkedIn company URL. **Paid plans**: Unlimited.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/company", {
+  company_linkedin_url: "https://www.linkedin.com/company/openai",
+});
+
+console.log(`Name: ${result.company.name}`);
+console.log(`Industry: ${result.company.industry}`);
+console.log(`Employees: ${result.company.employee_count}`);
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/company", {
+    "company_linkedin_url": "https://www.linkedin.com/company/openai"
+})
+
+print(f"Name: {result['company']['name']}")
+print(f"Industry: {result['company']['industry']}")
+print(f"Employees: {result['company']['employee_count']}")
+```
+
+</CodeGroup>
+
+---
+
+## Domain → LinkedIn URL — POST `/v2/enrichment/domain-to-linkedin`
+
+Convert a website domain to a Company LinkedIn URL. Use this as the first step when your source data only contains domains. Returns `found` (boolean) and `company_linkedin_url` (string). **Paid plans**: Unlimited.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/domain-to-linkedin", {
+  domain: "openai.com",
+});
+
+if (result.found) {
+  console.log(`LinkedIn URL: ${result.company_linkedin_url}`);
+  // Now use this URL for Waterfall ICP, Employee Finder, or Company Enrichment
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/domain-to-linkedin", {
+    "domain": "openai.com"
+})
+
+if result["found"]:
+    print(f"LinkedIn URL: {result['company_linkedin_url']}")
+    # Now use this URL for Waterfall ICP, Employee Finder, or Company Enrichment
+```
+
+</CodeGroup>
+
+---
+
+## Email Validation — POST `/v2/utilities/email/validate`
+
+Validate an email address via live SMTP handshake. Use before enrolling leads in cold email sequences. **Paid plans**: Unlimited. **Free trial**: 0.5 credits.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/utilities/email/validate", {
+  email: "jane.doe@acme.com",
+});
+
+// status: "valid" | "catch_all" | "invalid"
+console.log(`Status: ${result.status}`);
+console.log(`Deliverable: ${result.deliverable}`);
+```
+
+```python Python
+result = blitz_request("POST", "/v2/utilities/email/validate", {
+    "email": "jane.doe@acme.com"
+})
+
+# status: "valid" | "catch_all" | "invalid"
+print(f"Status: {result['status']}")
+print(f"Deliverable: {result['deliverable']}")
+```
+
+</CodeGroup>
+
+<Note>
+  **Routing by validation status:**
+  - `"valid"` → Enroll in aggressive cold email sequence
+  - `"catch_all"` → Route to LinkedIn sequence or manual review
+  - `"invalid"` → Mark as Do Not Contact in CRM
+</Note>
+
+---
+
+## Employee Finder — POST `/v2/search/employee-finder`
+
+Search employees at a company by job level, department, and location. Supports pagination. See [Employee Finder guide](/guide/concepts/employee-finder) for full documentation.
+
+**Paid plans**: Unlimited. **Free trial**: 1 credit per result. Pagination: increment `page` to fetch the next page. The response includes `total_pages`.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/search/employee-finder", {
+  company_linkedin_url: "https://www.linkedin.com/company/openai",
+  job_level: ["C-Team", "VP", "Director"],
+  job_function: ["Sales & Business Development"],
+  sales_region: ["NORAM"],
+  max_results: 10,
+  page: 1,
+});
+
+console.log(`Page ${result.page} of ${result.total_pages} (${result.results_length} results)`);
+for (const person of result.results) {
+  // Employee Finder returns person fields directly (not nested in .person)
+  console.log(`${person.full_name} — ${person.headline}`);
+  console.log(`  LinkedIn: ${person.linkedin_url}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/search/employee-finder", {
+    "company_linkedin_url": "https://www.linkedin.com/company/openai",
+    "job_level": ["C-Team", "VP", "Director"],
+    "job_function": ["Sales & Business Development"],
+    "sales_region": ["NORAM"],
+    "max_results": 10,
+    "page": 1,
+})
+
+print(f"Page {result['page']} of {result['total_pages']} ({result['results_length']} results)")
+for person in result["results"]:
+    # Employee Finder returns person fields directly (not nested in .person)
+    print(f"{person['full_name']} — {person['headline']}")
+    print(f"  LinkedIn: {person['linkedin_url']}")
+```
+
+</CodeGroup>
+
+---
+
+## People Search — POST `/v2/search/people`
+
+Find people across multiple companies by combining company AND people filters. Supports cursor-based pagination. See [People Search guide](/guide/concepts/people-search) for full documentation.
+
+**Paid plans**: Unlimited. **Free trial**: 1 credit per result. Pagination: pass the `cursor` from the response to fetch the next page. `cursor: null` means last page.
+
+<Note>
+  People Search uses `location.country` for person country filter (not `country_code` as in Employee Finder). The accepted ISO 2-letter codes are identical.
+</Note>
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/search/people", {
+  company: {
+    keywords: { include: ["SaaS"] },
+    employee_range: ["51-200", "201-500"],
+    hq: { country_code: ["US"] },
+  },
+  people: {
+    job_title: { include: ["Sales"] },
+    job_level: ["VP", "Director"],
+    job_function: ["Sales & Business Development"],
+  },
+  max_results: 10,
+});
+
+console.log(`Found ${result.results_length} results`);
+for (const person of result.results) {
+  // People Search returns person fields directly (not nested in .person)
+  console.log(`${person.full_name} — ${person.headline}`);
+  console.log(`  LinkedIn: ${person.linkedin_url}`);
+}
+
+// Paginate with cursor
+if (result.cursor) {
+  const nextPage = await blitzRequest("POST", "/v2/search/people", {
+    company: {
+      keywords: { include: ["SaaS"] },
+      employee_range: ["51-200", "201-500"],
+      hq: { country_code: ["US"] },
+    },
+    people: {
+      job_title: { include: ["Sales"] },
+      job_level: ["VP", "Director"],
+      job_function: ["Sales & Business Development"],
+    },
+    max_results: 10,
+    cursor: result.cursor,
+  });
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/search/people", {
+    "company": {
+        "keywords": {"include": ["SaaS"]},
+        "employee_range": ["51-200", "201-500"],
+        "hq": {"country_code": ["US"]},
+    },
+    "people": {
+        "job_title": {"include": ["Sales"]},
+        "job_level": ["VP", "Director"],
+        "job_function": ["Sales & Business Development"],
+    },
+    "max_results": 10,
+})
+
+print(f"Found {result['results_length']} results")
+for person in result["results"]:
+    # People Search returns person fields directly (not nested in .person)
+    print(f"{person['full_name']} — {person['headline']}")
+    print(f"  LinkedIn: {person['linkedin_url']}")
+
+# Paginate with cursor
+if result["cursor"]:
+    next_page = blitz_request("POST", "/v2/search/people", {
+        "company": {
+            "keywords": {"include": ["SaaS"]},
+            "employee_range": ["51-200", "201-500"],
+            "hq": {"country_code": ["US"]},
+        },
+        "people": {
+            "job_title": {"include": ["Sales"]},
+            "job_level": ["VP", "Director"],
+            "job_function": ["Sales & Business Development"],
+        },
+        "max_results": 10,
+        "cursor": result["cursor"],
+    })
+```
+
+</CodeGroup>
+
+---
+
+## LinkedIn → Domain — POST `/v2/enrichment/linkedin-to-domain`
+
+Get the email domain associated with a Company LinkedIn URL. **Paid plans**: Unlimited. **Free trial**: 0.5 credits.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/linkedin-to-domain", {
+  company_linkedin_url: "https://www.linkedin.com/company/openai",
+});
+
+if (result.found) {
+  console.log(`Email domain: ${result.email_domain}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/linkedin-to-domain", {
+    "company_linkedin_url": "https://www.linkedin.com/company/openai"
+})
+
+if result["found"]:
+    print(f"Email domain: {result['email_domain']}")
+```
+
+</CodeGroup>
+
+---
+
+## Reverse Email Lookup — POST `/v2/enrichment/email-to-person`
+
+Get a full person profile from a known work email. **Paid plans**: Unlimited.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/email-to-person", {
+  email: "jane.doe@acme.com",
+});
+
+if (result.found) {
+  const person = result.person.person;
+  console.log(`Name: ${person.full_name}`);
+  console.log(`LinkedIn: ${person.linkedin_url}`);
+  console.log(`Headline: ${person.headline}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/email-to-person", {
+    "email": "jane.doe@acme.com"
+})
+
+if result["found"]:
+    person = result["person"]["person"]
+    print(f"Name: {person['full_name']}")
+    print(f"LinkedIn: {person['linkedin_url']}")
+    print(f"Headline: {person['headline']}")
+```
+
+</CodeGroup>
+
+---
+
+## Reverse Phone Lookup — POST `/v2/enrichment/phone-to-person`
+
+Get a full person profile from a phone number. **US numbers only.** **Paid plans**: Unlimited. **Free trial**: 5 credits.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/enrichment/phone-to-person", {
+  phone: "+14155551234",
+});
+
+if (result.found) {
+  const person = result.person.person;
+  console.log(`Name: ${person.full_name}`);
+  console.log(`LinkedIn: ${person.linkedin_url}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/enrichment/phone-to-person", {
+    "phone": "+14155551234"
+})
+
+if result["found"]:
+    person = result["person"]["person"]
+    print(f"Name: {person['full_name']}")
+    print(f"LinkedIn: {person['linkedin_url']}")
+```
+
+</CodeGroup>

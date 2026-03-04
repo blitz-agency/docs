@@ -30,16 +30,21 @@ _(The "Surgical Strike" Approach)_
 
 <Steps>
  <Step title="1. Trigger (The Button)">
-   The Rep clicks a button in the CRM (via a Webhook/Flow).
+   The Rep clicks a button in the CRM (via a Webhook/Flow). The CRM account must have either a **Company LinkedIn URL** or a **Company Domain** stored.
  </Step>
- <Step title="2. The Waterfall Search">
-   The automation sends the Company Domain to BlitzAPI's **Waterfall ICP** endpoint.
+ <Step title="2. Resolve the Company LinkedIn URL">
+   BlitzAPI requires a **Company LinkedIn URL** as its primary matching key — a domain alone is not a reliable identifier.
 
-
-   - _Query_: "Find the VP Sales or CRO in the US for this company."
+   - **If the CRM already stores the LinkedIn URL**: use it directly as `company_linkedin_url`.
+   - **If only a domain is available**: first call `POST /v2/enrichment/domain-to-linkedin` to resolve the domain into a LinkedIn URL, then pass the result to the next step.
  </Step>
- <Step title="3. Automatic Sync">
-   BlitzAPI returns the **Verified Email** and **Phone**. The automation creates the Contact in the CRM and assigns it to the Rep instantly.
+ <Step title="3. The Waterfall Search">
+   Send the Company LinkedIn URL to BlitzAPI's **Waterfall ICP** endpoint (`POST /v2/search/waterfall-icp-keyword`).
+
+   - _Example query_: "Find the VP Sales or CRO in the US for this company."
+ </Step>
+ <Step title="4. Automatic Sync">
+   BlitzAPI returns the matched contact's LinkedIn URL and profile. Pass it to the enrichment endpoints to retrieve the **Verified Email** and/or **Phone**. The automation creates the Contact in the CRM and assigns it to the Rep instantly.
  </Step>
 </Steps>
 
@@ -64,7 +69,7 @@ _(The Anti-Bounce Shield)_
    Your automation tool (n8n/Make) pulls the list of emails.
  </Step>
  <Step title="2. Strict Validation">
-   Pass every email through `/api/email/validate`.
+   Pass every email through `POST /v2/utilities/email/validate`.
 
 
    - BlitzAPI checks: Syntax, DNS, and performs a live SMTP handshake.
@@ -77,8 +82,8 @@ _(The Anti-Bounce Shield)_
 </Steps>
 
 
-<Card title="Tech Enabler: Validation" icon="shield-check" href="/api-reference/email/validate">
- Use `/email/validate` to filter out risks before they hurt your domain reputation.
+<Card title="Tech Enabler: Email Validation" icon="shield-check" href="/api-reference">
+ Use `POST /v2/utilities/email/validate` to filter out risks before they hurt your domain reputation.
 </Card>
 
 
@@ -101,11 +106,10 @@ The true power of BlitzAPI is unleashed when combined with automation platforms.
 
 
 <CardGroup cols={2}>
- <Card title="Get your API Key" icon="key" href="https://app.blitzapi.io">
+ <Card title="Get your API Key" icon="key" href="https://app.blitz-api.ai">
    Start building your dynamic playbooks today.
  </Card>
- <Card title="See Integration Guides" icon="puzzle-piece" href="/guide/integrations/n8n-make-clay">
+ <Card title="See Integration Guides" icon="puzzle-piece" href="/guide/integrations/clay">
    Copy-paste recipes for your favorite automation tools.
  </Card>
 </CardGroup>
-

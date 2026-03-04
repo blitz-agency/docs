@@ -24,7 +24,7 @@ You will need the **HTTP** app \> **Make a request** module.
    Create a new scenario and add the HTTP module.
 
 
-   - **URL**: Paste your endpoint (e.g., `https://api.blitz-api.ai/api/search/waterfall-icp-keyword`)
+   - **URL**: Paste your endpoint (e.g., `https://api.blitz-api.ai/v2/search/waterfall-icp-keyword`)
    - **Method**: `POST`
  </Step>
  <Step title="2. Authentication (Headers)">
@@ -143,12 +143,12 @@ Logic: Prioritize the CMO globally. Fallback to VP or Head of Marketing.
 Target: Convert a Profile URL to a Verified Email.
 
 
-Endpoint: https://api.blitz-api.ai/api/enrichment/email
+Endpoint: `POST https://api.blitz-api.ai/v2/enrichment/email`
 
 
 ```json
 {
- "linkedin_profile_url": "{{1.person_linkedin_url}}"
+ "person_linkedin_url": "{{1.person_linkedin_url}}"
 }
 ```
 

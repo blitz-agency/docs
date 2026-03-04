@@ -1,202 +1,73 @@
 ---
 title: "MCP Server"
-description: "Connect your AI tools to the Blitz API documentation for accurate, hallucination-free code generation."
+description: "Connect any AI tool directly to the Blitz API documentation for hallucination-free code generation."
 ---
-
-export const InstallButton = ({children, href}) => {
-  return <a href={href} className="text-sm font-medium text-white dark:!text-zinc-950 bg-zinc-900 hover:bg-zinc-700 dark:bg-zinc-100 hover:dark:bg-zinc-300 rounded-full px-3.5 py-1.5 not-prose inline-flex items-center gap-1.5">
-        {children}
-      </a>;
-};
 
 ## What is the Blitz API MCP Server?
 
-The **Model Context Protocol (MCP)** is an open standard that lets AI assistants connect directly to external data sources instead of relying on their training data.
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open standard that lets AI assistants connect directly to external data sources instead of relying on their training data.
 
-The **Blitz API MCP Server** gives any compatible AI tool **live access** to the complete Blitz API documentation — every endpoint, parameter, response schema, and code example. When your AI assistant needs to write code that calls Blitz API, it searches the actual documentation instead of guessing.
+The **Blitz API MCP Server** gives any compatible AI tool live access to the complete Blitz API documentation — every endpoint, parameter, response schema, and code example.
+
+When your AI assistant needs to write code that calls Blitz API, it searches the actual documentation instead of guessing.
 
 **MCP Server URL**
-
 ```
 https://docs.blitz-api.ai/mcp
 ```
 
-### Why use it?
+---
 
-AI models are trained on static snapshots of the internet. When they generate code for an API, they often hallucinate endpoints that don't exist, use outdated parameter names, or return incorrect response shapes.
+## Why Use It?
+
+AI models are trained on static snapshots of the internet. When they generate code for an API, they often:
+- Hallucinate endpoints that don't exist
+- Use outdated parameter names
+- Return incorrect response shapes
 
 With the Blitz API MCP Server connected:
 
-- **No more hallucinated endpoints** — the AI reads the real API reference before generating code.
-- **Always up to date** — any time the documentation is updated, your AI tool sees the changes immediately.
-- **Accurate request/response schemas** — parameters, types, required fields, and example payloads come straight from the source.
-- **Faster development** — skip the back-and-forth of correcting AI-generated code that doesn't match the actual API.
-
-<Tip>
-  The AI decides **when** to search the documentation based on your conversation context. You don't need to explicitly ask it to — just mention Blitz API and it will proactively look up the relevant endpoints.
-</Tip>
+| Without MCP | With MCP |
+| :---------- | :------- |
+| AI guesses endpoint URLs | AI reads the real API reference |
+| Outdated parameter names | Always up-to-date parameter schemas |
+| Incorrect response shapes | Accurate response structures from source |
+| Back-and-forth corrections | Ship correct code on the first try |
 
 ---
 
-## Installation
+## What Content is Available?
 
-Connect the Blitz API MCP Server to your preferred AI tool. Pick your platform below and follow the steps.
+The MCP server provides a search tool that covers the entire Blitz API documentation:
+
+| Content | Description |
+| :------ | :---------- |
+| API endpoints | Full reference for every v2 endpoint — methods, URLs, and parameters |
+| Request schemas | Required and optional fields, types, and example payloads |
+| Response schemas | Complete response structures with field descriptions |
+| Waterfall logic | How cascade/waterfall search works, ICP scoring, and priority levels |
+| Code examples | cURL commands, Node.js, Python, and integration patterns |
+| Guides & recipes | Enrichment workflows, CRM hygiene, and integration tutorials |
+
+---
+
+## Setup
 
 <Tabs>
+  <Tab title="Claude (claude.ai)">
+    1. Open [Claude.ai](https://claude.ai) and start a new conversation.
+    2. Click the **"+"** or attachments button.
+    3. Select **"Add integration"** and search for **"Blitz API"**.
+    4. The connector will be available in your conversation.
+
+    <Note>
+      You may need to explicitly enable the connector for each new conversation using the attachments button.
+    </Note>
+  </Tab>
   <Tab title="Cursor">
-    <InstallButton href="cursor://anysphere.cursor-deeplink/mcp/install?name=blitz-api&config=eyJ1cmwiOiJodHRwczovL2RvY3MuYmxpdHotYXBpLmFpL21jcCJ9">Install in Cursor</InstallButton>
+    Press `Cmd + Shift + P` (macOS) or `Ctrl + Shift + P` (Windows/Linux) to open the command palette, then search for **"Open MCP Settings"**.
 
-    Click the button above to install automatically. Or configure it manually:
-
-    <Steps>
-      <Step title="Open MCP Settings">
-        Press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (macOS) or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (Windows/Linux) to open the command palette, then search for **"Open MCP Settings"**.
-      </Step>
-      <Step title="Add the Blitz API server">
-        In your `mcp.json` file, add the following configuration:
-
-        ```json
-        {
-          "mcpServers": {
-            "blitz-api": {
-              "url": "https://docs.blitz-api.ai/mcp"
-            }
-          }
-        }
-        ```
-      </Step>
-      <Step title="Verify the connection">
-        In Cursor's Agent chat, ask: *"What tools do you have available?"* — you should see the Blitz API documentation search tool listed.
-      </Step>
-    </Steps>
-  </Tab>
-
-  <Tab title="VS Code">
-    <InstallButton href="https://vscode.dev/redirect/mcp/install?name=blitz-api&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.blitz-api.ai%2Fmcp%22%7D">Install in VS Code</InstallButton>
-
-    Click the button above to install automatically. Or set it up manually:
-
-    <Steps>
-      <Step title="Create the MCP config file">
-        In your project root, create a `.vscode/mcp.json` file (or open it if it already exists).
-      </Step>
-      <Step title="Add the Blitz API server">
-        ```json
-        {
-          "servers": {
-            "blitz-api": {
-              "type": "http",
-              "url": "https://docs.blitz-api.ai/mcp"
-            }
-          }
-        }
-        ```
-      </Step>
-    </Steps>
-  </Tab>
-
-  <Tab title="Claude">
-    <Steps>
-      <Step title="Open Connectors settings">
-        Go to [claude.ai/settings/connectors](https://claude.ai/settings/connectors) and select **Add custom connector**.
-      </Step>
-      <Step title="Configure the server">
-        Fill in the following:
-
-        | Field    | Value                              |
-        | :------- | :--------------------------------- |
-        | **Name** | `Blitz API`                        |
-        | **URL**  | `https://docs.blitz-api.ai/mcp`   |
-
-        Click **Add** to save.
-      </Step>
-      <Step title="Use in conversations">
-        When starting a new conversation, click the **attachments** button (the plus icon) and select **Blitz API** to give Claude access to the documentation for that chat.
-      </Step>
-    </Steps>
-  </Tab>
-
-  <Tab title="Claude Code">
-    Run the following command in your terminal:
-
-    ```bash
-    claude mcp add --transport http blitz-api https://docs.blitz-api.ai/mcp
-    ```
-
-    Verify the connection:
-
-    ```bash
-    claude mcp list
-    ```
-
-    You should see `blitz-api` in the list of configured servers.
-  </Tab>
-
-  <Tab title="ChatGPT">
-    ChatGPT supports MCP connections through its **Connectors** feature.
-
-    <Steps>
-      <Step title="Open Settings">
-        In ChatGPT, go to **Settings** → **Connectors** → **Add connector**.
-      </Step>
-      <Step title="Add the server URL">
-        Enter the Blitz API MCP server URL:
-
-        ```
-        https://docs.blitz-api.ai/mcp
-        ```
-      </Step>
-      <Step title="Start using it">
-        ChatGPT will automatically search the Blitz API documentation when relevant to your questions.
-      </Step>
-    </Steps>
-  </Tab>
-
-  <Tab title="Codex">
-    Run the following command in your terminal:
-
-    ```bash
-    codex mcp add blitz-api --url https://docs.blitz-api.ai/mcp
-    ```
-
-    You can also add it directly to your `~/.codex/config.toml` (or a project-scoped `.codex/config.toml`):
-
-    ```toml
-    [mcp_servers.blitz-api]
-    url = "https://docs.blitz-api.ai/mcp"
-    ```
-
-    Verify the connection by running `/mcp` in the Codex TUI, or:
-
-    ```bash
-    codex mcp list
-    ```
-  </Tab>
-
-  <Tab title="Windsurf">
-    Add to your `~/.codeium/windsurf/mcp_config.json`:
-
-    ```json
-    {
-      "mcpServers": {
-        "blitz-api": {
-          "serverUrl": "https://docs.blitz-api.ai/mcp"
-        }
-      }
-    }
-    ```
-
-    Restart Windsurf to activate the connection.
-  </Tab>
-
-  <Tab title="Other clients">
-    For any MCP-compatible client that supports remote servers, use the following URL:
-
-    ```
-    https://docs.blitz-api.ai/mcp
-    ```
-
-    **Standard configuration format:**
+    In your `mcp.json` file, add:
 
     ```json
     {
@@ -208,7 +79,28 @@ Connect the Blitz API MCP Server to your preferred AI tool. Pick your platform b
     }
     ```
 
-    If your client does not support remote MCP servers directly, use the `mcp-remote` bridge:
+    In Cursor's Agent chat, ask: `"What tools do you have available?"` — you should see the Blitz API documentation search tool listed.
+
+    <Tip>
+      Make sure the MCP server shows a **green status indicator** in your MCP settings after adding it.
+    </Tip>
+  </Tab>
+  <Tab title="VS Code">
+    In your project root, create a `.vscode/mcp.json` file (or open it if it already exists):
+
+    ```json
+    {
+      "servers": {
+        "blitz-api": {
+          "type": "http",
+          "url": "https://docs.blitz-api.ai/mcp"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop">
+    Older versions of Claude Desktop don't support remote MCP servers natively. Use the `mcp-remote` wrapper:
 
     ```json
     {
@@ -220,80 +112,60 @@ Connect the Blitz API MCP Server to your preferred AI tool. Pick your platform b
       }
     }
     ```
+
+    Save this in your Claude Desktop config file and restart the application.
   </Tab>
 </Tabs>
 
 ---
 
-## What content is available?
-
-The MCP server provides a search tool that covers the entire Blitz API documentation:
-
-| Content                  | Description                                                                 |
-| :----------------------- | :-------------------------------------------------------------------------- |
-| **API endpoints**        | Full reference for every v1 and v2 endpoint — methods, URLs, and parameters |
-| **Request schemas**      | Required and optional fields, types, and example payloads                   |
-| **Response schemas**     | Complete response structures with field descriptions                        |
-| **Waterfall logic**      | How cascade/waterfall search works, ICP scoring, and priority levels        |
-| **Code examples**        | cURL commands, JSON payloads, and integration patterns                      |
-| **Guides & recipes**     | Enrichment workflows, CRM hygiene, and integration tutorials               |
-
----
-
-## How it works
-
-When your AI tool is connected to the Blitz API MCP server:
-
-1. **You ask a question** — for example, *"Write a script that finds the marketing director at a company using Blitz API."*
-2. **The AI searches the documentation** — it queries the MCP server for relevant endpoints, parameters, and examples.
-3. **You get accurate code** — the response is grounded in the real API specification, not guesswork.
-
-The AI proactively searches when it detects your question relates to Blitz API. You can also explicitly ask it to look something up, like *"Search the Blitz API docs for the email enrichment endpoint."*
-
-<Note>
-  Each search returns the most relevant documentation sections. The AI may perform multiple searches during a single conversation to gather all the information it needs.
-</Note>
-
----
-
-## Example prompts
+## Example Prompts
 
 Once connected, try these prompts with your AI tool:
 
-- *"Using Blitz API, write a Python script to find the Head of Sales at a company given its LinkedIn URL."*
-- *"What parameters does the waterfall ICP keyword search endpoint accept?"*
-- *"Generate a Node.js function that enriches a list of LinkedIn profile URLs with work emails using Blitz API."*
-- *"Explain the difference between v1 and v2 of the Blitz API."*
+<AccordionGroup>
+  <Accordion title="Write a Python script to find decision-makers">
+    ```
+    Using Blitz API, write a Python script to find the Head of Sales at a company given its LinkedIn URL. Include rate limiting and error handling.
+    ```
+  </Accordion>
+  <Accordion title="Get parameters for an endpoint">
+    ```
+    What parameters does the waterfall ICP keyword search endpoint accept? Show me a complete example JSON body.
+    ```
+  </Accordion>
+  <Accordion title="Generate a Node.js enrichment function">
+    ```
+    Generate a Node.js function that enriches a list of LinkedIn profile URLs with work emails using Blitz API. Handle the case where the email is not found.
+    ```
+  </Accordion>
+  <Accordion title="Build a full enrichment pipeline">
+    ```
+    Write a Python script that takes a list of company domains, converts each to a LinkedIn URL, then finds the VP of Sales using the Blitz API waterfall search. Include retry logic.
+    ```
+  </Accordion>
+  <Accordion title="Find people matching your ICP">
+    ```
+    Using Blitz API People Search, find VPs of Sales at SaaS companies with 51-200 employees in the US. Show me the full request and how to paginate.
+    ```
+  </Accordion>
+</AccordionGroup>
 
 ---
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="The AI isn't using the MCP server">
+  <Accordion title="The AI tool doesn't seem to use the documentation">
     Some AI tools require you to explicitly enable the connector for each conversation. In Claude, use the attachments button to select the Blitz API connector. In Cursor, make sure the MCP server shows a green status indicator in your MCP settings.
   </Accordion>
-
-  <Accordion title="Tools not appearing after setup">
-    Restart your AI tool after adding the MCP configuration. Most clients need a full restart to detect new MCP servers.
+  <Accordion title="Connection fails after adding the config">
+    Restart your AI tool after adding the MCP configuration. Most clients need a full restart to detect new MCP servers. Verify the URL is exactly `https://docs.blitz-api.ai/mcp` — no trailing slash, no extra path segments.
   </Accordion>
-
-  <Accordion title="Getting timeout or connection errors">
-    Verify the URL is exactly `https://docs.blitz-api.ai/mcp` — no trailing slash, no extra path segments. If the issue persists, check your network connection and try again.
+  <Accordion title="Claude Desktop doesn't connect">
+    Older versions of Claude Desktop don't support remote MCP servers natively. Use the `mcp-remote` wrapper shown in the Claude Desktop tab above.
   </Accordion>
-
-  <Accordion title="Using a client that doesn't support remote MCP">
-    Some older clients (like Claude Desktop) don't support remote MCP servers natively. Use the `mcp-remote` wrapper:
-
-    ```json
-    {
-      "mcpServers": {
-        "blitz-api": {
-          "command": "npx",
-          "args": ["-y", "mcp-remote", "https://docs.blitz-api.ai/mcp"]
-        }
-      }
-    }
-    ```
+  <Accordion title="Network or timeout errors">
+    Check your network connection and try again. If the issue persists, verify the server is reachable by opening `https://docs.blitz-api.ai/mcp` in your browser.
   </Accordion>
 </AccordionGroup>

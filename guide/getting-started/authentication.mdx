@@ -31,7 +31,7 @@ Here is how to set the header in various environments:
 
 
 ```bash cURL
-curl "https://api.blitz-api.ai/api/blitz/key-info"\
+curl "https://api.blitz-api.ai/v2/account/key-info" \
  -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -71,12 +71,7 @@ headers = {
 ## Verifying your Key
 
 
-To check if your key is active and view your remaining credits, use the `/api/blitz/key-info` endpoint. This is a great way to "health check" your integration.
-
-
-```bash
-GET /v2/account/key-info
-```
+To check if your key is active and view your remaining credits, use the `GET /v2/account/key-info` endpoint. This is a great way to "health check" your integration before running batch jobs.
 
 
 **Response:**
@@ -84,25 +79,37 @@ GET /v2/account/key-info
 
 ```json
 {
- "valid": true,
- "id": "XXX",
- "remaining_credits": 99.5,
- "next_reset_at": "2026-02-12T17:48:25.199Z",
- "max_requests_per_seconds": 5,
- "allowed_apis": [
-   "/search/waterfall-icp-keyword",
-   "/enrichment/email_domain",
-   "/enrichment/email"
- ],
- "active_plans": [
-   {
-     "name": "Startup Trial",
-     "status": "active",
-     "started_at": "2026-01-12T17:48:25.200Z"
-   }
- ]
+  "valid": true,
+  "id": "key_abc123",
+  "remaining_credits": 99.5,
+  "next_reset_at": "2026-02-12T17:48:25.199Z",
+  "max_requests_per_seconds": 5,
+  "allowed_apis": [
+    "/search/waterfall-icp-keyword",
+    "/enrichment/email",
+    "/enrichment/phone"
+  ],
+  "active_plans": [
+    {
+      "name": "Unlimited Leads",
+      "status": "active",
+      "started_at": "2026-01-12T17:48:25.200Z"
+    }
+  ]
 }
 ```
+
+**Response Fields:**
+
+| Field                    | Type      | Description                                                                        |
+| :----------------------- | :-------- | :--------------------------------------------------------------------------------- |
+| `valid`                  | `boolean` | `true` if the key is active and can make requests.                                 |
+| `id`                     | `string`  | Internal identifier for your API key.                                              |
+| `remaining_credits`      | `number`  | Credits remaining in your current period. Relevant for trial accounts only — paid plans are unlimited. |
+| `next_reset_at`          | `string`  | ISO 8601 timestamp of when your credits reset.                                     |
+| `max_requests_per_seconds` | `integer` | Your plan's rate limit. Use this value to configure your rate limiter client-side. |
+| `allowed_apis`           | `array`   | List of endpoint paths your key is authorized to call.                             |
+| `active_plans`           | `array`   | Your active subscription(s) with name, status, and start date.                    |
 
 
 ## Errors

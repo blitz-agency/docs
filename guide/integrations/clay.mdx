@@ -64,7 +64,7 @@ If you prefer to configure the HTTP node manually, follow these settings.
 
 ```json
 {
- "company_linkedin_url": "[https://www.linkedin.com/company/wttj-fr",
+ "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
  "cascade": [
    {
      "include_title": ["HRD", "Human Director"],
@@ -142,7 +142,7 @@ _Target: Find Marketing Decision Maker._
 
 ```json
 {
- "company_linkedin_url": "[https://www.linkedin.com/company/wttj-fr",
+ "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
  "cascade": [
    {
      "include_title": ["Marketing Director", "Head Marketing", "Chief Marketing Officer"],
@@ -188,7 +188,7 @@ _Target: Get verified email from a Profile URL._
 
 ```json
 {
- "linkedin_profile_url": "{{Linkedin Profile Column}}"
+ "person_linkedin_url": "{{Linkedin Profile Column}}"
 }
 ```
 
@@ -207,5 +207,7 @@ Once the request runs successfully:
 3. Select the fields you need (e.g., `email`, `phone`, `person_linkedin_url`).
 
 
-> **Pro Tip**: Always map the `icp` score field. It tells you _which_ level of your cascade was matched (0 = Top Priority), helping you score your leads instantly.
+<Tip>
+  Always map the `icp` field. It tells you which tier of your cascade was matched (`1` = Top Priority / Tier 1), helping you score and route your leads instantly.
+</Tip>
 

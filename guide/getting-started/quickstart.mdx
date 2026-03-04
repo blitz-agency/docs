@@ -20,7 +20,7 @@ Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: 
    We recommend using **cURL** to test quickly in your terminal, or **Node.js/Python** for building integration scripts.
  </Step>
  <Step title="Prepare the request">
-   We will use the `/api/enrichment/email` endpoint.
+   We will use the `POST /v2/enrichment/email` endpoint.
 
 
    Replace `YOUR_API_KEY` with your actual key.
@@ -33,10 +33,10 @@ Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: 
    curl --request POST \
      --url https://api.blitz-api.ai/v2/enrichment/email \
      --header 'Content-Type: application/json' \
-     --header 'x-api-key: antoine-blitz_TPX9fhCmYG4xL37TNkpMpoit' \
+     --header 'x-api-key: YOUR_API_KEY' \
      --data '
    {
-     "person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373"
+     "person_linkedin_url": "https://www.linkedin.com/in/example-person"
    }
    ```
 
@@ -47,9 +47,9 @@ Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: 
   
    url = "https://api.blitz-api.ai/v2/enrichment/email"
   
-   payload = { "person_linkedin_url": "https://www.linkedin.com/in/antoine-blitz-5581b7373" }
+   payload = { "person_linkedin_url": "https://www.linkedin.com/in/example-person" }
    headers = {
-       "x-api-key": "antoine-blitz_TPX9fhCmYG4xL37TNkpMpoit",
+       "x-api-key": "YOUR_API_KEY",
        "Content-Type": "application/json"
    }
   
@@ -68,21 +68,33 @@ Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: 
    ```json
    {
      "found": true,
-     "email": "antoine@blitz-agency.com",
+     "email": "jane.doe@acme.com",
      "all_emails": [
        {
-         "email": "antoine@blitz-agency.com",
+         "email": "jane.doe@acme.com",
          "job_order_in_profile": 1,
-         "company_linkedin_url": "https://www.linkedin.com/company/blitz-api",
-         "email_domain": "blitz-agency.com"
+         "company_linkedin_url": "https://www.linkedin.com/company/acme",
+         "email_domain": "acme.com"
        }
      ]
    }
    ```
 
+   **Response Fields:**
+
+   | Field | Type | Description |
+   | :---- | :--- | :---------- |
+   | `found` | `boolean` | `true` if a verified email was found. `false` if no email exists in the database. |
+   | `email` | `string` | The primary verified work email address. `null` if `found: false`. |
+   | `all_emails` | `array` | All verified email addresses found for this profile (usually 1). |
+   | `all_emails[].email` | `string` | The verified email address. |
+   | `all_emails[].job_order_in_profile` | `integer` | Position of the associated job in the person's LinkedIn profile (1 = current job). |
+   | `all_emails[].company_linkedin_url` | `string` | LinkedIn URL of the company associated with this email. |
+   | `all_emails[].email_domain` | `string` | Domain of the email address. |
 
    <Note>
-     **Cost**: This successful request costs **1 credit**. If the email is not found (`found: false`), the cost is **0 credits**.
+     **Paid plans**: Unlimited — included in your flat monthly subscription.
+     **Free trial** (1,000 credits): 1 credit on success, 0 credits if not found (`found: false`).
    </Note>
  </Step>
 </Steps>
@@ -92,7 +104,8 @@ Welcome to BlitzAPI! In this guide, we will perform a simple but powerful task: 
 
 
 1. **Authentication**: You passed your key via the `x-api-key` header.
-3. **Verification**: We validated the email deliverability before returning it.
+2. **Identity Matching**: BlitzAPI matched the LinkedIn profile URL against our verified B2B dataset.
+3. **Verification**: We validated email deliverability (SMTP handshake) before returning it.
 
 
 ## Next Steps

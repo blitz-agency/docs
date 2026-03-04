@@ -1,211 +1,144 @@
 ---
 title: "Company Search"
-description: "Build targeted company lists using powerful filters: industry, location, size, keywords, and more."
+description: "Find companies matching precise ICP criteria. Build ABM lists and power dynamic prospecting workflows."
 ---
 
-The **Company Search** endpoint (`POST /v2/search/companies`) lets you find companies matching precise criteria. Use it to build ABM lists, identify ICP-matching accounts, or power dynamic prospecting workflows.
+The **Company Search** endpoint (`POST /v2/search/companies`) lets you find companies matching precise criteria.
 
-<Info>
-  **Cost**: 1 Credit per result returned. If `max_results` is set to 25 and the query matches 25+ companies, the request costs 25 credits.
-</Info>
+Use it to:
+- Build ABM target lists from scratch
+- Identify ICP-matching accounts by industry, size, and geography
+- Power dynamic prospecting workflows without static lists
+
+**Cost**: 1 credit per result returned. If `max_results: 25` and the query matches 25+ companies, the request costs 25 credits.
+
+---
 
 ## How It Works
 
-You send a `POST` request with a `company` object containing your filters. All filters are optional and combined with **AND** logic. Within each filter, multiple values use **OR** logic.
+You send a `POST` request with a `company` object containing your filters. All filters are **optional** and combined with **AND** logic. Within each filter, multiple values use **OR** logic.
 
 The API returns a paginated list of company profiles matching your criteria.
 
-```json
-POST /v2/search/companies
+---
 
-{
-  "company": {
-    "keywords": { "include": ["SaaS", "cloud platform"] },
-    "industry": { "include": ["Software Development"] },
-    "hq": { "continent": ["Europe"] },
-    "employee_range": ["51-200", "201-500"]
-  },
-  "max_results": 25
-}
-```
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+| :-------- | :--- | :------- | :---------- |
+| `company` | `object` | Yes | Filter object. All nested fields are optional and combined with AND logic. |
+| `max_results` | `integer` | No | Number of companies to return. Default: `10`. Max: `25`. |
+| `cursor` | `string` | No | Pagination cursor from a previous response. Pass to get the next page. |
+
+### Company Filter Fields
+
+| Field | Type | Description | Example |
+| :---- | :--- | :---------- | :------ |
+| `keywords.include` | `array` | Keywords that must appear in the company profile | `["SaaS", "B2B"]` |
+| `keywords.exclude` | `array` | Keywords to exclude | `["agency", "consulting"]` |
+| `industry.include` | `array` | Industry names (must use [normalized values](/guide/reference/field-normalization)) | `["Software Development"]` |
+| `hq.country_code` | `array` | HQ country codes (2-letter ISO, e.g., `"US"`) | `["FR", "DE"]` |
+| `employee_range` | `array` | Employee count ranges | `["51-200", "201-500"]` |
+
+<Warning>
+  Industry values are **case-sensitive and normalized**. Passing `"Tech"` instead of `"Computer Software"` or `"SaaS"` instead of `"Software Development"` will return 0 results. See the [Field Normalization reference](/guide/reference/field-normalization) for accepted values.
+</Warning>
+
+---
+
+## Example Request
+
+Find SaaS companies with 51-500 employees headquartered in France or Germany:
 
 <CodeGroup>
 
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/search/companies", {
+  company: {
+    keywords: { include: ["SaaS"] },
+    industry: { include: ["Software Development"] },
+    hq: { country_code: ["FR", "DE"] },
+    employee_range: ["51-200", "201-500"],
+  },
+  max_results: 25,
+});
+
+for (const company of result.results) {
+  console.log(`${company.name} — ${company.industry}`);
+  console.log(`  LinkedIn: ${company.linkedin_url}`);
+  console.log(`  Employees: ${company.employee_count}`);
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/search/companies", {
+    "company": {
+        "keywords": { "include": ["SaaS"] },
+        "industry": { "include": ["Software Development"] },
+        "hq": { "country_code": ["FR", "DE"] },
+        "employee_range": ["51-200", "201-500"],
+    },
+    "max_results": 25,
+})
+
+for company in result["results"]:
+    print(f"{company['name']} — {company['industry']}")
+    print(f"  LinkedIn: {company['linkedin_url']}")
+    print(f"  Employees: {company['employee_count']}")
+```
+
 ```bash cURL
-curl --request POST \
-  --url https://api.blitz-api.ai/v2/search/companies \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: YOUR_API_KEY' \
-  --data '{
+curl -X POST "https://api.blitz-api.ai/v2/search/companies" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
     "company": {
       "keywords": { "include": ["SaaS"] },
       "industry": { "include": ["Software Development"] },
       "hq": { "country_code": ["FR", "DE"] },
       "employee_range": ["51-200", "201-500"]
     },
-    "max_results": 10
+    "max_results": 25
   }'
-```
-
-
-```python Python
-import requests
-
-headers = {
-    "x-api-key": "YOUR_API_KEY",
-    "Content-Type": "application/json"
-}
-
-payload = {
-    "company": {
-        "keywords": { "include": ["SaaS"] },
-        "industry": { "include": ["Software Development"] },
-        "hq": { "country_code": ["FR", "DE"] },
-        "employee_range": ["51-200", "201-500"]
-    },
-    "max_results": 10
-}
-
-response = requests.post(
-    "https://api.blitz-api.ai/v2/search/companies",
-    json=payload,
-    headers=headers
-)
-
-print(response.json())
-```
-
-
-```javascript JavaScript
-const axios = require('axios');
-
-const client = axios.create({
-  baseURL: 'https://api.blitz-api.ai',
-  headers: {
-    'x-api-key': 'YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  }
-});
-
-const { data } = await client.post('/v2/search/company', {
-  company: {
-    keywords: { include: ['SaaS'] },
-    industry: { include: ['Software Development'] },
-    hq: { country_code: ['FR', 'DE'] },
-    employee_range: ['51-200', '201-500']
-  },
-  max_results: 10
-});
-
-console.log(data);
 ```
 
 </CodeGroup>
 
 ---
 
-## Filter Reference
-
-### `name` — Company Name
-
-Search for keywords in the company name.
+## Response Schema
 
 ```json
-"name": {
-  "include": ["Stripe", "Adyen"],
-  "exclude": ["Holdings"]
+{
+  "results_length": 25,
+  "cursor": "eyJwYWdlIjoy...",
+  "results": [
+    {
+      "name": "Acme Corp",
+      "linkedin_url": "https://www.linkedin.com/company/acme-corp",
+      "website": "acme.com",
+      "industry": "Software Development",
+      "employee_count": 120,
+      "hq": {
+        "city": "Paris",
+        "country": "France",
+        "country_code": "FR"
+      }
+    }
+  ]
 }
 ```
 
-### `keywords` — Description Search
-
-Search for keywords in the company's LinkedIn description/about section.
-
-```json
-"keywords": {
-  "include": ["AI", "machine learning"],
-  "exclude": ["consulting"]
-}
-```
-
-### `industry` — Industry Filter
-
-Filter by LinkedIn-normalized industry labels. These are **exact match** values.
-
-```json
-"industry": {
-  "include": ["Software Development", "Financial Services"],
-  "exclude": ["Staffing and Recruiting"]
-}
-```
-
-<Warning>
-  Industry values must match the exact LinkedIn taxonomy. A typo or variation (e.g., `"SaaS"` instead of `"Software Development"`) will return 0 results. See the [full list of accepted industries](/guide/reference/field-normalization#industries).
-</Warning>
-
-### `hq` — Headquarters Location
-
-Filter by the company's headquarters. Combine sub-fields for precision.
-
-```json
-"hq": {
-  "continent": ["Europe"],
-  "country_code": ["FR", "DE", "GB"],
-  "sales_region": ["EMEA"],
-  "city": { "include": ["Paris", "Berlin"] }
-}
-```
-
-<Tip>
-  Use `sales_region` for broad GTM targeting (NORAM, LATAM, EMEA, APAC). Use `country_code` or `city` for surgical precision. See [Field Normalization](/guide/reference/field-normalization) for all accepted values.
-</Tip>
-
-### `employee_count` — Exact Range
-
-Set a numeric range on the actual LinkedIn employee count.
-
-```json
-"employee_count": { "min": 100, "max": 500 }
-```
-
-### `employee_range` — LinkedIn Buckets
-
-Use LinkedIn's predefined size buckets. Pass multiple values for OR logic.
-
-```json
-"employee_range": ["51-200", "201-500", "501-1000"]
-```
-
-Accepted values: `1-10`, `11-50`, `51-200`, `201-500`, `501-1000`, `1001-5000`, `5001-10000`, `10001+`.
-
-### `founded_year` — Founding Year Range
-
-Target startups or established companies by founding year.
-
-```json
-"founded_year": { "min": 2018, "max": 2024 }
-```
-
-### `type` — Company Type
-
-Filter by LinkedIn company type.
-
-```json
-"type": {
-  "include": ["Privately Held", "Public Company"],
-  "exclude": ["Government Agency"]
-}
-```
-
-Accepted values: `Educational`, `Educational Institution`, `Government Agency`, `Nonprofit`, `Partnership`, `Privately Held`, `Public Company`, `Self-Employed`, `Self-Owned`, `Sole Proprietorship`.
-
-### `min_linkedin_followers`
-
-Set a minimum follower threshold to filter out shell or inactive pages.
-
-```json
-"min_linkedin_followers": 500
-```
+| Field | Type | Description |
+| :---- | :--- | :---------- |
+| `results_length` | `integer` | Number of results in this page. |
+| `cursor` | `string` | Pass this value in the next request to get the following page. `null` if no more results. |
+| `results[].name` | `string` | Company name. |
+| `results[].linkedin_url` | `string` | Company LinkedIn URL. Use this as input for Waterfall ICP, Employee Finder, and Company Enrichment endpoints. |
+| `results[].website` | `string` | Company website domain. |
+| `results[].industry` | `string` | Normalized industry name. |
+| `results[].employee_count` | `integer` | Approximate employee count. |
+| `results[].hq` | `object` | Headquarters location (city, country, country_code). |
 
 ---
 
@@ -219,7 +152,7 @@ The API supports cursor-based pagination. Each response includes a `cursor` fiel
 
 // Response includes: "cursor": "eyJwYWdl..."
 
-// Next page
+// Next page request
 { "company": { ... }, "cursor": "eyJwYWdl...", "max_results": 25 }
 ```
 
@@ -227,115 +160,21 @@ When `cursor` is `null` in the response, you've reached the last page.
 
 ---
 
-## Response Structure
+## Recommended Workflow
 
-```json
-{
-  "results_count": 2,
-  "total_results": 148,
-  "cursor": "eyJwYWdlIjoyLCJzZWFyY2hfaWQiOiJhYmMxMjMifQ==",
-  "results": [
-    {
-      "linkedin_url": "https://www.linkedin.com/company/blitz-api",
-      "linkedin_id": 108037802,
-      "name": "Blitzapi",
-      "about": "BlitzAPI provides enriched B2B data access...",
-      "industry": "Technology; Information and Internet",
-      "type": "Privately Held",
-      "size": "1-10",
-      "employees_on_linkedin": 3,
-      "followers": 6,
-      "founded_year": null,
-      "specialties": null,
-      "hq": {
-        "city": "Paris",
-        "state": null,
-        "postcode": null,
-        "country_code": "FR",
-        "country_name": "France",
-        "continent": "Europe",
-        "street": null
-      },
-      "domain": "blitz-api.ai",
-      "website": "https://blitz-api.ai"
-    }
-  ]
-}
-```
+Use Company Search as the first step in your ABM pipeline:
 
----
-
-## Recipes
-
-### The "ICP Builder" — SaaS Scale-ups in Europe
-
-Find mid-size SaaS companies across Europe for an ABM campaign.
-
-```json
-{
-  "company": {
-    "keywords": { "include": ["SaaS", "platform", "cloud"] },
-    "industry": {
-      "include": ["Software Development", "Technology; Information and Internet"],
-      "exclude": ["Staffing and Recruiting", "Management Consulting"]
-    },
-    "hq": { "continent": ["Europe"] },
-    "employee_range": ["51-200", "201-500"],
-    "type": { "include": ["Privately Held"] },
-    "min_linkedin_followers": 200
-  },
-  "max_results": 50
-}
-```
-
-### The "Startup Hunter" — Early-stage FinTech in the US
-
-Identify recently-founded FinTech companies for partnership opportunities.
-
-```json
-{
-  "company": {
-    "keywords": { "include": ["fintech", "payments", "neobank", "banking API"] },
-    "hq": { "country_code": ["US"] },
-    "founded_year": { "min": 2021 },
-    "employee_range": ["1-10", "11-50"],
-    "type": { "include": ["Privately Held"] }
-  },
-  "max_results": 25
-}
-```
-
-### The "Enterprise Mapper" — Large companies in APAC
-
-Map large public companies across the Asia-Pacific region.
-
-```json
-{
-  "company": {
-    "hq": { "sales_region": ["APAC"] },
-    "employee_range": ["5001-10000", "10001+"],
-    "type": { "include": ["Public Company"] },
-    "min_linkedin_followers": 10000
-  },
-  "max_results": 50
-}
-```
-
----
-
-## Combine with Waterfall Search
-
-Company Search becomes extremely powerful when chained with the **Waterfall ICP Search**. Use Company Search to build your target account list, then pipe each `linkedin_url` into the Waterfall to find decision-makers.
-
-```
-Company Search → Get linkedin_url → Waterfall ICP → Get decision-makers → Email Enrichment
-```
-
-<CardGroup cols={2}>
-  <Card icon="filter" href="/guide/concepts/waterfall-logic" title="Waterfall Logic">
-    Learn how to find the best contacts within each company.
-  </Card>
-  <Card icon="book" href="/guide/reference/field-normalization" title="Field Normalization">
-    Full list of accepted values for industries, regions, and country codes.
-  </Card>
-</CardGroup>
+<Steps>
+  <Step title="Find ICP-matching companies">
+    Use Company Search to build a list of target accounts matching your ICP filters.
+  </Step>
+  <Step title="Extract LinkedIn URLs">
+    The `linkedin_url` field in the response is your key for all downstream enrichment.
+  </Step>
+  <Step title="Find decision-makers">
+    Pass each `linkedin_url` to the [Waterfall ICP Search](/guide/concepts/waterfall-logic) to find the right contacts, or use [People Search](/guide/concepts/people-search) to find multiple contacts across all your target companies in a single query.
+  </Step>
+  <Step title="Enrich and sync">
+    Enrich contacts with verified emails and sync to your CRM or outreach tool.
+  </Step>
+</Steps>
