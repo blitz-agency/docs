@@ -10,26 +10,22 @@ This section covers technical standards and logic details to help you build reli
 
 All v2 endpoints at a glance. Base URL: `https://api.blitz-api.ai`. All endpoints use `POST` except `key-info`.
 
-<Note>
-  **Paid plans**: All endpoints are **unlimited** with no per-request cost. Credits below apply only to **free trial accounts** (1,000 credits). Email enrichment requires Unlimited Email plan+; phone enrichment requires Unlimited Phone Numbers plan.
-</Note>
-
-| Endpoint | Method | Description | Plan | Trial cost |
-| :------- | :----- | :---------- | :--- | :--------- |
-| `/v2/account/key-info` | `GET` | Check API key validity, credits, and rate limit | Any | 0 credits |
-| `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers via cascade hierarchy (cached data, <600ms) | Leads+ | 1 / result |
-| `/v2/search/employee-finder` | `POST` | Search employees by role and seniority level | Leads+ | 1 / result |
-| `/v2/search/companies` | `POST` | Find companies by filters (industry, size, location, keywords) | Leads+ | 1 / result |
-| `/v2/search/people` | `POST` | Find people across companies by combined company + people filters | Leads+ | 1 / result |
-| `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Email+ | 1 (0 if not found) |
-| `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone number (**US only**) | Phone | 5 (0 if not found) |
-| `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Leads+ | 1 |
-| `/v2/enrichment/phone-to-person` | `POST` | Phone number → full person profile | Leads+ | 5 |
-| `/v2/enrichment/company` | `POST` | Company LinkedIn URL → full company profile | Leads+ | 1 |
-| `/v2/enrichment/domain-to-linkedin` | `POST` | Website domain → Company LinkedIn URL | Leads+ | 1 |
-| `/v2/enrichment/linkedin-to-domain` | `POST` | Company LinkedIn URL → verified email domain | Leads+ | 0.5 |
-| `/v2/utilities/email/validate` | `POST` | Validate email deliverability via SMTP handshake | Leads+ | 0.5 |
-| `/v2/utilities/current-date` | `POST` | Get current server date/time for a timezone | Any | 0 |
+| Endpoint | Method | Description | Plan |
+| :------- | :----- | :---------- | :--- |
+| `/v2/account/key-info` | `GET` | Check API key validity and rate limit | Any |
+| `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers via cascade hierarchy (cached data, <600ms) | Leads+ |
+| `/v2/search/employee-finder` | `POST` | Search employees by role and seniority level | Leads+ |
+| `/v2/search/companies` | `POST` | Find companies by filters (industry, size, location, keywords) | Leads+ |
+| `/v2/search/people` | `POST` | Find people across companies by combined company + people filters | Leads+ |
+| `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Email+ |
+| `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone number (**US only**) | Phone |
+| `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Leads+ |
+| `/v2/enrichment/phone-to-person` | `POST` | Phone number → full person profile | Leads+ |
+| `/v2/enrichment/company` | `POST` | Company LinkedIn URL → full company profile | Leads+ |
+| `/v2/enrichment/domain-to-linkedin` | `POST` | Website domain → Company LinkedIn URL | Leads+ |
+| `/v2/enrichment/linkedin-to-domain` | `POST` | Company LinkedIn URL → verified email domain | Leads+ |
+| `/v2/utilities/email/validate` | `POST` | Validate email deliverability via SMTP handshake | Leads+ |
+| `/v2/utilities/current-date` | `POST` | Get current server date/time for a timezone | Any |
 
 <Info>
   Search endpoints require a **Company LinkedIn URL** as input (not a domain). If you only have a domain, use `/v2/enrichment/domain-to-linkedin` first.
@@ -116,7 +112,7 @@ To ensure stability for all users:
 | Code | Meaning | Solution |
 | :--- | :------ | :------- |
 | `401` | Unauthorized | Missing or invalid `x-api-key` header. |
-| `402` | Payment Required | Insufficient credits. Top up or upgrade your plan. |
+| `402` | Payment Required | Account limit reached. Upgrade your plan. |
 | `404` | Not Found | API key does not exist. |
 | `429` | Too Many Requests | Exceeded rate limit. Implement client-side rate limiting (max 5 RPS). |
 | `500` | Internal Server Error | Transient server error. Retry with exponential backoff. |

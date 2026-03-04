@@ -7,26 +7,22 @@ description: "Production-ready code for every Blitz API v2 endpoint. Copy, paste
 
 All v2 endpoints at a glance. Base URL: `https://api.blitz-api.ai`. All endpoints use `POST` except `key-info`.
 
-<Note>
-  **Paid plans**: All endpoints are **unlimited** — no credits deducted. Credit costs below apply only to **free trial accounts** (1,000 credits).
-</Note>
-
-| Endpoint | Method | Description | Plan required | Trial cost |
-| :------- | :----- | :---------- | :------------ | :--------- |
-| `/v2/account/key-info` | `GET` | Check API key & credits | Any | 0 credits |
-| `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers by cascade hierarchy | Unlimited Leads+ | 1 credit / result |
-| `/v2/search/employee-finder` | `POST` | Search employees by role & seniority | Unlimited Leads+ | 1 credit / result |
-| `/v2/search/companies` | `POST` | Find companies by filters | Unlimited Leads+ | 1 credit / result |
-| `/v2/search/people` | `POST` | Find people across companies by combined filters | Unlimited Leads+ | 1 credit / result |
-| `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Unlimited Email+ | 1 credit |
-| `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone (US only) | Unlimited Phone | 5 credits |
-| `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Unlimited Leads+ | 1 credit |
-| `/v2/enrichment/phone-to-person` | `POST` | Phone number → full person profile | Unlimited Leads+ | 5 credits |
-| `/v2/enrichment/company` | `POST` | Company LinkedIn URL → company profile | Unlimited Leads+ | 1 credit |
-| `/v2/enrichment/domain-to-linkedin` | `POST` | Website domain → Company LinkedIn URL | Unlimited Leads+ | 1 credit |
-| `/v2/enrichment/linkedin-to-domain` | `POST` | Company LinkedIn URL → email domain | Unlimited Leads+ | 0.5 credits |
-| `/v2/utilities/email/validate` | `POST` | Validate email deliverability (SMTP) | Unlimited Leads+ | 0.5 credits |
-| `/v2/utilities/current-date` | `POST` | Get current server date/time | Any | 0 credits |
+| Endpoint | Method | Description | Plan required |
+| :------- | :----- | :---------- | :------------ |
+| `/v2/account/key-info` | `GET` | Check API key validity & rate limit | Any |
+| `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers by cascade hierarchy | Unlimited Leads+ |
+| `/v2/search/employee-finder` | `POST` | Search employees by role & seniority | Unlimited Leads+ |
+| `/v2/search/companies` | `POST` | Find companies by filters | Unlimited Leads+ |
+| `/v2/search/people` | `POST` | Find people across companies by combined filters | Unlimited Leads+ |
+| `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Unlimited Email+ |
+| `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone (US only) | Unlimited Phone |
+| `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Unlimited Leads+ |
+| `/v2/enrichment/phone-to-person` | `POST` | Phone number → full person profile | Unlimited Leads+ |
+| `/v2/enrichment/company` | `POST` | Company LinkedIn URL → company profile | Unlimited Leads+ |
+| `/v2/enrichment/domain-to-linkedin` | `POST` | Website domain → Company LinkedIn URL | Unlimited Leads+ |
+| `/v2/enrichment/linkedin-to-domain` | `POST` | Company LinkedIn URL → email domain | Unlimited Leads+ |
+| `/v2/utilities/email/validate` | `POST` | Validate email deliverability (SMTP) | Unlimited Leads+ |
+| `/v2/utilities/current-date` | `POST` | Get current server date/time | Any |
 
 ---
 
@@ -203,7 +199,7 @@ def blitz_request(method, path, payload=None):
 
 ## Check API Key — GET `/v2/account/key-info`
 
-Verify your key and check remaining credits. Use as a health check before batch jobs.
+Verify your key and check your account status. Use as a health check before batch jobs.
 
 <CodeGroup>
 
@@ -233,7 +229,7 @@ print(f"Allowed endpoints: {', '.join(info['allowed_apis'])}")
 
 Find the best decision-maker at a company using a prioritized cascade. The engine tries each tier in order and fills results from the highest-priority match first.
 
-**Paid plans**: Unlimited. **Free trial**: 1 credit per result. `icp` = cascade tier matched (1 = top priority). `ranking` = overall position in the company (1 = most relevant).
+`icp` = cascade tier matched (1 = top priority). `ranking` = overall position in the company (1 = most relevant).
 
 <CodeGroup>
 
@@ -312,7 +308,7 @@ for person in result["results"]:
 
 ## Email Enrichment — POST `/v2/enrichment/email`
 
-Retrieve a verified work email from a LinkedIn profile URL. Requires **Unlimited Email** plan or above. **Free trial**: 1 credit on success, 0 if not found.
+Retrieve a verified work email from a LinkedIn profile URL. Requires **Unlimited Email** plan or above.
 
 <CodeGroup>
 
@@ -345,7 +341,7 @@ else:
 
 ## Phone Enrichment — POST `/v2/enrichment/phone`
 
-Retrieve a direct phone number from a LinkedIn profile URL. **US contacts only.** Requires **Unlimited Phone Numbers** plan. **Free trial**: 5 credits on success, 0 if not found.
+Retrieve a direct phone number from a LinkedIn profile URL. **US contacts only.** Requires **Unlimited Phone Numbers** plan.
 
 <CodeGroup>
 
@@ -374,7 +370,7 @@ if result["found"]:
 
 ## Company Enrichment — POST `/v2/enrichment/company`
 
-Retrieve a full company profile from a LinkedIn company URL. **Paid plans**: Unlimited.
+Retrieve a full company profile from a LinkedIn company URL.
 
 <CodeGroup>
 
@@ -404,7 +400,7 @@ print(f"Employees: {result['company']['employee_count']}")
 
 ## Domain → LinkedIn URL — POST `/v2/enrichment/domain-to-linkedin`
 
-Convert a website domain to a Company LinkedIn URL. Use this as the first step when your source data only contains domains. Returns `found` (boolean) and `company_linkedin_url` (string). **Paid plans**: Unlimited.
+Convert a website domain to a Company LinkedIn URL. Use this as the first step when your source data only contains domains. Returns `found` (boolean) and `company_linkedin_url` (string).
 
 <CodeGroup>
 
@@ -435,7 +431,7 @@ if result["found"]:
 
 ## Email Validation — POST `/v2/utilities/email/validate`
 
-Validate an email address via live SMTP handshake. Use before enrolling leads in cold email sequences. **Paid plans**: Unlimited. **Free trial**: 0.5 credits.
+Validate an email address via live SMTP handshake. Use before enrolling leads in cold email sequences.
 
 <CodeGroup>
 
@@ -474,7 +470,7 @@ print(f"Deliverable: {result['deliverable']}")
 
 Search employees at a company by job level, department, and location. Supports pagination. See [Employee Finder guide](/guide/concepts/employee-finder) for full documentation.
 
-**Paid plans**: Unlimited. **Free trial**: 1 credit per result. Pagination: increment `page` to fetch the next page. The response includes `total_pages`.
+Pagination: increment `page` to fetch the next page. The response includes `total_pages`.
 
 <CodeGroup>
 
@@ -521,7 +517,7 @@ for person in result["results"]:
 
 Find people across multiple companies by combining company AND people filters. Supports cursor-based pagination. See [People Search guide](/guide/concepts/people-search) for full documentation.
 
-**Paid plans**: Unlimited. **Free trial**: 1 credit per result. Pagination: pass the `cursor` from the response to fetch the next page. `cursor: null` means last page.
+Pagination: pass the `cursor` from the response to fetch the next page. `cursor: null` means last page.
 
 <Note>
   People Search uses `location.country` for person country filter (not `country_code` as in Employee Finder). The accepted ISO 2-letter codes are identical.
@@ -613,9 +609,83 @@ if result["cursor"]:
 
 ---
 
+## Company Search — POST `/v2/search/companies`
+
+Find companies matching ICP criteria (industry, size, location, keywords). Supports cursor-based pagination. See [Company Search guide](/guide/concepts/company-search) for full documentation.
+
+Pagination: pass the `cursor` from the response to fetch the next page. `cursor: null` means last page.
+
+<CodeGroup>
+
+```javascript Node.js
+const result = await blitzRequest("POST", "/v2/search/companies", {
+  company: {
+    keywords: { include: ["SaaS"] },
+    industry: { include: ["Software Development"] },
+    hq: { country_code: ["FR", "DE"] },
+    employee_range: ["51-200", "201-500"],
+  },
+  max_results: 25,
+});
+
+for (const company of result.results) {
+  console.log(`${company.name} — ${company.industry}`);
+  console.log(`  LinkedIn: ${company.linkedin_url}`);
+  console.log(`  Employees: ${company.employee_count}`);
+}
+
+// Paginate with cursor
+if (result.cursor) {
+  const nextPage = await blitzRequest("POST", "/v2/search/companies", {
+    company: {
+      keywords: { include: ["SaaS"] },
+      industry: { include: ["Software Development"] },
+      hq: { country_code: ["FR", "DE"] },
+      employee_range: ["51-200", "201-500"],
+    },
+    max_results: 25,
+    cursor: result.cursor,
+  });
+}
+```
+
+```python Python
+result = blitz_request("POST", "/v2/search/companies", {
+    "company": {
+        "keywords": {"include": ["SaaS"]},
+        "industry": {"include": ["Software Development"]},
+        "hq": {"country_code": ["FR", "DE"]},
+        "employee_range": ["51-200", "201-500"],
+    },
+    "max_results": 25,
+})
+
+for company in result["results"]:
+    print(f"{company['name']} — {company['industry']}")
+    print(f"  LinkedIn: {company['linkedin_url']}")
+    print(f"  Employees: {company['employee_count']}")
+
+# Paginate with cursor
+if result["cursor"]:
+    next_page = blitz_request("POST", "/v2/search/companies", {
+        "company": {
+            "keywords": {"include": ["SaaS"]},
+            "industry": {"include": ["Software Development"]},
+            "hq": {"country_code": ["FR", "DE"]},
+            "employee_range": ["51-200", "201-500"],
+        },
+        "max_results": 25,
+        "cursor": result["cursor"],
+    })
+```
+
+</CodeGroup>
+
+---
+
 ## LinkedIn → Domain — POST `/v2/enrichment/linkedin-to-domain`
 
-Get the email domain associated with a Company LinkedIn URL. **Paid plans**: Unlimited. **Free trial**: 0.5 credits.
+Get the email domain associated with a Company LinkedIn URL.
 
 <CodeGroup>
 
@@ -644,7 +714,7 @@ if result["found"]:
 
 ## Reverse Email Lookup — POST `/v2/enrichment/email-to-person`
 
-Get a full person profile from a known work email. **Paid plans**: Unlimited.
+Get a full person profile from a known work email.
 
 <CodeGroup>
 
@@ -679,7 +749,7 @@ if result["found"]:
 
 ## Reverse Phone Lookup — POST `/v2/enrichment/phone-to-person`
 
-Get a full person profile from a phone number. **US numbers only.** **Paid plans**: Unlimited. **Free trial**: 5 credits.
+Get a full person profile from a phone number. **US numbers only.**
 
 <CodeGroup>
 

@@ -71,7 +71,7 @@ headers = {
 ## Verifying your Key
 
 
-To check if your key is active and view your remaining credits, use the `GET /v2/account/key-info` endpoint. This is a great way to "health check" your integration before running batch jobs.
+To check if your key is active, use the `GET /v2/account/key-info` endpoint. This is a great way to "health check" your integration before running batch jobs.
 
 
 **Response:**
@@ -105,8 +105,8 @@ To check if your key is active and view your remaining credits, use the `GET /v2
 | :----------------------- | :-------- | :--------------------------------------------------------------------------------- |
 | `valid`                  | `boolean` | `true` if the key is active and can make requests.                                 |
 | `id`                     | `string`  | Internal identifier for your API key.                                              |
-| `remaining_credits`      | `number`  | Credits remaining in your current period. Relevant for trial accounts only — paid plans are unlimited. |
-| `next_reset_at`          | `string`  | ISO 8601 timestamp of when your credits reset.                                     |
+| `remaining_credits`      | `number`  | Remaining usage allowance. Relevant for trial accounts only — paid plans are unlimited. |
+| `next_reset_at`          | `string`  | ISO 8601 timestamp of when your allowance resets.                                  |
 | `max_requests_per_seconds` | `integer` | Your plan's rate limit. Use this value to configure your rate limiter client-side. |
 | `allowed_apis`           | `array`   | List of endpoint paths your key is authorized to call.                             |
 | `active_plans`           | `array`   | Your active subscription(s) with name, status, and start date.                    |
@@ -121,6 +121,6 @@ If authentication fails, the API will return a `401 Unauthorized` error.
 | **Code** | **Meaning**          | **Solution**                                                                          |
 | -------- | -------------------- | ------------------------------------------------------------------------------------- |
 | `401`    | **Unauthorized**     | Missing or invalid API key. Check that the `x-api-key` header is present and correct. |
-| `402`    | **Payment Required** | Your key is valid, but you have insufficient credits to perform the action.           |
+| `402`    | **Payment Required** | Your key is valid, but your account has reached its limit. Upgrade your plan.         |
 | `404`    | **Not Found**        | The API Key provided does not exist in our system.                                    |
 
