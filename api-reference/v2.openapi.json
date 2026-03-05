@@ -6252,7 +6252,7 @@
     "/v2/enrichment/email-to-person": {
       "post": {
         "summary": "Reverse Email Lookup",
-        "description": "Identify a professional and retrieve their full profile starting from a verified work email address.\n\n⚠️ **Response nesting**: Person data is at `result.person.person` (double nested).",
+        "description": "Identify a professional and retrieve their full profile starting from a verified work email address.",
         "tags": [
           "People Enrichment"
         ],
@@ -6289,7 +6289,6 @@
                   "example": {
                     "found": true,
                     "person": {
-                      "person": {
                         "first_name": "Antoine",
                         "last_name": "Blitz",
                         "full_name": "Antoine Blitz",
@@ -6326,7 +6325,6 @@
                         "skills": [],
                         "certifications": []
                       }
-                    }
                   }
                 }
               }
@@ -6378,7 +6376,7 @@
     "/v2/enrichment/phone-to-person": {
       "post": {
         "summary": "Reverse Phone Lookup",
-        "description": "Identify a professional and retrieve their full profile from a verified phone number.\n\n⚠️ **US numbers only.**\n\n⚠️ **Response nesting**: Person data is at `result.person.person` (double nested).",
+        "description": "Identify a professional and retrieve their full profile from a verified phone number.\n\n⚠️ **US numbers only.**",
         "tags": [
           "People Enrichment"
         ],
@@ -6415,7 +6413,6 @@
                   "example": {
                     "found": true,
                     "person": {
-                      "person": {
                         "first_name": "Antoine",
                         "last_name": "Blitz",
                         "full_name": "Antoine Blitz",
@@ -6453,7 +6450,6 @@
                         "certifications": []
                       }
                     }
-                  }
                 }
               }
             }
