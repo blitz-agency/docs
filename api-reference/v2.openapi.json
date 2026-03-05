@@ -1001,7 +1001,7 @@
     "/v2/search/people": {
       "post": {
         "summary": "People Search",
-        "description": "Find people across multiple companies by combining company filters AND people filters in a single query.\n\n**Pagination**: Cursor-based. Pass the `cursor` from the response to get the next page. `cursor: null` = last page.\n\n**Filter logic**: All filters combine with AND. Multiple values within a filter use OR. Include is applied first, then exclude removes matches.",
+        "description": "Find people across multiple companies by combining company filters AND people filters in a single query.\n\n**Pagination**: Cursor-based. Pass the `cursor` from the response to get the next page. `cursor: null` = first page.\n\n**Filter logic**: All filters combine with AND. Multiple values within a filter use OR. Include is applied first, then exclude removes matches.",
         "tags": [
           "People Search"
         ],
@@ -3851,7 +3851,7 @@
     "/v2/search/companies": {
       "post": {
         "summary": "Company Search",
-        "description": "Find companies matching ICP criteria (industry, size, location, keywords). Returns company profiles with LinkedIn URLs for downstream enrichment.\n\n**Pagination**: Cursor-based. Pass the `cursor` from the response to get the next page. `cursor: null` = last page.\n\n**Filter logic**: All filters combine with AND. Multiple values within a filter use OR.",
+        "description": "Find companies matching ICP criteria (industry, size, location, keywords). Returns company profiles with LinkedIn URLs for downstream enrichment.\n\n**Pagination**: Cursor-based. Pass the `cursor` from the response to get the next page. `cursor: null` = first page.\n\n**Filter logic**: All filters combine with AND. Multiple values within a filter use OR.",
         "tags": [
           "Company Search"
         ],
