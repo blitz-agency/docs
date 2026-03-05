@@ -2522,7 +2522,7 @@
                               "type": "string"
                             }
                           },
-                          "country": {
+                          "country_code": {
                             "default": [],
                             "examples": [
                               [
