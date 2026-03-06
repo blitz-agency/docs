@@ -16,7 +16,6 @@ All v2 endpoints at a glance. Base URL: `https://api.blitz-api.ai`. All endpoint
 | `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers via cascade hierarchy (cached data, \<600ms) | Leads+ |
 | `/v2/search/employee-finder` | `POST` | Search employees by role and seniority level | Leads+ |
 | `/v2/search/companies` | `POST` | Find companies by filters (industry, size, location, keywords) | Leads+ |
-| `/v2/search/people` | `POST` | Find people across companies by combined company + people filters | Leads+ |
 | `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Email+ |
 | `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone number (**US only**) | Phone |
 | `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Leads+ |
@@ -103,7 +102,7 @@ To ensure stability for all users:
 
 | Endpoint Type | Recommended Timeout |
 | :------------ | :------------------ |
-| Waterfall ICP, Employee Finder, Company Search, People Search | 10 seconds |
+| Waterfall ICP, Employee Finder, Company Search | 10 seconds |
 | Email/Phone Validation | 20 seconds |
 | Enrichment (email, phone, company) | 10 seconds |
 

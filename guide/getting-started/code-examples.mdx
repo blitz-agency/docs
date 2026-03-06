@@ -13,7 +13,6 @@ All v2 endpoints at a glance. Base URL: `https://api.blitz-api.ai`. All endpoint
 | `/v2/search/waterfall-icp-keyword` | `POST` | Find decision-makers by cascade hierarchy | Unlimited Leads+ |
 | `/v2/search/employee-finder` | `POST` | Search employees by role & seniority | Unlimited Leads+ |
 | `/v2/search/companies` | `POST` | Find companies by filters | Unlimited Leads+ |
-| `/v2/search/people` | `POST` | Find people across companies by combined filters | Unlimited Leads+ |
 | `/v2/enrichment/email` | `POST` | LinkedIn profile URL → verified work email | Unlimited Email+ |
 | `/v2/enrichment/phone` | `POST` | LinkedIn profile URL → phone (US only) | Unlimited Phone |
 | `/v2/enrichment/email-to-person` | `POST` | Work email → full person profile | Unlimited Leads+ |
@@ -507,102 +506,6 @@ for person in result["results"]:
     # Employee Finder returns person fields directly (not nested in .person)
     print(f"{person['full_name']} — {person['headline']}")
     print(f"  LinkedIn: {person['linkedin_url']}")
-```
-
-</CodeGroup>
-
----
-
-## People Search — POST `/v2/search/people`
-
-Find people across multiple companies by combining company AND people filters. Supports cursor-based pagination. See [People Search guide](/guide/concepts/people-search) for full documentation.
-
-Pagination: pass the `cursor` from the response to fetch the next page. `cursor: null` means last page.
-
-<Note>
-  People Search uses `location.country` for person country filter (not `country_code` as in Employee Finder). The accepted ISO 2-letter codes are identical.
-</Note>
-
-<CodeGroup>
-
-```javascript Node.js
-const result = await blitzRequest("POST", "/v2/search/people", {
-  company: {
-    keywords: { include: ["SaaS"] },
-    employee_range: ["51-200", "201-500"],
-    hq: { country_code: ["US"] },
-  },
-  people: {
-    job_title: { include: ["Sales"] },
-    job_level: ["VP", "Director"],
-    job_function: ["Sales & Business Development"],
-  },
-  max_results: 10,
-});
-
-console.log(`Found ${result.results_length} results`);
-for (const person of result.results) {
-  // People Search returns person fields directly (not nested in .person)
-  console.log(`${person.full_name} — ${person.headline}`);
-  console.log(`  LinkedIn: ${person.linkedin_url}`);
-}
-
-// Paginate with cursor
-if (result.cursor) {
-  const nextPage = await blitzRequest("POST", "/v2/search/people", {
-    company: {
-      keywords: { include: ["SaaS"] },
-      employee_range: ["51-200", "201-500"],
-      hq: { country_code: ["US"] },
-    },
-    people: {
-      job_title: { include: ["Sales"] },
-      job_level: ["VP", "Director"],
-      job_function: ["Sales & Business Development"],
-    },
-    max_results: 10,
-    cursor: result.cursor,
-  });
-}
-```
-
-```python Python
-result = blitz_request("POST", "/v2/search/people", {
-    "company": {
-        "keywords": {"include": ["SaaS"]},
-        "employee_range": ["51-200", "201-500"],
-        "hq": {"country_code": ["US"]},
-    },
-    "people": {
-        "job_title": {"include": ["Sales"]},
-        "job_level": ["VP", "Director"],
-        "job_function": ["Sales & Business Development"],
-    },
-    "max_results": 10,
-})
-
-print(f"Found {result['results_length']} results")
-for person in result["results"]:
-    # People Search returns person fields directly (not nested in .person)
-    print(f"{person['full_name']} — {person['headline']}")
-    print(f"  LinkedIn: {person['linkedin_url']}")
-
-# Paginate with cursor
-if result["cursor"]:
-    next_page = blitz_request("POST", "/v2/search/people", {
-        "company": {
-            "keywords": {"include": ["SaaS"]},
-            "employee_range": ["51-200", "201-500"],
-            "hq": {"country_code": ["US"]},
-        },
-        "people": {
-            "job_title": {"include": ["Sales"]},
-            "job_level": ["VP", "Director"],
-            "job_function": ["Sales & Business Development"],
-        },
-        "max_results": 10,
-        "cursor": result["cursor"],
-    })
 ```
 
 </CodeGroup>

@@ -3,7 +3,7 @@ title: "Field Normalization"
 description: "Accepted values for industry, employee range, job level, job function, company type, sales region, and country codes. All values are case-sensitive."
 ---
 
-BlitzAPI Search endpoints (Company Search, Employee Finder, People Search, Waterfall ICP) use **normalized values** for categorical filters. Passing an incorrect value (e.g., `"SaaS"` instead of `"Software Development"`) will silently return 0 results.
+BlitzAPI Search endpoints (Company Search, Employee Finder, Waterfall ICP) use **normalized values** for categorical filters. Passing an incorrect value (e.g., `"SaaS"` instead of `"Software Development"`) will silently return 0 results.
 
 <Warning>
   All enum values are **case-sensitive** and must match exactly. Copy-paste from this page to avoid typos.
@@ -13,7 +13,7 @@ BlitzAPI Search endpoints (Company Search, Employee Finder, People Search, Water
 
 ## Employee Range
 
-Used in: **Company Search** (`employee_range` filter), **People Search** (`company.employee_range` filter).
+Used in: **Company Search** (`employee_range` filter)
 
 | Value | Headcount |
 | :---- | :-------- |
@@ -30,7 +30,7 @@ Used in: **Company Search** (`employee_range` filter), **People Search** (`compa
 
 ## Job Levels
 
-Used in: **Employee Finder** (`job_level` filter), **People Search** (`people.job_level` filter).
+Used in: **Employee Finder** (`job_level` filter)
 
 | Value | Description |
 | :---- | :---------- |
@@ -45,7 +45,7 @@ Used in: **Employee Finder** (`job_level` filter), **People Search** (`people.jo
 
 ## Job Functions
 
-Used in: **Employee Finder** (`job_function` filter), **People Search** (`people.job_function` filter).
+Used in: **Employee Finder** (`job_function` filter)
 
 <Accordion title="View all accepted job function values (22)">
 
@@ -80,7 +80,7 @@ Used in: **Employee Finder** (`job_function` filter), **People Search** (`people
 
 ## Sales Regions
 
-Used in: **Employee Finder** (`sales_region` filter), **People Search** (`people.location.sales_region` and `company.hq.sales_region` filters).
+Used in: **Employee Finder** (`sales_region` filter)
 
 | Value | Coverage |
 | :---- | :------- |
@@ -93,7 +93,7 @@ Used in: **Employee Finder** (`sales_region` filter), **People Search** (`people
 
 ## Continents
 
-Used in: **Employee Finder** (`continent` filter), **People Search** (`people.location.continent` and `company.hq.continent` filters).
+Used in: **Employee Finder** (`continent` filter)
 
 | Value |
 | :---- |
@@ -109,7 +109,7 @@ Used in: **Employee Finder** (`continent` filter), **People Search** (`people.lo
 
 ## Company Type
 
-Used in: **People Search** (`company.type.include` and `company.type.exclude` filters).
+Used in: **Company Search** (`company.type.include` and `company.type.exclude` filters).
 
 | Value | Description |
 | :---- | :---------- |
@@ -128,11 +128,7 @@ Used in: **People Search** (`company.type.include` and `company.type.exclude` fi
 
 ## Industry
 
-Used in: **Company Search** (`industry.include` and `industry.exclude` filters), **People Search** (`company.industry.include` and `company.industry.exclude` filters).
-
-<Note>
-  **People Search** uses an **extended industry taxonomy** (~500+ values from LinkedIn's full classification). The values below cover the most common industries and are accepted by both Company Search and People Search. For the complete People Search industry list, refer to the [API Reference](/api-reference).
-</Note>
+Used in: **Company Search** (`industry.include` and `industry.exclude` filters)
 
 <Accordion title="View all accepted industry values">
 
@@ -291,17 +287,14 @@ Used in: **Company Search** (`industry.include` and `industry.exclude` filters),
 
 ## Country Codes
 
-Used in: **Waterfall ICP** (`location` field), **Employee Finder** (`country_code` field), **Company Search** (`hq.country_code` field), and **People Search** (`people.location.country` and `company.hq.country_code` fields).
+Used in: **Waterfall ICP** (`location` field), **Employee Finder** (`country_code` field), **Company Search** (`hq.country_code` field).
 
 Country codes follow the **ISO 3166-1 alpha-2** standard (consistent with LinkedIn).
 
 <Tip>
-  For **Waterfall ICP Search**, use `"WORLD"` to search globally without geographic restriction. For **Employee Finder**, use `["WORLD"]` as `country_code` default or simply omit the field. For **Company Search** and **People Search**, omit the location/hq fields entirely or pass empty arrays.
+  For **Waterfall ICP Search**, use `"WORLD"` to search globally without geographic restriction. For **Employee Finder**, use `["WORLD"]` as `country_code` default or simply omit the field. For **Company Search** omit the location/hq fields entirely or pass empty arrays.
 </Tip>
 
-<Note>
-  **People Search** uses `location.country` (not `country_code`) for person location filters, but the values are the same ISO 2-letter codes. The company HQ filter uses `hq.country_code` like Company Search.
-</Note>
 
 ### Common Codes
 
@@ -362,8 +355,5 @@ For the complete list of all country codes, refer to the [official ISO 3166-1 st
   </Accordion>
   <Accordion title="Employee Finder returns results but not the roles I expected">
     Check that you're using the right combination of `job_level` and `job_function`. For example, to find senior sales leaders, use `"job_level": ["C-Team", "VP", "Director"]` combined with `"job_function": ["Sales & Business Development"]`.
-  </Accordion>
-  <Accordion title="People Search: person country filter is being ignored">
-    People Search uses **`people.location.country`** (not `country_code`). The values are the same ISO 2-letter codes, but the field name is different from Employee Finder's `country_code`.
   </Accordion>
 </AccordionGroup>

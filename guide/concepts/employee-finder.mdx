@@ -20,8 +20,6 @@ Unlike [Waterfall ICP Search](/guide/concepts/waterfall-logic) which uses a prio
 | Build a buying committee with strict priority order | [Waterfall ICP](/guide/concepts/waterfall-logic) |
 | Export the full engineering team for hiring intelligence | **Employee Finder** |
 | Get paginated results across large companies | **Employee Finder** |
-| Find people matching company + persona criteria across _many_ companies | [People Search](/guide/concepts/people-search) |
-| Search across multiple companies with industry, size, and location filters | [People Search](/guide/concepts/people-search) |
 
 ---
 
@@ -218,7 +216,7 @@ for person in result["results"]:
 | `end_date` | `string` | End date. |
 
 <Note>
-  **Key difference from Waterfall ICP**: Employee Finder and [People Search](/guide/concepts/people-search) return person fields **directly** in `results[]`. Waterfall ICP nests them inside `results[].person`. Plan your parsing logic accordingly.
+  **Key difference from Waterfall ICP**: Employee Finder return person fields **directly** in `results[]`. Waterfall ICP nests them inside `results[].person`. Plan your parsing logic accordingly.
 </Note>
 
 ---
