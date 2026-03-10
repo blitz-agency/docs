@@ -536,8 +536,8 @@
                 },
                 "example": {
                   "company_linkedin_url": "https://www.linkedin.com/company/openai",
-                  "max_results": 10,
-                  "results_length": 10,
+                  "max_results": 3,
+                  "results_length": 3,
                   "results": [
                     {
                       "icp": 2,
@@ -600,6 +600,116 @@
                             "name": "PADI Advanced Open Water Scuba Diver"
                           }
                         ]
+                      }
+                    },
+                    {
+                      "icp": 2,
+                      "ranking": 2,
+                      "person": {
+                        "first_name": "Alison",
+                        "last_name": "Harmon",
+                        "full_name": "Alison Harmon",
+                        "nickname": null,
+                        "civility_title": null,
+                        "headline": null,
+                        "about_me": null,
+                        "location": {
+                          "city": "San Francisco",
+                          "state_code": "CA",
+                          "country_code": "US",
+                          "continent": "North America"
+                        },
+                        "linkedin_url": "https://www.linkedin.com/in/alisonharmon",
+                        "connections_count": 500,
+                        "profile_picture_url": "https://media.licdn.com/dms/image/v2/C5603AQHDyMfUDPEWvQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1630362000214",
+                        "experiences": [
+                          {
+                            "job_title": "Head of Growth",
+                            "company_linkedin_url": "https://www.linkedin.com/company/openai",
+                            "company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
+                            "job_description": null,
+                            "job_start_date": "2023-09-01",
+                            "job_end_date": null,
+                            "job_is_current": true,
+                            "job_location": {
+                              "city": null,
+                              "state_code": null,
+                              "country_code": null
+                            }
+                          }
+                        ],
+                        "education": [],
+                        "skills": [
+                          "matlab",
+                          "crystal healing",
+                          "apis",
+                          "goats",
+                          "mathematica",
+                          "r",
+                          "microsoft word",
+                          "microsoft office",
+                          "weapons handling",
+                          "statistics",
+                          "calculus",
+                          "mathematical modeling",
+                          "astrophysics",
+                          "desk",
+                          "mathematical analysis",
+                          "science",
+                          "astrology",
+                          "asana",
+                          "linear algebra",
+                          "lead generation",
+                          "mathematics",
+                          "physics",
+                          "python"
+                        ],
+                        "certifications": []
+                      }
+                    },
+                    {
+                      "icp": 2,
+                      "ranking": 3,
+                      "person": {
+                        "first_name": "Pearl",
+                        "last_name": "Aguilar",
+                        "full_name": "Pearl Aguilar",
+                        "nickname": null,
+                        "civility_title": null,
+                        "headline": "Senior Digital Marketing Manager at OpenAI",
+                        "about_me": "With a proven track record in the digital marketing landscape, I specialize in driving…",
+                        "location": {
+                          "city": null,
+                          "state_code": null,
+                          "country_code": "GB",
+                          "continent": "Europe"
+                        },
+                        "linkedin_url": "https://www.linkedin.com/in/pearl-aguilar-76b9b5208",
+                        "connections_count": 500,
+                        "profile_picture_url": "https://media.licdn.com/dms/image/v2/C5603AQGbgR8KVYAKrw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1643629859057",
+                        "experiences": [
+                          {
+                            "job_title": "Digital Marketing Manager",
+                            "company_linkedin_url": "https://www.linkedin.com/company/openai",
+                            "company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
+                            "job_description": null,
+                            "job_start_date": "2024-06-01",
+                            "job_end_date": null,
+                            "job_is_current": true,
+                            "job_location": {
+                              "city": "London",
+                              "state_code": null,
+                              "country_code": "GB"
+                            }
+                          }
+                        ],
+                        "education": [
+                          {
+                            "degree": "Bachelor of Engineering - BE"
+                          }
+                        ],
+                        "skills": [],
+                        "certifications": []
                       }
                     }
                   ]
@@ -674,7 +784,7 @@
                 "properties": {
                   "company_linkedin_url": {
                     "type": "string",
-                    "example": "https://www.linkedin.com/company/wttj-fr"
+                    "example": "https://www.linkedin.com/company/openai"
                   },
                   "country_code": {
                     "type": "array",
@@ -787,71 +897,34 @@
                 "schema": {
                   "type": "object",
                   "example": {
-                    "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
+                    "company_linkedin_url": "https://www.linkedin.com/company/openai",
                     "max_results": 3,
                     "results_length": 3,
                     "page": 1,
-                    "total_pages": 82,
+                    "total_pages": 1285,
                     "results": [
                       {
-                        "first_name": "Hélène",
-                        "last_name": "Pillon",
-                        "full_name": "Hélène Pillon",
-                        "nickname": null,
-                        "civility_title": null,
-                        "headline": "Journaliste freelance",
-                        "about_me": "Depuis Marseille, je travaille pour différents médias français et européens en tant que…",
-                        "location": {
-                          "city": null,
-                          "state_code": null,
-                          "country_code": "FR",
-                          "continent": "Europe"
-                        },
-                        "linkedin_url": "https://www.linkedin.com/in/h%c3%a9l%c3%a8ne-pillon-2a57155a",
-                        "connections_count": 361,
-                        "profile_picture_url": "https://media.licdn.com/dms/image/v2/C5103AQGChE55b4tmFA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517400935573",
-                        "experiences": [
-                          {
-                            "job_title": "Journaliste Indépendante",
-                            "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                            "company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
-                            "job_description": "Rédaction de portraits pour le site web",
-                            "job_start_date": "2019-12-01",
-                            "job_end_date": null,
-                            "job_is_current": true,
-                            "job_location": {
-                              "city": null,
-                              "state_code": null,
-                              "country_code": null
-                            }
-                          }
-                        ],
-                        "education": [],
-                        "skills": [],
-                        "certifications": []
-                      },
-                      {
-                        "first_name": "Nathan",
-                        "last_name": "Chalot",
-                        "full_name": "Nathan Chalot",
+                        "first_name": "Eric",
+                        "last_name": "Mitchell",
+                        "full_name": "Eric Mitchell",
                         "nickname": null,
                         "civility_title": null,
                         "headline": null,
-                        "about_me": null,
+                        "about_me": "I co-lead (with Yann Dubois) the Post-training Frontiers team within Post-training at…",
                         "location": {
-                          "city": "Paris",
+                          "city": null,
                           "state_code": null,
-                          "country_code": "FR",
-                          "continent": "Europe"
+                          "country_code": "US",
+                          "continent": "North America"
                         },
-                        "linkedin_url": "https://www.linkedin.com/in/nathan-chalot-5a978210a",
-                        "connections_count": 500,
-                        "profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+                        "linkedin_url": "https://www.linkedin.com/in/ericanthonymitchell",
+                        "connections_count": 200,
+                        "profile_picture_url": "https://media.licdn.com/dms/image/v2/C5603AQF16tMUIXcPiA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517601421714",
                         "experiences": [
                           {
-                            "job_title": "Welcome to the Jungle France",
-                            "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                            "company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+                            "job_title": null,
+                            "company_linkedin_url": "https://www.linkedin.com/company/openai",
+                            "company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
                             "job_description": null,
                             "job_start_date": null,
                             "job_end_date": null,
@@ -865,80 +938,126 @@
                         ],
                         "education": [],
                         "skills": [
-                          "javascript",
-                          "html5",
-                          "jquery",
-                          "ruby",
-                          "css",
-                          "github",
-                          "git",
-                          "ruby on rails"
+                          "java",
+                          "agile methodologies",
+                          "objective-c",
+                          "json",
+                          "mobile applications",
+                          "english",
+                          "software development",
+                          "python",
+                          "customer service",
+                          "c",
+                          "ios development",
+                          "scikit-learn",
+                          "xcode"
                         ],
                         "certifications": []
                       },
                       {
-                        "first_name": "Colombe",
-                        "last_name": "Godeluck",
-                        "full_name": "Colombe Godeluck",
+                        "first_name": "Alex",
+                        "last_name": "Barron",
+                        "full_name": "Alex Barron",
                         "nickname": null,
                         "civility_title": null,
-                        "headline": "Helps companies strengthen & promote their employer brand",
+                        "headline": "ML",
                         "about_me": null,
                         "location": {
-                          "city": null,
-                          "state_code": null,
-                          "country_code": "FR",
-                          "continent": "Europe"
+                          "city": "San Francisco",
+                          "state_code": "CA",
+                          "country_code": "US",
+                          "continent": "North America"
                         },
-                        "linkedin_url": "https://www.linkedin.com/in/colombegodeluck",
-                        "connections_count": 500,
-                        "profile_picture_url": null,
+                        "linkedin_url": "https://www.linkedin.com/in/alexbarron1",
+                        "connections_count": 200,
+                        "profile_picture_url": "https://media.licdn.com/dms/image/v2/C5603AQHFO6JpxyUwBQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517005697979",
                         "experiences": [
                           {
-                            "job_title": "Account Manager Senior",
-                            "company_linkedin_url": "https://www.linkedin.com/company/wttj-fr",
-                            "company_linkedin_id": "0e1c06c9-ad2f-56fe-b36b-f0927aeb261d",
+                            "job_title": "Member of Technical Staff",
+                            "company_linkedin_url": "https://www.linkedin.com/company/openai",
+                            "company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
                             "job_description": null,
-                            "job_start_date": "2023-02-01",
+                            "job_start_date": "2025-04-01",
                             "job_end_date": null,
                             "job_is_current": true,
                             "job_location": {
-                              "city": "Anglet",
-                              "state_code": null,
-                              "country_code": "FR"
+                              "city": "San Francisco",
+                              "state_code": "CA",
+                              "country_code": "US"
                             }
                           }
                         ],
                         "education": [
                           {
-                            "degree": "French Baccalaureate",
-                            "end_date": "2010-01-01",
-                            "organization": "Louis Barthou High School",
-                            "start_date": "2007-01-01"
+                            "degree": "Bachelor of Science (BS)",
+                            "start_date": "2013-01-01",
+                            "end_date": "2017-01-01"
                           },
                           {
-                            "degree": "Master’s Degree",
-                            "end_date": "2016-01-01",
-                            "linkedin_url": "https://www.linkedin.com/school/maastricht-university-school-of-business-and-economics",
-                            "organization": "Maastricht University School of Business and Economics",
-                            "start_date": "2016-01-01"
-                          },
-                          {
-                            "degree": "Master's Degree",
-                            "end_date": "2014-01-01",
-                            "linkedin_url": "https://www.linkedin.com/school/universite-paris-dauphine-psl",
-                            "organization": "Université Paris Dauphine",
-                            "start_date": "2010-01-01"
-                          },
-                          {
-                            "degree": "Master’s Degree",
-                            "end_date": "2017-01-01",
-                            "linkedin_url": "https://www.linkedin.com/school/em-lyon-business-school",
-                            "organization": "EMLYON Business School",
-                            "start_date": "2015-01-01"
+                            "degree": "Master of Science (MS)",
+                            "start_date": "2016-01-01",
+                            "end_date": "2017-01-01"
                           }
                         ],
-                        "skills": [],
+                        "skills": [
+                          "microsoft office",
+                          "python",
+                          "c++",
+                          "objective-c",
+                          "c",
+                          "javascript",
+                          "swift",
+                          "java"
+                        ],
+                        "certifications": []
+                      },
+                      {
+                        "first_name": "Shane",
+                        "last_name": "Copenhagen",
+                        "full_name": "Shane Copenhagen",
+                        "nickname": null,
+                        "civility_title": null,
+                        "headline": "Robotics Software Engineer",
+                        "about_me": "A Robotics Software Engineer with a BS in CS+Robotics from Colorado School of Mines. My…",
+                        "location": {
+                          "city": "Golden",
+                          "state_code": "CO",
+                          "country_code": "US",
+                          "continent": "North America"
+                        },
+                        "linkedin_url": "https://www.linkedin.com/in/shane-copenhagen",
+                        "connections_count": 200,
+                        "profile_picture_url": "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+                        "experiences": [
+                          {
+                            "job_title": "Independent Contractor",
+                            "company_linkedin_url": "https://www.linkedin.com/company/openai",
+                            "company_linkedin_id": "c51425c5-1b38-578d-a700-c5ca850261ae",
+                            "job_description": "Building AI-enabled tools and bots for the OpenAI Community.",
+                            "job_start_date": "2023-02-01",
+                            "job_end_date": null,
+                            "job_is_current": true,
+                            "job_location": {
+                              "city": null,
+                              "state_code": null,
+                              "country_code": null
+                            }
+                          }
+                        ],
+                        "education": [],
+                        "skills": [
+                          "javascript",
+                          "computers",
+                          "public speaking",
+                          "banking",
+                          "html5",
+                          "database design",
+                          "insurance",
+                          "life insurance",
+                          "spanish-english",
+                          "java",
+                          "css3"
+                        ],
                         "certifications": []
                       }
                     ]
@@ -2432,6 +2551,63 @@
                     ]
                   }
                 }
+              },
+              "example": {
+                "company": {
+                  "name": {
+                    "include": [],
+                    "exclude": []
+                  },
+                  "industry": {
+                    "include": [
+                      "IT Services and IT Consulting"
+                    ],
+                    "exclude": []
+                  },
+                  "type": {
+                    "include": [],
+                    "exclude": [
+                      "Nonprofit",
+                      "Partnership"
+                    ]
+                  },
+                  "employee_range": [
+                      "1-10",
+                      "11-50",
+                      "51-200",
+                      "201-500",
+                      "501-1000",
+                      "1001-5000",
+                      "5001-10000",
+                      "10001+"
+                  ],
+                  "employee_count": {
+                    "min": 0,
+                    "max": 0
+                  },
+                  "min_linkedin_followers": 1,
+                  "keywords": {
+                    "include": [
+                      "Tech"
+                    ],
+                    "exclude": []
+                  },
+                  "founded_year": {
+                    "min": 0,
+                    "max": 0
+                  },
+                  "hq": {
+                    "city": {
+                      "include": ["City"],
+                      "exclude": ["New"]
+                    },
+                    "country_code": [],
+                    "continent": [],
+                    "sales_region": []
+                  }
+                },
+                "max_results": 3,
+                "cursor": null
               }
             }
           }
