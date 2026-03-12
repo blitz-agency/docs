@@ -12,7 +12,8 @@ The **Blitz API MCP Server** gives any compatible AI tool live access to the com
 When your AI assistant needs to write code that calls Blitz API, it searches the actual documentation instead of guessing.
 
 **MCP Server URL**
-```
+
+```text
 https://docs.blitz-api.ai/mcp
 ```
 
@@ -21,18 +22,19 @@ https://docs.blitz-api.ai/mcp
 ## Why Use It?
 
 AI models are trained on static snapshots of the internet. When they generate code for an API, they often:
+
 - Hallucinate endpoints that don't exist
 - Use outdated parameter names
 - Return incorrect response shapes
 
 With the Blitz API MCP Server connected:
 
-| Without MCP | With MCP |
-| :---------- | :------- |
-| AI guesses endpoint URLs | AI reads the real API reference |
-| Outdated parameter names | Always up-to-date parameter schemas |
-| Incorrect response shapes | Accurate response structures from source |
-| Back-and-forth corrections | Ship correct code on the first try |
+| Without MCP                | With MCP                                 |
+| :------------------------- | :--------------------------------------- |
+| AI guesses endpoint URLs   | AI reads the real API reference          |
+| Outdated parameter names   | Always up-to-date parameter schemas      |
+| Incorrect response shapes  | Accurate response structures from source |
+| Back-and-forth corrections | Ship correct code on the first try       |
 
 ---
 
@@ -40,14 +42,14 @@ With the Blitz API MCP Server connected:
 
 The MCP server provides a search tool that covers the entire Blitz API documentation:
 
-| Content | Description |
-| :------ | :---------- |
-| API endpoints | Full reference for every v2 endpoint — methods, URLs, and parameters |
-| Request schemas | Required and optional fields, types, and example payloads |
-| Response schemas | Complete response structures with field descriptions |
-| Waterfall logic | How cascade/waterfall search works, ICP scoring, and priority levels |
-| Code examples | cURL commands, Node.js, Python, and integration patterns |
-| Guides & recipes | Enrichment workflows, CRM hygiene, and integration tutorials |
+| Content          | Description                                                          |
+| :--------------- | :------------------------------------------------------------------- |
+| API endpoints    | Full reference for every v2 endpoint — methods, URLs, and parameters |
+| Request schemas  | Required and optional fields, types, and example payloads            |
+| Response schemas | Complete response structures with field descriptions                 |
+| Waterfall logic  | How cascade/waterfall search works, ICP scoring, and priority levels |
+| Code examples    | cURL commands, Node.js, Python, and integration patterns             |
+| Guides & recipes | Enrichment workflows, CRM hygiene, and integration tutorials         |
 
 ---
 
@@ -57,8 +59,8 @@ The MCP server provides a search tool that covers the entire Blitz API documenta
   <Tab title="Claude (claude.ai)">
     1. Open [Claude.ai](https://claude.ai) and start a new conversation.
     2. Click the **"+"** or attachments button.
-    3. Select **"Add integration"** and search for **"Blitz API"**.
-    4. The connector will be available in your conversation.
+    3. Select **"Manage Connectors"** and click on **"Add custom Connector"**.
+    4. Copy / Paste this URL into "Remote MCP server URL": https://docs.blitz-api.ai/mcp.
 
     <Note>
       You may need to explicitly enable the connector for each new conversation using the attachments button.
@@ -125,22 +127,22 @@ Once connected, try these prompts with your AI tool:
 
 <AccordionGroup>
   <Accordion title="Write a Python script to find decision-makers">
-    ```
+    ```text
     Using Blitz API, write a Python script to find the Head of Sales at a company given its LinkedIn URL. Include rate limiting and error handling.
     ```
   </Accordion>
   <Accordion title="Get parameters for an endpoint">
-    ```
+    ```text
     What parameters does the waterfall ICP keyword search endpoint accept? Show me a complete example JSON body.
     ```
   </Accordion>
   <Accordion title="Generate a Node.js enrichment function">
-    ```
+    ```text
     Generate a Node.js function that enriches a list of LinkedIn profile URLs with work emails using Blitz API. Handle the case where the email is not found.
     ```
   </Accordion>
   <Accordion title="Build a full enrichment pipeline">
-    ```
+    ```text
     Write a Python script that takes a list of company domains, converts each to a LinkedIn URL, then finds the VP of Sales using the Blitz API waterfall search. Include retry logic.
     ```
   </Accordion>

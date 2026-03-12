@@ -2,15 +2,18 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "BlitzAPI - The API Engine for every GTM Playbook",
-  "description": "High-performance B2B data infrastructure for Growth & Revenue teams. Waterfall ICP Search, Email & Phone Enrichment, and Company Search APIs.",
+  "description": "Example Co. is a company that provides example content and placeholder text.",
   "colors": {
     "primary": "#0055FE",
     "light": "#F8FAFC",
     "dark": "#0F172A"
   },
-  "favicon": "/favicon.svg",
-  "api":{
-    "examples":{
+  "favicon": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
+  },
+  "api": {
+    "examples": {
       "defaults": "required",
       "prefill": true
     }
@@ -42,9 +45,9 @@
             "group": "Core Concepts",
             "pages": [
               "guide/concepts/waterfall-logic",
-              "guide/concepts/employee-finder",
+              "guide/concepts/company-search",
               "guide/concepts/quality",
-              "guide/concepts/company-search"
+              "guide/concepts/employee-finder"
             ]
           },
           {
@@ -57,10 +60,10 @@
           {
             "group": "Integrations",
             "pages": [
+              "guide/integrations/MCP",
               "guide/integrations/clay",
               "guide/integrations/n8n",
-              "guide/integrations/make",
-              "guide/integrations/MCP"
+              "guide/integrations/make"
             ]
           },
           {
@@ -114,6 +117,18 @@
         "header": "Resources",
         "items": [
           {
+            "label": "Customers",
+            "href": "https://example.com/customers"
+          },
+          {
+            "label": "Enterprise",
+            "href": "https://example.com/enterprise"
+          },
+          {
+            "label": "Request Preview",
+            "href": "https://example.com/preview"
+          },
+          {
             "label": "Pricing",
             "href": "https://blitz-api.ai/pricing"
           },
@@ -131,6 +146,18 @@
         "header": "Company",
         "items": [
           {
+            "label": "Careers",
+            "href": "https://example.com/careers"
+          },
+          {
+            "label": "Blog",
+            "href": "https://example.com/blog"
+          },
+          {
+            "label": "Privacy Policy",
+            "href": "https://example.com/legal/privacy"
+          },
+          {
             "label": "Dashboard",
             "href": "https://app.blitz-api.ai"
           },
@@ -147,8 +174,15 @@
     ]
   },
   "integrations": {
+    "ga4": {
+      "measurementId": "G-XXXXXXXXXX"
+    },
     "telemetry": {
       "enabled": true
+    },
+    "cookies": {
+      "key": "example_cookie_key",
+      "value": "example_cookie_value"
     }
   },
   "contextual": {
@@ -156,14 +190,17 @@
       "copy",
       "view",
       "chatgpt",
-      "claude"
+      "claude",
+      "mcp",
+      "cursor",
+      "vscode"
     ]
   },
   "errors": {
     "404": {
       "redirect": false,
-      "title": "Page not found",
-      "description": "This page doesn't exist. Check the URL or navigate using the sidebar."
+      "title": "I can't be found",
+      "description": "What ever **happened** to this _page_?"
     }
   }
 }
